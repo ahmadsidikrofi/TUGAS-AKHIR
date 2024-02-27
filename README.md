@@ -4,7 +4,8 @@ Project ini digunakan untuk memenuhi pelaksanaan dari Tugas Akhir pembuatan Dash
 
 > **Warning**
 > This project is still in development and is not ready for production use.
-
+>
+> 
 ## Tech Stack 💻
 
 - **Back-end:** [Laravel](https://laravel.com/)
@@ -13,7 +14,7 @@ Project ini digunakan untuk memenuhi pelaksanaan dari Tugas Akhir pembuatan Dash
 - **Styling:** [Tailwind CSS](https://tailwindcss.com)
 - **Database:** [Mysql](https://www.mysql.com)
 
-Laravel Running Locally
+Easy step to run locally
 
 1. Install Composer
 
