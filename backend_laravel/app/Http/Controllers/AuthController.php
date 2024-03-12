@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PasienModel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -61,17 +61,17 @@ class AuthController extends Controller
 
     public function SigninPasien( Request $request )
     {
-        if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            // $randToken = Str::random(60);
+            // $token = $user->createToken($randToken)->plainTextToken;
             $pasienLogin = PasienModel::where('email', $request->input('email'))->first();
             $pasienLogin->is_login = 1;
             $pasienLogin->save();
-            $pasienSlug = auth()->user()->slug;
-
             return response()->json([
                 'success' => true,
                 'message' => 'Kamu berhasil login',
-                'user' => auth()->user(),
-                'pasienSlug' => $pasienSlug
+                'pasien' => auth()->user(),
+                'Token' => auth()->user()->getRememberToken()
             ], 200);
         } else {
             return response()->json([
@@ -80,27 +80,10 @@ class AuthController extends Controller
             ], 404);
         };
     }
-    // public function IsLoggedIn(Request $request)
-    // {
-    //     if (Session::has('user_slug')) {
-    //         // Pengguna telah login
-    //         return response()->json([
-    //             'logged_in' => true,
-    //             'user_slug' => Session::get('user_slug')
-    //         ], 200);
-    //     } else {
-    //         // Pengguna tidak login
-    //         return response()->json([
-    //             'logged_in' => false,
-    //             'message' => 'Pengguna tidak login'
-    //         ], 401);
-    //     }
-    // }
 
-    public function IsLoggedIn($slug)
+    public function IsLoggedIn($token)
     {
-        $pasien = PasienModel::where('slug', $slug)->first();
-        // $pasien = PasienModel::find($id);
+        $pasien = PasienModel::where('remember_token', $token)->first();
         if ( $pasien->is_login === 1 ) {
             return response()->json([
                 'success' => true,
@@ -168,3 +151,26 @@ class AuthController extends Controller
         }
     }
 }
+
+
+    // public function SigninPasien( Request $request )
+    // {
+    //     if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+    //         $pasienLogin = PasienModel::where('email', $request->input('email'))->first();
+    //         $pasienLogin->is_login = 1;
+    //         $pasienLogin->save();
+    //         $pasienSlug = auth()->user()->slug;
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Kamu berhasil login',
+    //             'user' => auth()->user(),
+    //             'pasienSlug' => $pasienSlug
+    //         ], 200);
+    //     } else {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => "Sepertinya ada yang salah dengan email / password kamu"
+    //         ], 404);
+    //     };
+    // }

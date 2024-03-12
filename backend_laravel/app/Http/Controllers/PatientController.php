@@ -9,7 +9,8 @@ class PatientController extends Controller
 {
     public function PatientsAll()
     {
-        $dataPatients = PasienModel::with('heartrate', 'respirationrate')->latest()->get();
+        // $dataPatients = PasienModel::with('heartrate', 'respirationrate')->latest()->get();
+        $dataPatients = PasienModel::all();
         return response()->json($dataPatients, 200);
     }
 }

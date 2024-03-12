@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::get('/test', function() {
     return response()->json([
         'success' => true,
@@ -30,8 +31,7 @@ Route::get('/test', function() {
 // AUTH
 Route::post('/signup', [AuthController::class, "SignupPasien"]);
 Route::post('/signin', [AuthController::class, "SigninPasien"]);
-Route::get('/logged-in/{slug}', [AuthController::class, "IsLoggedIn"]);
-// Route::get('/check-logged-in', [AuthController::class, "IsLoggedIn"]);
+Route::get('/logged-in/{token}', [AuthController::class, "IsLoggedIn"]);
 Route::put('/profile-update/{slug}', [AuthController::class, "UpdateProfile"]);
 Route::post('/forget-password', [AuthController::class, "ForgetPassword"]);
 
