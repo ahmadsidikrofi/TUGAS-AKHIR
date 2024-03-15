@@ -19,6 +19,10 @@ class PasienModel extends Model
     {
         return $this->hasOne(HeartrateModel::class, 'patient_id');
     }
+    public function oxygenSaturation()
+    {
+        return $this->hasOne(OxygenSaturationModel::class, "patient_id");
+    }
     public function respirationrate()
     {
         return $this->hasOne(RespirationrateModel::class, "patient_id");

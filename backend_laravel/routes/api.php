@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EWSController;
 use App\Http\Controllers\HeartrateController;
 use App\Http\Controllers\PatientController;
 use Illuminate\Http\Request;
@@ -35,5 +36,10 @@ Route::get('/logged-in/{token}', [AuthController::class, "IsLoggedIn"]);
 Route::put('/profile-update/{slug}', [AuthController::class, "UpdateProfile"]);
 Route::post('/forget-password', [AuthController::class, "ForgetPassword"]);
 
-// Patients
-Route::get('/patients', [PatientController::class, "PatientsAll"]);
+
+Route::middleware('api')->group(function () {
+    // Patients
+    Route::get('/patients-data', [PatientController::class, "SendPatientsToArduino"]);
+    Route::get('/heartrate', [EWSController::class, "StoreHeartRate"]);
+    Route::get('/patients', [PatientController::class, "PatientsData"]);
+});

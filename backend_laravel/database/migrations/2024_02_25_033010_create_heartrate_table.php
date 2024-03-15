@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('heartrate', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('heart_beats');
+            $table->string('heart_beats');
             $table->string('colors')->nullable();
             $table->timestamps();
         });

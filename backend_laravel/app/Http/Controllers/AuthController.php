@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HeartrateModel;
+use App\Models\OxygenSaturationModel;
 use App\Models\PasienModel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -46,7 +48,15 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'remember_token' => Str::random(60)
         ]);
-        if ($pasienBaru) {
+        $heartRate = HeartrateModel::create([
+            'patient_id' => $pasienBaru->id,
+            'heart_beats' => 'Tiada Jari',
+        ]);
+        $oxygenSaturation = OxygenSaturationModel::create([
+            'patient_id' => $pasienBaru->id,
+            'blood_oxygen' => '0',
+        ]);
+        if ($pasienBaru && $heartRate && $oxygenSaturation) {
             return response()->json([
                 'success' => true,
                 'message' => 'Pasien berhasil didaftarkan'
