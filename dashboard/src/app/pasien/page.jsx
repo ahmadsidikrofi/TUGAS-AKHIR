@@ -13,7 +13,7 @@ const Pasien = () => {
   });
   const fetchData = async () => {
     axios
-      .get('https://dashboard-backend.000webhostapp.com/api/patients')
+      .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
       .then((response) => setPasien(response.data))
       .catch((error) => console.log(error));
   };
