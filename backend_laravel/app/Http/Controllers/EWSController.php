@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HeartrateModel;
 use App\Models\PasienModel;
 use Illuminate\Http\Request;
 
@@ -22,21 +23,21 @@ class EWSController extends Controller
         if ($patient) {
             if ($patient->is_login === 1) {
                 // Heartrate data
-                $patient->heartrate()->update(['heart_beats' => $heart_beats]);
+                $patient->heartrate()->create(['heart_beats' => $heart_beats]);
                 if ($heart_beats > 40 && $heart_beats <= 50) {
-                    $patient->heartrate()->update(['colors' => $yellowColor]); // Kuning
+                    $patient->heartrate()->create(['colors' => $yellowColor]); // Kuning
                 } else if ( $heart_beats > 50 && $heart_beats <= 90  ) {
-                    $patient->heartrate()->update(['colors' => $greenColor ]); // hijau
+                    $patient->heartrate()->create(['colors' => $greenColor ]); // hijau
                 } else if ( $heart_beats > 90 && $heart_beats <= 110 ) {
-                    $patient->heartrate()->update(['colors' => $yellowColor]); // Kuning
+                    $patient->heartrate()->create(['colors' => $yellowColor]); // Kuning
                 } else if ( $heart_beats > 110 && $heart_beats <= 130 ) {
-                    $patient->heartrate()->update(['colors' => $orangeColor ]); // orange
+                    $patient->heartrate()->create(['colors' => $orangeColor ]); // orange
                 } else {
-                    $patient->heartrate()->update(['colors' => $redColor ]); // merah
+                    $patient->heartrate()->create(['colors' => $redColor ]); // merah
                 };
 
                 // Oxygen Saturation
-                $patient->oxygenSaturation()->update(['blood_oxygen' => $blood_oxygen]);
+                $patient->oxygenSaturation()->create(['blood_oxygen' => $blood_oxygen]);
                 return response()->json(['message' => 'Detak jantung berhasil disimpan'], 200);
             } else {
                 return response()->json(['message' => 'Detak jantung gagal disimpan'], 500);
@@ -44,5 +45,12 @@ class EWSController extends Controller
         } else {
             return response()->json(['message' => 'Mungkin pasien belum login'], 500);
         }
+    }
+
+    function HeartratePatientDetail($slug)
+    {
+        $pasienId = PasienModel::where('slug', $slug)->value('id');
+        $heartrate = HeartrateModel::where('patient_id', $pasienId)->orderBy('updated_at', 'desc')->get();
+        return response()->json($heartrate, 200);
     }
 }

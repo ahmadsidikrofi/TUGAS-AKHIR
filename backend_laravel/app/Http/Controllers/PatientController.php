@@ -16,6 +16,13 @@ class PatientController extends Controller
     function PatientsData()
     {
         $patients = PasienModel::with('heartrate')->get();
-        return response()->json($patients);
+        return response()->json($patients, 200);
     }
+    // function PatientsData()
+    // {
+    //     $patients = PasienModel::with(['heartrate' => function ($query) {
+    //         $query->orderBy('heart_beats', 'desc');
+    //     }])->get();
+    //     return response()->json($patients, 200);
+    // }
 }
