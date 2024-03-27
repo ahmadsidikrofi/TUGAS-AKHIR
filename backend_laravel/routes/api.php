@@ -39,7 +39,11 @@ Route::post('/forget-password', [AuthController::class, "ForgetPassword"]);
 
 Route::middleware('api')->group(function () {
     // Patients
+    // Arduino
     Route::get('/patients-data', [PatientController::class, "SendPatientsToArduino"]);
     Route::get('/heartrate', [EWSController::class, "StoreHeartRate"]);
+    // Web Chart
     Route::get('/patients', [PatientController::class, "PatientsData"]);
+    Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
+    Route::get('/oxymeter-patient/{slug}', [EWSController::class, "OxymeterPatientDetail"]);
 });
