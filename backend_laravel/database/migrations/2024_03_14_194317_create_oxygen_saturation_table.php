@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('blood_oxygen');
-            $table->string('colors')->nullable();
+            $table->integer('score')->nullable();
             $table->timestamps();
         });
     }

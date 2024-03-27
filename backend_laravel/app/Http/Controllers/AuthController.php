@@ -46,7 +46,7 @@ class AuthController extends Controller
             'nama_lengkap' => $request->input('nama_lengkap'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->password),
-            'remember_token' => Str::random(60)
+            'remember_token' => Str::random(60),
         ]);
         $heartRate = HeartrateModel::create([
             'patient_id' => $pasienBaru->id,
@@ -59,7 +59,10 @@ class AuthController extends Controller
         if ($pasienBaru && $heartRate && $oxygenSaturation) {
             return response()->json([
                 'success' => true,
-                'message' => 'Pasien berhasil didaftarkan'
+                'message' => 'Pasien berhasil didaftarkan',
+                'pasien' => $pasienBaru,
+                'access_token' => auth()->login($pasienBaru),
+                'type' => 'bearer',
             ], 201);
         } else {
             return response()->json([
@@ -71,9 +74,8 @@ class AuthController extends Controller
 
     public function SigninPasien( Request $request )
     {
-        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-            // $randToken = Str::random(60);
-            // $token = $user->createToken($randToken)->plainTextToken;
+        $token = auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')]);
+        if ($token) {
             $pasienLogin = PasienModel::where('email', $request->input('email'))->first();
             $pasienLogin->is_login = 1;
             $pasienLogin->save();
@@ -81,7 +83,8 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'Kamu berhasil login',
                 'pasien' => auth()->user(),
-                'Token' => auth()->user()->getRememberToken()
+                'access_token' => $token,
+                'type' => 'bearer',
             ], 200);
         } else {
             return response()->json([
@@ -91,9 +94,27 @@ class AuthController extends Controller
         };
     }
 
-    public function IsLoggedIn($token)
+    // public function IsLoggedIn($token)
+    // {
+    //     $pasien = PasienModel::where('remember_token', $token)->first();
+    //     if ( $pasien->is_login === 1 ) {
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Kamu sedang masa login',
+    //             'pasien_data' => $pasien
+    //         ], 200);
+    //     } else {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Kamu tidak berada pada masa login',
+    //             'is_login' => $pasien->is_login,
+    //         ], 401);
+    //     }
+    // }
+
+    public function IsLoggedIn(Request $request)
     {
-        $pasien = PasienModel::where('remember_token', $token)->first();
+        $pasien = $request->user();
         if ( $pasien->is_login === 1 ) {
             return response()->json([
                 'success' => true,
@@ -108,6 +129,7 @@ class AuthController extends Controller
             ], 401);
         }
     }
+
     public function UpdateProfile( Request $request, $slug )
     {
         $pasienProfile = PasienModel::where('slug', $slug)->first();
