@@ -5,7 +5,6 @@ import ReactApexChart from 'react-apexcharts';
 import { useEffect, useState } from 'react';
 
 const ChartJantung = () => {
-
   const [data, setData] = useState({
     chart: {
       id: 'apexchart-example',
@@ -25,7 +24,7 @@ const ChartJantung = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/heartrate-patient');
-        const newData = response.data.map(patient => ({
+        const newData = response.data.map((patient) => ({
           x: new Date(patient.updated_at),
           y: parseInt(patient.heart_beats),
         }));
@@ -40,7 +39,7 @@ const ChartJantung = () => {
         console.log(error);
       }
     };
-  
+
     // Panggil fetchData pada saat komponen dimuat
     fetchData();
     // Lakukan polling setiap 10 detik
