@@ -18,6 +18,12 @@ class PatientController extends Controller
         $patients = PasienModel::with('heartrate')->get();
         return response()->json($patients, 200);
     }
+
+    public function PatientsDataDetail($slug)
+    {
+        $patient = PasienModel::where('slug', $slug)->first();
+        return response()->json($patient, 200);
+    }
     // function PatientsData()
     // {
     //     $patients = PasienModel::with(['heartrate' => function ($query) {

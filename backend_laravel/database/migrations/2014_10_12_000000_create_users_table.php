@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('alamat')->nullable();
             $table->string('tgl_lahir')->nullable();
             $table->enum('jenis_kelamin', ["Pria", "Wanita"])->nullable();
-            $table->enum("perawatan", ["Rawat inap", "Rawat jalan"])->nullable();
+            $table->enum("perawatan", ["Rawat inap", "Rawat jalan"])->default("Rawat Inap");
             $table->string('password');
             $table->boolean('is_login')->default(0);
             $table->rememberToken();

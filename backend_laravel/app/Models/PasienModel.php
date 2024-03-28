@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-// use Laravel\Sanctum\HasApiTokens;
-// use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class PasienModel extends Model
+class PasienModel extends Authenticatable implements JWTSubject
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
     use Sluggable;
     protected $table = "users";
     protected $guarded = [];
@@ -34,5 +36,26 @@ class PasienModel extends Model
                 'source' => 'nama_lengkap'
             ]
         ];
+    }
+
+    // Rest omitted for brevity
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
