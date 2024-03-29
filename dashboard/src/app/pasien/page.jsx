@@ -3,18 +3,19 @@
 import ChartJantung from '../Components/ChartJantung';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { CaretUp, CaretDown } from '@phosphor-icons/react/dist/ssr';
 import Dropdown from '../Components/Dropdown';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button"
 
 const Pasien = () => {
   const [pasien, setPasien] = useState([]);
   const [dropdown, setDropdown] = useState({
     pasien: false,
   });
-  const [perawatan, setPerawatan] = useState('');
   const router = useRouter()
+  const { toast } = useToast()
   const fetchData = async () => {
     axios
       .get('http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
@@ -40,12 +41,23 @@ const Pasien = () => {
       axios.put(`http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
         perawatan: jenisPerawatanBaru
       })
+      toast({
+        title: "Ubah jenis perawatan pasien.",
+        description: "Jenis perawatan berhasil diubah.",
+      })
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Ubah jenis perawatan pasien.",
+        description: "Jenis perawatan gagal diubah.",
+      })
+
     }
   }
 
   return (
     <div className="flex flex-col">
-      <h1 className=" ml-10 mt-10 text-3xl font-bold">List All Pasien</h1>
+      <h1 className="ml-10 mt-10 text-3xl font-bold">List All Pasien</h1>
       <table className="border-2 border-black bg-white mt-5 mx-10 w-60">
         <thead className="border-2 border-black ">
           <tr className="border-2 border-black bg-gray-300">
