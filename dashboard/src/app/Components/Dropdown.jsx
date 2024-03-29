@@ -5,6 +5,7 @@ const Dropdown = ({ patient }) => {
     <div>
       <ul>
         <li>{patient.heartrate.heart_beats}</li>
+        <li>{patient.oxygen_saturation.blood_oxygen}</li>
       </ul>
     </div>
   );
