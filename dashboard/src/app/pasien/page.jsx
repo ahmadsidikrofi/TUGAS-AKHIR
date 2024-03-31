@@ -7,14 +7,23 @@ import Dropdown from '../Components/Dropdown';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
-import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from '@/components/ui/button';
+import { ToastAction } from '@/components/ui/toast';
 
 const Pasien = () => {
   const [pasien, setPasien] = useState([]);
   const [dropdown, setDropdown] = useState({
     pasien: false,
   });
-  const router = useRouter()
   const { toast } = useToast()
   const fetchData = async () => {
     axios
@@ -34,25 +43,49 @@ const Pasien = () => {
   };
 
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
-    const res = await axios.get('http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
-    const patient = res.data
-    const findPatient = patient.find(item => item.slug === slug)
-    if (findPatient) {
-      axios.put(`http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
-        perawatan: jenisPerawatanBaru
+    axios.put(`http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
+      perawatan: jenisPerawatanBaru
+    }).then(() => {
+      const updatePerawatan = pasien.map((item) => {
+        if (item.slug === slug) {
+          return {
+            ...item,
+            perawatan: jenisPerawatanBaru
+          }
+        }
+        return item
       })
+      setPasien(updatePerawatan)
       toast({
-        title: "Ubah jenis perawatan pasien.",
-        description: "Jenis perawatan berhasil diubah.",
+        title: "Ubah Perawatan",
+        description: "Jenis perawatan berhasil diubah"
       })
-    } else {
+    }).catch(() => {
       toast({
         variant: "destructive",
-        title: "Ubah jenis perawatan pasien.",
-        description: "Jenis perawatan gagal diubah.",
+        title: "Ubah Perawatan",
+        description: "Jenis perawatan yang sama tidak dapat diubah",
+        action: <ToastAction altText="Coba lagi">Coba lagi</ToastAction>,
       })
+    })
+  }
 
-    }
+  const DropdownPerawatan = ({item}) => {
+    return (
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">{item.perawatan}</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuRadioGroup value={item.perawatan} onValueChange={(val) => ubahPerawatan(item.slug, val)}>
+              <DropdownMenuRadioItem value="Rawat inap">Rawat inap</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="Rawat jalan">Rawat jalan</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    )
   }
 
   return (
@@ -76,11 +109,7 @@ const Pasien = () => {
               <td className="border-2 py-4 border-black text-center bg-gray-300">{i + 1}</td>
               <td className={`border-2 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>{item.nama_lengkap}</td>
               <td className={`border-2 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>
-                <select onChange={(e) => ubahPerawatan(item.slug, e.target.value)} className="border-2 border-black rounded p-1" name="perawatan" id="perawatan">
-                  {/* <option disabled>saat ini: {item.perawatan}</option> */}
-                  <option selected={item.perawatan === "Rawat inap" ? true : false}  value="Rawat inap">Rawat inap</option>
-                  <option selected={item.perawatan === "Rawat jalan" ? true : false}  value="Rawat jalan">Rawat jalan</option>
-                </select>
+                <DropdownPerawatan item={item}/>
               </td>
               <td className={`border-2 px-5 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>{item.email ? item.email : '-'}</td>
               <td className={`border-2 px-5 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>{item.jenis_kelamin ? item.jenis_kelamin : '-'}</td>
@@ -90,7 +119,7 @@ const Pasien = () => {
                     <Dropdown patient={item} />
                   </>
                 ) : (
-                  <p>...</p>
+                  <p>Selengkapnya...</p>
                 )}
               </td>
               <td className={`border-2 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>
