@@ -4,8 +4,7 @@ import axios from 'axios';
 import ReactApexChart from 'react-apexcharts';
 import { useEffect, useState } from 'react';
 
-const ChartJantung = () => {
-
+const ChartJantung = ({slug}) => {
   const [data, setData] = useState({
     chart: {
       id: 'apexchart-example',
@@ -24,9 +23,9 @@ const ChartJantung = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/heartrate-patient');
-        const newData = response.data.map(patient => ({
-          x: new Date(patient.updated_at),
+        const response = await axios.get(`http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/heartrate-patient/${slug}`);
+        const newData = response.data.map((patient) => ({
+          x: new Date(patient.created_at),
           y: parseInt(patient.heart_beats),
         }));
         // Perbarui data series untuk grafik
@@ -40,7 +39,7 @@ const ChartJantung = () => {
         console.log(error);
       }
     };
-  
+
     // Panggil fetchData pada saat komponen dimuat
     fetchData();
     // Lakukan polling setiap 10 detik
@@ -52,7 +51,7 @@ const ChartJantung = () => {
   return (
     <div className="bg-white h-[100%] rounded-lg shadow-lg w-[60vw] p-5 ml-10 my-10">
       <div id="chart">
-        <ReactApexChart options={data} series={series} type="area" height={450} />
+        <ReactApexChart options={data} series={series} type="line" height={450} />
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ const Home = () => {
         <ManyPasien />
         <ListMiniPasien />
       </div>
-      <PieChart />
+      {/* <PieChart /> */}
     </div>
   );
 };

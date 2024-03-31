@@ -24,7 +24,7 @@ const Sidebar = () => {
           <Link
             href={'/'}
             onClick={() => handelActive('dashboard')}
-            className={`flex justify-between cursor-pointer hover:bg-gray-700 hover:rounded-lg hover:text-white focus:bg-white gap-4 font-bold text-lg items-center flex focus:text-black text-left rounded-lg focus:font-bold block p-4 w-full ${
+            className={`flex justify-between cursor-pointer hover:bg-gray-700 hover:rounded-lg hover:text-white focus:bg-white gap-4 font-bold text-lg items-center focus:text-black text-left rounded-lg focus:font-bold p-4 w-full ${
               active === 'dashboard' ? 'bg-white text-black font-bold rounded-lg' : 'null'
             }`}
           >
