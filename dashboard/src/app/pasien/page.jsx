@@ -43,31 +43,33 @@ const Pasien = () => {
   };
 
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
-    axios.put(`http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
-      perawatan: jenisPerawatanBaru
-    }).then(() => {
-      const updatePerawatan = pasien.map((item) => {
-        if (item.slug === slug) {
-          return {
-            ...item,
-            perawatan: jenisPerawatanBaru
+    if (typeof window !== "undefined") {
+      axios.put(`http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
+        perawatan: jenisPerawatanBaru
+      }).then(() => {
+        const updatePerawatan = pasien.map((item) => {
+          if (item.slug === slug) {
+            return {
+              ...item,
+              perawatan: jenisPerawatanBaru
+            }
           }
-        }
-        return item
+          return item
+        })
+        setPasien(updatePerawatan)
+        toast({
+          title: "Ubah Perawatan",
+          description: "Jenis perawatan berhasil diubah"
+        })
+      }).catch(() => {
+        toast({
+          variant: "destructive",
+          title: "Ubah Perawatan",
+          description: "Jenis perawatan yang sama tidak dapat diubah",
+          action: <ToastAction altText="Coba lagi">Coba lagi</ToastAction>,
+        })
       })
-      setPasien(updatePerawatan)
-      toast({
-        title: "Ubah Perawatan",
-        description: "Jenis perawatan berhasil diubah"
-      })
-    }).catch(() => {
-      toast({
-        variant: "destructive",
-        title: "Ubah Perawatan",
-        description: "Jenis perawatan yang sama tidak dapat diubah",
-        action: <ToastAction altText="Coba lagi">Coba lagi</ToastAction>,
-      })
-    })
+    }
   }
 
   const DropdownPerawatan = ({item}) => {
