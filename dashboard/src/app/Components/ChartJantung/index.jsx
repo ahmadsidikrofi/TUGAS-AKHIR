@@ -44,11 +44,11 @@ const ChartJantung = ({slug}) => {
 
     // Panggil fetchData pada saat komponen dimuat
     fetchData();
-    // Lakukan polling setiap 10 detik
-    const intervalId = setInterval(fetchData, 5000);
-    // Bersihkan interval saat komponen dilepas
-    return () => clearInterval(intervalId);
-  }, []);
+    if (typeof window !== 'undefined') {
+      const intervalId = setInterval(fetchData, 5000);
+      return () => clearInterval(intervalId);
+    }
+  }, [slug]);
 
   return (
     <div className="bg-white h-[100%] rounded-lg shadow-lg w-[60vw] p-5 ml-10 my-10">
