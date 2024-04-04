@@ -13,22 +13,23 @@ class PatientController extends Controller
         return response()->json($dataPatients, 200);
     }
 
+    // function PatientsData()
+    // {
+    //     $patients = PasienModel::with('heartrate', 'oxygenSaturation')->orderBy('updated_at', 'desc')->get();
+    //     return response()->json($patients, 200);
+    // }
     function PatientsData()
     {
-        $patients = PasienModel::with('heartrate')->get();
+        $patients = PasienModel::with(['heartrate' => function ($query) {
+            $query->orderBy('updated_at', 'desc');
+        }, 'oxygenSaturation' => function ($query) {
+            $query->orderBy('updated_at', 'desc');
+        }])->get();
         return response()->json($patients, 200);
     }
-
     public function PatientsDataDetail($slug)
     {
         $patient = PasienModel::where('slug', $slug)->first();
         return response()->json($patient, 200);
     }
-    // function PatientsData()
-    // {
-    //     $patients = PasienModel::with(['heartrate' => function ($query) {
-    //         $query->orderBy('heart_beats', 'desc');
-    //     }])->get();
-    //     return response()->json($patients, 200);
-    // }
 }
