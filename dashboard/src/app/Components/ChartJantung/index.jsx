@@ -53,9 +53,9 @@ const ChartJantung = ({slug}) => {
   return (
     <div className="bg-white h-[100%] rounded-lg shadow-lg w-[60vw] p-5 ml-10 my-10">
       <div id="chart">
-        <ReactApexChart options={data} series={series} type="line" height={450} />
+        <ReactApexChart options={data} series={series} type="line" height={450} className="dark:text-slate-800"/>
       </div>
-    </div>
+  </div>
   );
 };
 export default ChartJantung;

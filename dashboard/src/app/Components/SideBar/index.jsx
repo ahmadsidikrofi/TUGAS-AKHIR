@@ -4,6 +4,8 @@ import '@/app/globals.css';
 import Link from 'next/link';
 import { useState } from 'react';
 import { UserSquare, CaretUp, Gauge, CaretDown, Info } from '@phosphor-icons/react/dist/ssr';
+import { DarkTheme } from '../DarkTheme';
+import { HoverMenu } from '../HoverMenu';
 
 const Sidebar = () => {
   const [sidebarMenu, setSideBarMenu] = useState(false);
@@ -17,14 +19,17 @@ const Sidebar = () => {
     }
   };
   return (
-    <div className="flex flex-col w-80 sticky top-0 h-screen bg-transparent text-black p-4 gap-4 shadow-lg shadow-black ">
-      <h1 className="text-2xl font-bold mb-6 text-center text-[#000 ] mt-12">Dashboard Jantung</h1>
+    <div className="flex flex-col w-80 sticky top-0 h-screen bg-transparent p-4 gap-4 shadow-lg shadow-black ">
+      <div className='mx-5 mt-7 flex justify-center'>
+        <DarkTheme />
+      </div>
+      <h1 className="text-2xl font-bold mb-6 text-center text-[#000 ]">Dashboard Jantung</h1>
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col gap-4 ">
           <Link
             href={'/'}
             onClick={() => handelActive('dashboard')}
-            className={`flex justify-between cursor-pointer hover:bg-[#000] hover:rounded-lg hover:text-white gap-4 font-bold text-lg items-center text-left rounded-lg focus:font-bold block p-4 ${
+            className={`flex justify-between cursor-pointer hover:bg-[#000] hover:rounded-lg hover:text-white gap-4 font-bold text-lg items-center text-left rounded-lg focus:font-bold p-4 ${
               active === 'dashboard' ? 'bg-black text-white font-bold rounded-lg' : 'null'
             }`}
           >
@@ -33,7 +38,7 @@ const Sidebar = () => {
               <p>Dashboard</p>
             </div>
           </Link>
-          <Link
+          {/* <Link
             href={'/pasien'}
             onClick={() => handelActive('pasien')}
             className={`flex justify-between cursor-pointer hover:bg-[#000] hover:rounded-lg hover:text-white gap-4 font-bold text-lg items-center text-left rounded-lg focus:font-bold block p-4 ${
@@ -47,7 +52,7 @@ const Sidebar = () => {
             <div className="cursor-pointer mt-1 hover:text-[#f52f57]" onClick={() => setSideBarMenu(!sidebarMenu)}>
               {!sidebarMenu ? <CaretDown size={20} /> : <CaretUp size={20} />}
             </div>
-          </Link>
+          </Link> 
           {sidebarMenu ? (
             <ul className="flex flex-col font-bold rounded-lg  ml-7 mr-4 gap-6 ">
               <li className="hover:text-[#3559E0] text-white ml-4 cursor-pointer">
@@ -59,7 +64,11 @@ const Sidebar = () => {
             </ul>
           ) : (
             <ul className="hidden"></ul>
-          )}
+          )} */}
+
+          <div className='hover:bg-[#000] hover:rounded-lg hover:text-white p-4'>
+            <HoverMenu />
+          </div>
           <div
             onClick={() => handelActive('help')}
             className={`flex justify-between cursor-pointer hover:bg-[#000] hover:rounded-lg hover:text-white gap-4 font-bold text-lg items-center text-left rounded-lg focus:font-bold block p-4 ${
