@@ -40,14 +40,14 @@ Route::post('/forget-password', [AuthController::class, "ForgetPassword"]);
 
 Route::middleware('api')->group(function () {
     // Patients
+    Route::get('/patients', [PatientController::class, "PatientsData"]);
     // Arduino
     Route::get('/patients-data', [PatientController::class, "SendPatientsToArduino"]);
     Route::get('/heartrate', [EWSController::class, "StoreHeartRate"]);
     // Web Chart
-    Route::get('/patients', [PatientController::class, "PatientsData"]);
     Route::get('/patients/{slug}', [PatientController::class, "PatientsDataDetail"]);
-    Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
     // Route::get('/heartrate-patient', [EWSController::class, "HeartRatePatient"]);
-    Route::delete('/delete-100-heartrate', [EWSController::class, "Delete100Heartrate"]);
+    Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
     Route::get('/oxymeter-patient/{slug}', [EWSController::class, "OxymeterPatientDetail"]);
+    Route::get('/delete-ews-data', [EWSController::class, "Delete100Heartrate"]);
 });

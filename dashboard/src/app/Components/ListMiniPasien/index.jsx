@@ -3,7 +3,7 @@ const ListMiniPasien = () => {
     <div className="bg-white rounded-lg shadow-lg w-[80vh] h-[75vh] p-7">
       <h1 className="font-bold text-xl text-[#f52f57]">List Pasien</h1>
       <div className="mt-8">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
               <tr>
