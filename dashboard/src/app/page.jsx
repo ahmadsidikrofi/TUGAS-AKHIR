@@ -4,12 +4,18 @@ import ListMiniPasien from './Components/ListMiniPasien';
 
 const Home = () => {
   return (
-    <div className="p-10 pl-5 flex gap-10 justify-between">
-      <div className="flex flex-col pl-10 gap-20">
-        <ManyPasien />
-        <ListMiniPasien />
+    <div>
+      <h1 className="ml-10 mt-10 text-3xl font-bold">Dashboard</h1>
+      <div className="p-5 pt-10 pl-10 flex flex-col justify-between">
+        <div className="flex gap-10">
+          <ManyPasien />
+          <ManyPasien />
+        </div>
+        <div className="flex mt-14 gap-5">
+          <ListMiniPasien />
+          <PieChart />
+        </div>
       </div>
-      {/* <PieChart /> */}
     </div>
   );
 };
