@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HeartrateModel;
+use App\Models\NibpModel;
 use App\Models\OxygenSaturationModel;
 use App\Models\PasienModel;
 use Illuminate\Support\Str;
@@ -56,7 +57,11 @@ class AuthController extends Controller
             'patient_id' => $pasienBaru->id,
             'blood_oxygen' => '0',
         ]);
-        if ($pasienBaru && $heartRate && $oxygenSaturation) {
+        $nibp = NibpModel::create([
+            'patient_id' => $pasienBaru->id,
+            'systolic' => '0'
+        ]);
+        if ($pasienBaru && $heartRate && $oxygenSaturation && $nibp) {
             return response()->json([
                 'success' => true,
                 'message' => 'Pasien berhasil didaftarkan',
