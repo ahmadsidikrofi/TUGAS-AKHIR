@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\HeartrateModel;
+use App\Models\NibpModel;
 use App\Models\OxygenSaturationModel;
 use App\Models\PasienModel;
 use Illuminate\Http\Request;
 
 class EWSController extends Controller
 {
-    function StoreHeartRate( Request $request )
+    function StoreEWS( Request $request )
     {
-        $heartrateCount = new HeartrateModel();
-        $oxygenSaturationCount = new OxygenSaturationModel();
+        $nibpCount = new NibpModel();
+
         $redColor = 3;
         $yellowColor = 1;
         $orangeColor = 2;
@@ -20,33 +21,31 @@ class EWSController extends Controller
 
         $heart_beats = $request->input('hr');
         $blood_oxygen = $request->input('SpO2');
+        $systolic = $request->input('nibp');
         $patient_id = $request->input('patient_id');
         // $patient = PasienModel::where('is_login', 1)->first();
         $patient = PasienModel::find($patient_id);
         if ($patient) {
             if ($patient->is_login === 1) {
                 // Heartrate data
-                $patient->heartrate()->create(['heart_beats' => $heart_beats]);
-                if ($heart_beats > 40 && $heart_beats <= 50) {
-                    $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $yellowColor]); // Kuning
-                } else if ( $heart_beats > 50 && $heart_beats <= 90  ) {
-                    $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $greenColor ]); // hijau
-                } else if ( $heart_beats > 90 && $heart_beats <= 110 ) {
-                    $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $yellowColor]); // Kuning
-                } else if ( $heart_beats > 110 && $heart_beats <= 130 ) {
-                    $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $orangeColor ]); // orange
+                $this->StoreHeartrate($patient, $heart_beats);
+
+                // Oxygen Saturation data
+                $this->StoreOxygenSaturation($patient, $blood_oxygen);
+
+                // nibp
+                $patient->nibp()->create(['systolic' => $systolic]);
+                if ($systolic <= 91 && $systolic <= 100) {
+                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $orangeColor]);
+                } else if ($systolic > 100 && $systolic <= 110) {
+                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $yellowColor]);
+                } else if ($systolic > 110 && $systolic <= 219) {
+                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $greenColor]);
                 } else {
-                    $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $redColor ]); // merah
-                };
-
-                if ($heartrateCount->count() > 100) {
-                    $heartrateCount->orderBy('created_at')->limit(50)->delete();
+                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $redColor]);
                 }
-
-                // Oxygen Saturation
-                $patient->oxygenSaturation()->updateOrCreate(['blood_oxygen' => $blood_oxygen]);
-                if ($oxygenSaturationCount->count() > 200) {
-                    $oxygenSaturationCount->orderBy('created_at')->limit(100)->delete();
+                if ($nibpCount->count() > 100) {
+                    $nibpCount->orderBy('created_at')->limit(50)->delete();
                 }
                 return response()->json(['message' => 'Detak jantung berhasil disimpan'], 200);
             } else {
@@ -54,6 +53,53 @@ class EWSController extends Controller
             }
         } else {
             return response()->json(['message' => 'Mungkin pasien belum login'], 500);
+        }
+    }
+
+    public function StoreHeartrate( $patient, $heart_beats )
+    {
+        $heartrateCount = new HeartrateModel();
+        $redColor = 3;
+        $yellowColor = 1;
+        $orangeColor = 2;
+        $greenColor = 0;
+        $patient->heartrate()->create(['heart_beats' => $heart_beats]);
+        if ($heart_beats > 40 && $heart_beats <= 50) {
+            $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $yellowColor]); // Kuning
+        } else if ( $heart_beats > 50 && $heart_beats <= 90  ) {
+            $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $greenColor ]); // hijau
+        } else if ( $heart_beats > 90 && $heart_beats <= 110 ) {
+            $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $yellowColor]); // Kuning
+        } else if ( $heart_beats > 110 && $heart_beats <= 130 ) {
+            $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $orangeColor ]); // orange
+        } else {
+            $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $redColor ]); // merah
+        };
+
+        if ($heartrateCount->count() > 100) {
+            $heartrateCount->orderBy('created_at')->limit(50)->delete();
+        }
+    }
+
+    public function StoreOxygenSaturation( $patient, $blood_oxygen ) {
+        $oxygenSaturationCount = new OxygenSaturationModel();
+        $redColor = 3;
+        $yellowColor = 1;
+        $orangeColor = 2;
+        $greenColor = 0;
+
+        $patient->oxygenSaturation()->create(['blood_oxygen' => $blood_oxygen]);
+        if ($blood_oxygen >= 92 && $blood_oxygen <= 93) {
+            $patient->oxygenSaturation()->where('blood_oxygen', $blood_oxygen)->update(['score' => $orangeColor]);
+        } else if ($blood_oxygen >= 94 && $blood_oxygen <= 95) {
+            $patient->oxygenSaturation()->where('blood_oxygen', $blood_oxygen)->update(['score' => $yellowColor]);
+        } else if ($blood_oxygen <= 91) {
+            $patient->oxygenSaturation()->where('blood_oxygen', $blood_oxygen)->update(['score' => $redColor]);
+        } else if ($blood_oxygen >= 96) {
+            $patient->oxygenSaturation()->where('blood_oxygen', $blood_oxygen)->update(['score' => $greenColor]);
+        }
+        if ($oxygenSaturationCount->count() > 100) {
+            $oxygenSaturationCount->orderBy('created_at')->limit(50)->delete();
         }
     }
 
