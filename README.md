@@ -1,4 +1,4 @@
-# [FlowBite]
+# [FlowBeat]
 
 Project ini digunakan untuk memenuhi pelaksanaan dari Tugas Akhir pembuatan Dashboard Monitoring Pasien Berpenyakit Jantung
 
