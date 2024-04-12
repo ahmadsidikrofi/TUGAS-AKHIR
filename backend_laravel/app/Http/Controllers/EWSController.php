@@ -12,13 +12,6 @@ class EWSController extends Controller
 {
     function StoreEWS( Request $request )
     {
-        $nibpCount = new NibpModel();
-
-        $redColor = 3;
-        $yellowColor = 1;
-        $orangeColor = 2;
-        $greenColor = 0;
-
         $heart_beats = $request->input('hr');
         $blood_oxygen = $request->input('SpO2');
         $systolic = $request->input('nibp');
@@ -29,24 +22,10 @@ class EWSController extends Controller
             if ($patient->is_login === 1) {
                 // Heartrate data
                 $this->StoreHeartrate($patient, $heart_beats);
-
                 // Oxygen Saturation data
                 $this->StoreOxygenSaturation($patient, $blood_oxygen);
-
-                // nibp
-                $patient->nibp()->create(['systolic' => $systolic]);
-                if ($systolic <= 91 && $systolic <= 100) {
-                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $orangeColor]);
-                } else if ($systolic > 100 && $systolic <= 110) {
-                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $yellowColor]);
-                } else if ($systolic > 110 && $systolic <= 219) {
-                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $greenColor]);
-                } else {
-                    $patient->nibp()->where('systolic', $systolic)->update(['score' => $redColor]);
-                }
-                if ($nibpCount->count() > 100) {
-                    $nibpCount->orderBy('created_at')->limit(50)->delete();
-                }
+                // Nibp data
+                $this->StoreNibp($patient, $systolic);
                 return response()->json(['message' => 'Detak jantung berhasil disimpan'], 200);
             } else {
                 return response()->json(['message' => 'Detak jantung gagal disimpan'], 500);
@@ -81,7 +60,8 @@ class EWSController extends Controller
         }
     }
 
-    public function StoreOxygenSaturation( $patient, $blood_oxygen ) {
+    public function StoreOxygenSaturation( $patient, $blood_oxygen )
+    {
         $oxygenSaturationCount = new OxygenSaturationModel();
         $redColor = 3;
         $yellowColor = 1;
@@ -100,6 +80,29 @@ class EWSController extends Controller
         }
         if ($oxygenSaturationCount->count() > 100) {
             $oxygenSaturationCount->orderBy('created_at')->limit(50)->delete();
+        }
+    }
+
+    public function StoreNibp( $patient, $systolic )
+    {
+        $nibpCount = new NibpModel();
+        $redColor = 3;
+        $yellowColor = 1;
+        $orangeColor = 2;
+        $greenColor = 0;
+
+        $patient->nibp()->create(['systolic' => $systolic]);
+        if ($systolic <= 91 && $systolic <= 100) {
+            $patient->nibp()->where('systolic', $systolic)->update(['score' => $orangeColor]);
+        } else if ($systolic > 100 && $systolic <= 110) {
+            $patient->nibp()->where('systolic', $systolic)->update(['score' => $yellowColor]);
+        } else if ($systolic > 110 && $systolic <= 219) {
+            $patient->nibp()->where('systolic', $systolic)->update(['score' => $greenColor]);
+        } else {
+            $patient->nibp()->where('systolic', $systolic)->update(['score' => $redColor]);
+        }
+        if ($nibpCount->count() > 100) {
+            $nibpCount->orderBy('created_at')->limit(50)->delete();
         }
     }
 
