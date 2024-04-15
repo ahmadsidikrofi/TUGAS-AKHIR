@@ -4,7 +4,7 @@ import axios from 'axios';
 import ReactApexChart from 'react-apexcharts';
 import { useEffect, useState } from 'react';
 
-const ChartJantung = ({slug}) => {
+const ChartOxygen = ({slug}) => {
   const [data, setData] = useState({
     chart: {
       id: 'apexchart-example',
@@ -15,7 +15,7 @@ const ChartJantung = ({slug}) => {
   });
   const [series, setSeries] = useState([
     {
-      name: 'Heart Rate',
+      name: 'Oxygen Saturation (SpO2)',
       data: [],
     },
   ]);
@@ -24,15 +24,15 @@ const ChartJantung = ({slug}) => {
     const fetchData = async () => {
       try {
         if (typeof window !== "undefined") {
-          const response = await axios.get(`http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/heartrate-patient/${slug}`);
+          const response = await axios.get(`http://192.168.1.2:8080/TUGAS-AKHIR/backend_laravel/public/api/oxymeter-patient/${slug}`);
           const newData = response.data.map((patient) => ({
             x: new Date(patient.created_at).toLocaleTimeString(),
-            y: parseInt(patient.heart_beats),
+            y: parseInt(patient.blood_oxygen),
           }));
           // Perbarui data series untuk grafik
           setSeries([
             {
-              name: 'Heart Rate',
+              name: 'Oxygen Saturation (SpO2)',
               data: newData,
             },
           ]);
@@ -49,13 +49,12 @@ const ChartJantung = ({slug}) => {
       return () => clearInterval(intervalId);
     }
   }, [slug]);
-
   return (
-    <div className="bg-white h-[100%] rounded-lg shadow-lg w-[60vw] p-5 ml-10 my-10">
+    <div className="bg-white rounded-lg shadow-lg p-5 my-10 max-w-[768px]">
       <div id="chart">
-        <ReactApexChart options={data} series={series} type="line" height={450} className="dark:text-slate-800"/>
+        <ReactApexChart options={data} series={series} type="line" height={380} className="dark:text-slate-800 lg:w-[30vw]"/>
       </div>
-  </div>
+    </div>
   );
 };
-export default ChartJantung;
+export default ChartOxygen;
