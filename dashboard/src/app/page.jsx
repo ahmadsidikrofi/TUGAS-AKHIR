@@ -12,7 +12,8 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
   const fetchData = async () => {
     axios
-      .get('http://192.168.1.2:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+      .get('https://dashboard-backend.000webhostapp.com/api/patients')
+      // .get('http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
       .then((response) => {
         setPasien(response.data)
         setTotPasien(response.data.length)

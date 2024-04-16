@@ -29,7 +29,7 @@ const Sidebar = () => {
             href={'/'}
             onClick={() => handelActive('dashboard')}
             className={`flex justify-between cursor-pointer gap-4 text-lg items-center rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear
-             ${active === 'dashboard' ? 'bg-[#5d87ff]rounded-[8px]' : 'null'
+             ${active === 'dashboard' ? 'bg-[#5d87ff] rounded-[8px]' : 'null'
             }`}
           >
             <div className="flex gap-4 font-bold text-lg items-center">

@@ -7,7 +7,8 @@ import Link from 'next/link';
 import { useToast } from "@/components/ui/use-toast"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ChevronRightIcon } from "@radix-ui/react-icons"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowDown, ArrowUpDown } from "lucide-react"
+import { ArrowBigDown } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,7 +49,7 @@ const Pasien = () => {
   const { toast } = useToast()
   const fetchData = async () => {
     axios
-      .get('http://192.168.1.2:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+      .get('http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
       // .get('https://dashboard-backend.000webhostapp.com/api/patients')
       .then((response) => {
         setPasien(response.data)
@@ -186,7 +187,7 @@ const Pasien = () => {
                           <Dropdown patient={item} />
                         </>
                       ) : (
-                        <Button variant="ghost">...</Button>
+                        <Button variant="ghost">HR: {item.heartrate.heart_beats} <ArrowDown size={14} /> </Button>
                       )}
                     </TableCell>
                     <TableCell className={`text-center ${cellColor} w-[10px]`}>{calcEws}</TableCell>
