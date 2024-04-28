@@ -1,11 +1,14 @@
 'use client';
 
-import ChartJantung from '../Components/ChartJantung';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Dropdown from '../Components/Dropdown';
 import Link from 'next/link';
 import { useToast } from "@/components/ui/use-toast"
+import { Skeleton } from "@/components/ui/skeleton"
+import { ChevronRightIcon } from "@radix-ui/react-icons"
+import { ArrowDown, ArrowUpDown } from "lucide-react"
+import { ArrowBigDown } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,34 +29,48 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Input } from '@/components/ui/input';
 
 
 const Pasien = () => {
   const [pasien, setPasien] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const skeleton = <Skeleton className="w-[100px] h-[20px] rounded-full" />
+  const [sortPerawatan, setSortPerawatan] = useState(false)
   const [dropdown, setDropdown] = useState({
     pasien: false,
   });
+  
+  let redColor = 'bg-red-500'
+  let yellowColor = "bg-yellow-400"
+  let orangeColor = 'bg-orange-500'
+  let codeBlue = 'bg-sky-500'
+
   const { toast } = useToast()
   const fetchData = async () => {
     axios
-      .get('https://6c1e-180-246-74-21.ngrok-free.app/TUGAS-AKHIR/backend_laravel/public/api/patients')
-      .then((response) => setPasien(response.data))
-      .catch((error) => console.log(error));
+      .get('http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+      // .get('https://dashboard-backend.000webhostapp.com/api/patients')
+      .then((response) => {
+        setPasien(response.data)
+        setLoading(false)
+      })
+      .catch((error) => console.log(error))
   };
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
-  const handleDropdown = (detailPatient) => {
+  const handleDropdown = (ewsPatient) => {
     setDropdown((prevState) => ({
       ...prevState,
-      [detailPatient]: !prevState[detailPatient],
+      [ewsPatient]: !prevState[ewsPatient],
     }));
-  };
+  }
 
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
     if (typeof window !== "undefined") {
-      axios.put(`https://6c1e-180-246-74-21.ngrok-free.app/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
+      axios.put(`http://192.168.1.2:8080/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
         perawatan: jenisPerawatanBaru
       }).then(() => {
         const updatePerawatan = pasien.map((item) => {
@@ -99,42 +116,94 @@ const Pasien = () => {
     )
   }
 
+  const handleSortPerawatan = () => {
+    if (!sortPerawatan) {
+      const sortedPasienAsc = [...pasien].sort((a, b) => {
+        if (a.perawatan < b.perawatan) return -1;
+        if (a.perawatan > b.perawatan) return 1;
+        return 0;
+      });
+      setPasien(sortedPasienAsc);
+      setSortPerawatan(true);
+    } else {
+      // Lakukan sorting secara descending
+      const sortedPasienDesc = [...pasien].sort((a, b) => {
+        if (a.perawatan > b.perawatan) return -1;
+        if (a.perawatan < b.perawatan) return 1;
+        return 0;
+      });
+      setPasien(sortedPasienDesc);
+      setSortPerawatan(false);
+    }
+  }
+
   return (
     <div className="flex flex-col">
       <h1 className="ml-10 mt-10 text-3xl font-bold">Daftar Pasien</h1>
       <div className='border-[1px] p-10 border-slate-200 dark:border-slate-800 rounded-lg mt-5 mx-10'>
+        <Input placeholder="Filter nama pasien..." className="w-[50%] mb-4" />
         <Table className="w-max">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">No</TableHead>
-              <TableHead>Nama Lengkap</TableHead>
-              <TableHead>Perawatan</TableHead>
-              <TableHead>EWS</TableHead>
-              <TableHead>Detail</TableHead>
+              <TableHead className="w-[70px] text-center">MRN</TableHead>
+              <TableHead className="text-center">Nama Pasien</TableHead>
+              <TableHead className="text-center"><Button variant="ghost" onClick={handleSortPerawatan}><ArrowUpDown size={18}/> Perawatan</Button></TableHead>
+              <TableHead className="text-center">EWS</TableHead>
+              <TableHead className="text-center">Total EWS</TableHead>
+              <TableHead className="text-center">Detail</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {pasien.map((item, i) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium">{i + 1}</TableCell>
-                <TableCell>{item.nama_lengkap}</TableCell>
-                <TableCell>
-                  <DropdownPerawatan item={item}/>
-                </TableCell>
-                <TableCell className="text-right" onClick={() => handleDropdown(item.id)}>
-                  {dropdown[item.id] ? (
-                    <>
-                      <Dropdown patient={item} />
-                    </>
-                  ) : (
-                    <p>Selengkapnya...</p>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Link href={`/detail/${item.slug}`}>Detail Pasien</Link>
-                </TableCell>
+            {loading ? (
+              <TableRow>
+                <TableCell>{skeleton} </TableCell>
+                <TableCell>{skeleton}</TableCell>
+                <TableCell>{skeleton}</TableCell>
+                <TableCell>{skeleton}</TableCell>
+                <TableCell>{skeleton}</TableCell>
+                <TableCell>{skeleton}</TableCell>
               </TableRow>
-            ))}
+            ) : (
+              pasien.map((item, i) => {
+                const calcEws = item.heartrate.score + item.oxygen_saturation.score + item.nibp.score
+                let cellColor = codeBlue
+                if (calcEws >= 1 && calcEws <= 4) {
+                  cellColor = yellowColor
+                } else if (calcEws >= 5 && calcEws <= 6) {
+                  cellColor = orangeColor
+                } else if (calcEws >= 7 && calcEws <= 8) {
+                  cellColor = redColor
+                } else {
+                  cellColor
+                }
+                return (
+                  <TableRow key={i}>
+                    <TableCell className="text-center">{i + 1}</TableCell>
+                    <TableCell>{item.nama_lengkap}</TableCell>
+                    <TableCell><DropdownPerawatan item={item} /></TableCell>
+                    <TableCell onClick={() => handleDropdown(item.id)}>
+                      {dropdown[item.id] ? (
+                        <>
+                          <Dropdown patient={item} />
+                        </>
+                      ) : (
+                        <Button variant="ghost">HR: {item.heartrate.heart_beats} <ArrowDown size={14} /> </Button>
+                      )}
+                    </TableCell>
+                    <TableCell className={`text-center ${cellColor} w-[10px]`}>{calcEws}</TableCell>
+                    <TableCell>
+                      <Link href={`/detail/${item.slug}`}>
+                        <Button variant="link">
+                          <Button variant="outline" className="ml-2">
+                            <ChevronRightIcon className="h-4 w-4" />
+                          </Button>
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                )
+              })
+            )}
           </TableBody>
         </Table>
       </div>

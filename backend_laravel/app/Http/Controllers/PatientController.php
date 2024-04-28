@@ -35,9 +35,57 @@ class PatientController extends Controller
         return response()->json($patient, 200);
     }
 
-    public function SortPatientPerawatan()
+    public function ProfilePatient(Request $request)
     {
-        $perawatan = PasienModel::select('perawatan')->latest()->get();
-        return response()->json($perawatan, 200);
+        $pasien = $request->user();
+        if ( $pasien->is_login === 1 ) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Kamu sedang masa login',
+                'pasien_data' => $pasien
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kamu tidak berada pada masa login',
+                'is_login' => $pasien->is_login,
+            ], 401);
+        }
+    }
+
+    // Update Profile Pasien dari sisi perawat
+    public function UpdateProfile( Request $request, $slug )
+    {
+        $pasienProfile = PasienModel::where('slug', $slug)->first();
+        $pasienProfile->update($request->all());
+        if ($pasienProfile->wasChanged()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profilemu berhasil diubah'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Profilemu tidak ada perubahan'
+            ], 500);
+        }
+    }
+
+    // Update Profile Pasien dari sisi pasien
+    public function UpdateProfileMobile( Request $request )
+    {
+        $pasienProfile = $request->user();
+        $pasienProfile->update($request->all());
+        if ($pasienProfile->wasChanged()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profilemu berhasil diubah'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Profilemu tidak mengalami perubahan'
+            ], 200);
+        }
     }
 }
