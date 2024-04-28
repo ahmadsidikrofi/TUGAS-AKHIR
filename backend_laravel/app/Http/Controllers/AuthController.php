@@ -117,41 +117,6 @@ class AuthController extends Controller
     //     }
     // }
 
-    public function IsLoggedIn(Request $request)
-    {
-        $pasien = $request->user();
-        if ( $pasien->is_login === 1 ) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Kamu sedang masa login',
-                'pasien_data' => $pasien
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kamu tidak berada pada masa login',
-                'is_login' => $pasien->is_login,
-            ], 401);
-        }
-    }
-
-    public function UpdateProfile( Request $request, $slug )
-    {
-        $pasienProfile = PasienModel::where('slug', $slug)->first();
-        $pasienProfile->update($request->all());
-        if ($pasienProfile->wasChanged()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Profilemu berhasil diubah'
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Profilemu tidak ada perubahan'
-            ], 500);
-        }
-    }
-
     public function ForgetPassword( Request $request )
     {
         $valid = Validator::make($request->all(), [

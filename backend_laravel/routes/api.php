@@ -33,8 +33,6 @@ Route::get('/test', function() {
 Route::post('/signup', [AuthController::class, "SignupPasien"]);
 Route::post('/signin', [AuthController::class, "SigninPasien"]);
 // Route::get('/logged-in/{token}', [AuthController::class, "IsLoggedIn"]);
-Route::get('/logged-in', [AuthController::class, "IsLoggedIn"]);
-Route::put('/profile-update/{slug}', [AuthController::class, "UpdateProfile"]);
 Route::post('/forget-password', [AuthController::class, "ForgetPassword"]);
 
 
@@ -42,13 +40,18 @@ Route::middleware('api')->group(function () {
     // Patients
     Route::get('/patients', [PatientController::class, "PatientsData"]);
     Route::get('/patients/{slug}', [PatientController::class, "PatientsDataDetail"]);
-    Route::get('/sort-perawatan', [PatientController::class, "SortPatientPerawatan"]);
+    Route::get('/profile', [PatientController::class, "ProfilePatient"]);
+    Route::put('/profile/{slug}', [PatientController::class, "UpdateProfile"]); // Perawat
+    Route::put('/profile', [PatientController::class, "UpdateProfileMobile"]); // Pasien
     // Arduino
     Route::get('/patients-data', [PatientController::class, "SendPatientsToArduino"]);
     Route::get('/heartrate', [EWSController::class, "StoreEWS"]);
+
     // Web Chart
     // Route::get('/heartrate-patient', [EWSController::class, "HeartRatePatient"]);
     Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
     Route::get('/oxymeter-patient/{slug}', [EWSController::class, "OxymeterPatientDetail"]);
-    Route::get('/delete-ews-data', [EWSController::class, "Delete100Heartrate"]);
+
+    // Mobile Chart
+    Route::get('/heartrate-patient-mobile', [EWSController::class, "HeartratePatientMobileDetail"]);
 });

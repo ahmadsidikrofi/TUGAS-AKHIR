@@ -106,6 +106,7 @@ class EWSController extends Controller
         }
     }
 
+    // WEB
     function HeartratePatientDetail($slug)
     {
         $pasienId = PasienModel::where('slug', $slug)->value('id');
@@ -119,19 +120,24 @@ class EWSController extends Controller
         return response()->json($spo2, 200);
     }
 
-    // function Delete100Heartrate()
-    // {
-    //     $heartrateCount = new HeartrateModel();
-    //     if ($heartrateCount->count() > 200) {
-    //         $heartrateCount->orderBy('created_at')->limit(150)->delete();
-    //         return response()->json(['message' => 'Detak jantung berhasil disimpan'], 200);
-    //     } else {
-    //         return response()->json(['message' => 'Detak jantung gagal disimpan'], 500);
-    //     }
-    // }
-    // function HeartRatePatient()
-    // {
-    //     $heartrate = HeartrateModel::latest()->get();
-    //     return response()->json($heartrate, 200);
-    // }
+    // MOBILE
+    public function HeartratePatientMobileDetail(Request $request)
+    {
+        $pasien = $request->user();
+        $heartrate = HeartrateModel::where('patient_id', $pasien->id)->get();
+        if ( $pasien->is_login === 1 ) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Kamu sedang masa login',
+                'heartrate' => $heartrate
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kamu tidak berada pada masa login',
+                'is_login' => $pasien->is_login,
+            ], 401);
+        }
+        return response()->json($heartrate, 200);
+    }
 }
