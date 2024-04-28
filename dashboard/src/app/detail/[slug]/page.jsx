@@ -3,7 +3,7 @@ import ChartJantung from '@/app/Components/chart/ChartJantung';
 import ChartOxygen from '@/app/Components/chart/ChartOxygen';
 
 const Detail = async ({ params: { slug } }) => {
-  const response = await axios.get(`http://192.168.1.2:8080/TUGAS-AKHIR/backend_laravel/public/api/patients/${slug}`);
+  const response = await axios.get(`http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients/${slug}`);
   // console.log(response.data);
   return (
     <div className="py-16 px-10">
