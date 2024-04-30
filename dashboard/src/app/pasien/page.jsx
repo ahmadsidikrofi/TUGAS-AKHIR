@@ -49,8 +49,8 @@ const Pasien = () => {
   const { toast } = useToast()
   const fetchData = async () => {
     axios
-      .get('http://192.168.1.4:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
-      // .get('https://dashboard-backend.000webhostapp.com/api/patients')
+      // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+      .get('https://dashboard-backend.000webhostapp.com/api/patients')
       .then((response) => {
         setPasien(response.data)
         setLoading(false)
@@ -70,7 +70,7 @@ const Pasien = () => {
 
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
     if (typeof window !== "undefined") {
-      axios.put(`http://192.168.1.2:8080/TUGAS-AKHIR/backend_laravel/public/api/profile-update/${slug}`, {
+      axios.put(`http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/profile/${slug}`, {
         perawatan: jenisPerawatanBaru
       }).then(() => {
         const updatePerawatan = pasien.map((item) => {
