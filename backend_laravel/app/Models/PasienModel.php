@@ -37,6 +37,10 @@ class PasienModel extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(NotificationsModel::class, "patient_id");
     }
+    public function notes()
+    {
+        return $this->hasMany(NotesModel::class, "patient_id");
+    }
     public function sluggable(): array
     {
         return [
