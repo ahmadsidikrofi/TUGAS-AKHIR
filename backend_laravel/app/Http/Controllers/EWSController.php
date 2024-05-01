@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HeartrateModel;
 use App\Models\NibpModel;
+use App\Models\NotificationsModel;
 use App\Models\OxygenSaturationModel;
 use App\Models\PasienModel;
 use Illuminate\Http\Request;
@@ -26,6 +27,11 @@ class EWSController extends Controller
                 $this->StoreOxygenSaturation($patient, $blood_oxygen);
                 // Nibp data
                 $this->StoreNibp($patient, $systolic);
+                $total_score = $patient->heartrate()->orderBy('created_at', 'desc')->first()->score + $patient->oxygenSaturation()->orderBy('created_at', 'desc')->first()->score + $patient->nibp()->orderBy('created_at', 'desc')->first()->score;
+                NotificationsModel::create([
+                    'patient_id' => $patient_id,
+                    'total_score' => $total_score
+                ]);
                 return response()->json(['message' => 'Detak jantung berhasil disimpan'], 200);
             } else {
                 return response()->json(['message' => 'Detak jantung gagal disimpan'], 500);
@@ -139,5 +145,37 @@ class EWSController extends Controller
             ], 401);
         }
         return response()->json($heartrate, 200);
+    }
+
+    public function EWSNotification()
+    {
+        $notifications = PasienModel::with(['notifications' => function($query) {
+            $query->where('total_score', '>=', 5);
+        }])->get();
+        $dataPasien = $notifications->map(function($pasien) {
+            $namaLengkap = $pasien->nama_lengkap;
+            $totalScores = $pasien->notifications->pluck('total_score');
+            $message = [];
+            foreach($totalScores as $totalScore) {
+                $message[] = [
+                    'nama_lengkap' => $namaLengkap,
+                    'total_score' => $totalScore,
+                ];
+            }
+            return $message;
+        });
+        return response()->json($dataPasien, 200);
+    }
+
+    public function EWSNotificationMobile( Request $request )
+    {
+        $pasien = $request->user();
+        if ($pasien->is_login === 1) {
+            $notifications = NotificationsModel::where('patient_id', $pasien->id)
+            ->where('total_score', '>=', 5)->get();
+            return response()->json($notifications, 200);
+        } else {
+            return response()->json(['message' => 'Pasien tidak login'], 403);
+        }
     }
 }
