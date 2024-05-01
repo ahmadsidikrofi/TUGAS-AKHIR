@@ -147,6 +147,7 @@ class EWSController extends Controller
         return response()->json($heartrate, 200);
     }
 
+    // Notification Perawat
     public function EWSNotification()
     {
         $notifications = PasienModel::with(['notifications' => function($query) {
@@ -167,15 +168,19 @@ class EWSController extends Controller
         return response()->json($dataPasien, 200);
     }
 
+    // Notification Pasien
     public function EWSNotificationMobile( Request $request )
     {
         $pasien = $request->user();
-        if ($pasien->is_login === 1) {
+        if ($pasien !== null && $pasien->is_login === 1) {
             $notifications = NotificationsModel::where('patient_id', $pasien->id)
             ->where('total_score', '>=', 5)->get();
             return response()->json($notifications, 200);
         } else {
-            return response()->json(['message' => 'Pasien tidak login'], 403);
+            return response()->json([
+                'success' => false,
+                'message' => 'Pasien tidak login'
+            ], 401);
         }
     }
 }
