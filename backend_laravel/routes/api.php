@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EWSController;
 use App\Http\Controllers\HeartrateController;
+use App\Http\Controllers\NotesController;
 use App\Http\Controllers\PatientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -54,4 +55,17 @@ Route::middleware('api')->group(function () {
 
     // Mobile Chart
     Route::get('/heartrate-patient-mobile', [EWSController::class, "HeartratePatientMobileDetail"]);
+
+    // Notification WEB
+    Route::get('/notifications', [EWSController::class, "EWSNotification"]);
+    // Notification Mobile
+    Route::get('/notifications-mobile', [EWSController::class, "EWSNotificationMobile"]);
+
+    // Notes WEB
+    Route::get('/notes/{slug}', [NotesController::class, "GetNotesData"]);
+    Route::post('/notes', [NotesController::class, "StoreNote"]);
+    Route::delete('/notes/{id}', [NotesController::class, "DeleteNotes"]);
+
+    // Notes Mobile
+    Route::get('/notes-mobile', [NotesController::class, "GetNotesMobile"]);
 });
