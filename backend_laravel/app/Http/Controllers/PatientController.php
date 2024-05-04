@@ -38,7 +38,7 @@ class PatientController extends Controller
     public function ProfilePatient(Request $request)
     {
         $pasien = $request->user();
-        if ( $pasien->is_login === 1 ) {
+        if ( $pasien ) {
             return response()->json([
                 'success' => true,
                 'message' => 'Kamu sedang masa login',

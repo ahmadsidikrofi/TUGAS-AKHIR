@@ -63,7 +63,8 @@ Route::middleware('api')->group(function () {
 
     // Notes WEB
     Route::get('/notes/{slug}', [NotesController::class, "GetNotesData"]);
-    Route::post('/notes', [NotesController::class, "StoreNote"]);
+    Route::post('/notes/{slug}', [NotesController::class, "StoreNote"]);
+    Route::put('/notes/{id}', [NotesController::class, "UpdateNote"]);
     Route::delete('/notes/{id}', [NotesController::class, "DeleteNotes"]);
 
     // Notes Mobile
