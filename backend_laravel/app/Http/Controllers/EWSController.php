@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\StoreDataEwsJob;
 use App\Models\HeartrateModel;
 use App\Models\NibpModel;
 use App\Models\NotificationsModel;
 use App\Models\OxygenSaturationModel;
 use App\Models\PasienModel;
+use App\Models\TemperatureModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Queue;
 
 class EWSController extends Controller
 {
@@ -16,8 +19,10 @@ class EWSController extends Controller
         $heart_beats = $request->input('hr');
         $blood_oxygen = $request->input('SpO2');
         $systolic = $request->input('nibp');
+        $temp = $request->input('temp');
         $patient_id = $request->input('patient_id');
-        // $patient = PasienModel::where('is_login', 1)->first();
+
+        // Queue::push(new StoreDataEwsJob($dataToStore));
         $patient = PasienModel::find($patient_id);
         if ($patient) {
             if ($patient->is_login === 1) {
@@ -27,7 +32,14 @@ class EWSController extends Controller
                 $this->StoreOxygenSaturation($patient, $blood_oxygen);
                 // Nibp data
                 $this->StoreNibp($patient, $systolic);
-                $total_score = $patient->heartrate()->orderBy('created_at', 'desc')->first()->score + $patient->oxygenSaturation()->orderBy('created_at', 'desc')->first()->score + $patient->nibp()->orderBy('created_at', 'desc')->first()->score;
+                // Temperature Data
+                $this->StoreTemp($patient, $temp);
+
+                $heartrateScore = $patient->heartrate()->orderBy('created_at', 'desc')->first()->score;
+                $oxygenScore = $patient->oxygenSaturation()->orderBy('created_at', 'desc')->first()->score;
+                $nibpScore = $patient->nibp()->orderBy('created_at', 'desc')->first()->score;
+                $tempScore = $patient->temperature()->orderBy('created_at', 'desc')->first()->score;
+                $total_score = $heartrateScore + $oxygenScore + $nibpScore + $tempScore;
                 NotificationsModel::create([
                     'patient_id' => $patient_id,
                     'total_score' => $total_score
@@ -109,6 +121,31 @@ class EWSController extends Controller
         }
         if ($nibpCount->count() > 100) {
             $nibpCount->orderBy('created_at')->limit(50)->delete();
+        }
+    }
+
+    public function StoreTemp( $patient, $temp )
+    {
+        $tempCount = new TemperatureModel();
+        $redColor = 3;
+        $yellowColor = 1;
+        $orangeColor = 2;
+        $greenColor = 0;
+
+        $patient->temperature()->create(['patient_temp' => $temp]);
+        if ($temp <= 35) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $redColor]);
+        } else if ($temp >= 35.1 && $temp <= 36.0) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $yellowColor]);
+        } else if ($temp >= 36.1 && $temp <= 38.0) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $greenColor]);
+        } else if ($temp >= 38.1 && $temp <= 39.0) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $yellowColor]);
+        } else if ($temp >= 39.1) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $orangeColor]);
+        }
+        if ($tempCount->count() > 100) {
+            $tempCount->orderBy('created_at')->limit(50)->delete();
         }
     }
 

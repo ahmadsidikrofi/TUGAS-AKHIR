@@ -49,7 +49,6 @@ Route::middleware('api')->group(function () {
     Route::get('/heartrate', [EWSController::class, "StoreEWS"]);
 
     // Web Chart
-    // Route::get('/heartrate-patient', [EWSController::class, "HeartRatePatient"]);
     Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
     Route::get('/oxymeter-patient/{slug}', [EWSController::class, "OxymeterPatientDetail"]);
 

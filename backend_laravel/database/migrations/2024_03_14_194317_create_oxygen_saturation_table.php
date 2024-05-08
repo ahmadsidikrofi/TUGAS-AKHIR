@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('oxygen_saturation', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('blood_oxygen');
+            $table->string('blood_oxygen')->default(0);
             $table->integer('score')->nullable();
             $table->timestamps();
         });
