@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RespirationrateModel extends Model
+class TemperatureModel extends Model
 {
     use HasFactory;
-    protected $table = 'respiration_rate';
+    protected $table = "temperature";
     protected $guarded = [];
 
     public function patient()

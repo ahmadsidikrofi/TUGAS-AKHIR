@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('nibp', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('systolic');
+            $table->string('systolic')->default(0);
             $table->integer('score')->nullable();
             $table->timestamps();
         });

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('respiration_rate', function (Blueprint $table) {
+        Schema::create('temperature', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('breaths');
+            $table->string('patient_temp')->default(0);
             $table->integer('score')->nullable();
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('respiration_rate');
+        Schema::dropIfExists('temperature');
     }
 };
