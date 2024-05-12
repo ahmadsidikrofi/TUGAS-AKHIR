@@ -25,7 +25,7 @@ const ChartOxygen = ({slug}) => {
       try {
         if (typeof window !== "undefined") {
           // const response = await axios.get(`http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/oxymeter-patient/${slug}`);
-          const response = await axios.get(`https://dashboard-backend.000webhostapp.com/api/oxymeter-patient/${slug}`);
+          const response = await axios.get(`https://flowbeat.web.id/api/oxymeter-patient/${slug}`);
           const newData = response.data.map((patient) => ({
             x: new Date(patient.created_at).toLocaleTimeString(),
             y: parseInt(patient.blood_oxygen),
@@ -46,7 +46,7 @@ const ChartOxygen = ({slug}) => {
     // Panggil fetchData pada saat komponen dimuat
     fetchData();
     if (typeof window !== 'undefined') {
-      const intervalId = setInterval(fetchData, 5000);
+      const intervalId = setInterval(fetchData, 1000);
       return () => clearInterval(intervalId);
     }
   }, [slug]);
