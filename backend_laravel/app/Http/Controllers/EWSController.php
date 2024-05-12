@@ -25,7 +25,7 @@ class EWSController extends Controller
         // Queue::push(new StoreDataEwsJob($dataToStore));
         $patient = PasienModel::find($patient_id);
         if ($patient) {
-            if ($patient->is_login === 1) {
+            if ($patient->is_login == '1' && $patient->is_active == 'active') {
                 // Heartrate data
                 $this->StoreHeartrate($patient, $heart_beats);
                 // Oxygen Saturation data
@@ -44,12 +44,12 @@ class EWSController extends Controller
                     'patient_id' => $patient_id,
                     'total_score' => $total_score
                 ]);
-                return response()->json(['message' => 'Detak jantung berhasil disimpan'], 200);
+                return response()->json(['message' => 'Data berhasil disimpan'], 200);
             } else {
-                return response()->json(['message' => 'Detak jantung gagal disimpan'], 500);
+                return response()->json(['message' => 'Pasien tidak berada pada masa login atau sedang tidak aktif, Data gagal disimpan'], 401);
             }
         } else {
-            return response()->json(['message' => 'Mungkin pasien belum login'], 500);
+            return response()->json(['message' => 'Pasien tidak terdaftar pada database rumah sakit'], 401);
         }
     }
 
@@ -162,13 +162,25 @@ class EWSController extends Controller
         $spo2 = OxygenSaturationModel::where('patient_id', $pasienId)->get();
         return response()->json($spo2, 200);
     }
+    public function NibpPatientDetail($slug)
+    {
+        $pasienId = PasienModel::where('slug', $slug)->value('id');
+        $nibp = NibpModel::where('patient_id', $pasienId)->get();
+        return response()->json($nibp, 200);
+    }
+    public function TempPatientDetail($slug)
+    {
+        $pasienId = PasienModel::where('slug', $slug)->value('id');
+        $temp = TemperatureModel::where('patient_id', $pasienId)->get();
+        return response()->json($temp, 200);
+    }
 
     // MOBILE
     public function HeartratePatientMobileDetail(Request $request)
     {
         $pasien = $request->user();
-        $heartrate = HeartrateModel::where('patient_id', $pasien->id)->get();
         if ( $pasien ) {
+            $heartrate = HeartrateModel::where('patient_id', $pasien->id)->get();
             return response()->json([
                 'success' => true,
                 'message' => 'Kamu sedang masa login',
@@ -178,18 +190,32 @@ class EWSController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Kamu tidak berada pada masa login',
-                'is_login' => $pasien->is_login,
             ], 401);
         }
-        return response()->json($heartrate, 200);
+    }
+
+    public function OxymeterPatientMobileDetail( Request $request )
+    {
+        $pasien = $request->user();
+        if ($pasien) {
+            $spo2 = OxygenSaturationModel::where('patient_id', $pasien->id)->get();
+            return response()->json([
+                'success' => true,
+                'message' => 'Kamu sedang masa login',
+                'oxygen' => $spo2,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kamu tidak berada pada masa login',
+            ], 401);
+        }
     }
 
     // Notification Perawat
     public function EWSNotification()
     {
-        $notifications = PasienModel::with(['notifications' => function($query) {
-            $query->where('total_score', '>=', 5);
-        }])->get();
+        $notifications = PasienModel::with(['notifications'])->latest()->get();
         $dataPasien = $notifications->map(function($pasien) {
             $namaLengkap = $pasien->nama_lengkap;
             $totalScores = $pasien->notifications->pluck('total_score');

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -106,25 +107,8 @@ class AuthController extends Controller
         };
     }
 
-    // public function IsLoggedIn($token)
-    // {
-    //     $pasien = PasienModel::where('remember_token', $token)->first();
-    //     if ( $pasien->is_login === 1 ) {
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Kamu sedang masa login',
-    //             'pasien_data' => $pasien
-    //         ], 200);
-    //     } else {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Kamu tidak berada pada masa login',
-    //             'is_login' => $pasien->is_login,
-    //         ], 401);
-    //     }
-    // }
 
-    public function ForgetPassword( Request $request )
+    public function LupaPassword( Request $request )
     {
         $valid = Validator::make($request->all(), [
             'noHp' => 'required',
@@ -159,27 +143,18 @@ class AuthController extends Controller
             ], 200);
         }
     }
+
+    public function LogoutPasien( Request $request )
+    {
+        $token = JWTAuth::getToken();
+        $removeToken = JWTAuth::invalidate($token);
+        if ($removeToken) {
+            $user = $request->user();
+            $user->update(['is_login' => 0]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout berhasil dilakukan!'
+            ]);
+        }
+    }
 }
-
-
-    // public function SigninPasien( Request $request )
-    // {
-    //     if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-    //         $pasienLogin = PasienModel::where('email', $request->input('email'))->first();
-    //         $pasienLogin->is_login = 1;
-    //         $pasienLogin->save();
-    //         $pasienSlug = auth()->user()->slug;
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Kamu berhasil login',
-    //             'user' => auth()->user(),
-    //             'pasienSlug' => $pasienSlug
-    //         ], 200);
-    //     } else {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => "Sepertinya ada yang salah dengan email / password kamu"
-    //         ], 404);
-    //     };
-    // }
