@@ -34,6 +34,7 @@ import { Input } from '@/components/ui/input';
 
 const Pasien = () => {
   const [pasien, setPasien] = useState([]);
+  const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(true)
   const skeleton = <Skeleton className="w-[100px] h-[20px] rounded-full" />
   const [sortPerawatan, setSortPerawatan] = useState(false)
@@ -49,16 +50,24 @@ const Pasien = () => {
   const { toast } = useToast()
   const fetchData = async () => {
     axios
-      // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
-      .get('https://dashboard-backend.000webhostapp.com/api/patients')
+      // .get('http://10.60.225.112:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+      .get('https://flowbeat.web.id/api/patients')
       .then((response) => {
         setPasien(response.data)
         setLoading(false)
       })
       .catch((error) => console.log(error))
   };
+  const fetchNotification = async () => {
+    await axios.get('https://flowbeat.web.id/api/notifications')
+    // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications')
+    .then((res) => {
+      setNotifications(res.data)
+    })
+  }
   useEffect(() => {
     fetchData()
+    fetchNotification()
   }, [])
 
   const handleDropdown = (ewsPatient) => {
@@ -70,7 +79,8 @@ const Pasien = () => {
 
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
     if (typeof window !== "undefined") {
-      axios.put(`http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/profile/${slug}`, {
+      // axios.put(`http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/profile/${slug}`, {
+      axios.put(`https://flowbeat.web.id/api/profile/${slug}`, {
         perawatan: jenisPerawatanBaru
       }).then(() => {
         const updatePerawatan = pasien.map((item) => {
@@ -207,41 +217,27 @@ const Pasien = () => {
           </TableBody>
         </Table>
       </div>
+
+      <div className='my-10 ml-10'>
+        <h1 className='text-3xl font-bold'>Notifikasi</h1>
+        {notifications.map((notification, i) => (
+          <div key={i}>
+            {notification.map((item, j) => {
+              if (item.total_score >= 5 && item.total_score < 7) {
+                return (
+                  <p key={j}>Pasien {item.nama_lengkap} perlu monitoring setiap jam
+                  dan perawatan ke unit intensif care. Total score saat ini: <span className='font-bold'>{item.total_score}</span></p>
+                )
+              } else if (item.total_score >= 7 ) {
+                return (
+                  <p key={j}>Pasien {item.nama_lengkap} panggil tim medis maks respon 10 menit. Total score saat ini: <span className='font-bold'>{item.total_score}</span></p>
+                )
+              }
+            })}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
-{/* <table className="border-2 border-black mt-5 mx-10 w-max">
-<thead className="border-2 border-black ">
-  <tr className="border-2 border-black">
-    <th className="border-2 border-black p-3 text-lg">No</th>
-    <th className="border-2 border-black p-8 text-lg">Nama Lengkap</th>
-    <th className="border-2 border-black p-8 px-18 text-lg">Perawatan</th>
-    <th className="border-2 border-black p-8 text-lg">EWS</th>
-    <th className="border-2 border-black p-8 text-lg">Detail</th>
-  </tr>
-</thead>
-<tbody>
-  {pasien.map((item, i) => (
-    <tr key={item.id}>
-      <td className="border-2 py-4 border-black text-center">{i + 1}</td>
-      <td className={`border-2 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>{item.nama_lengkap}</td>
-      <td className={`border-2 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>
-        <DropdownPerawatan item={item}/>
-      </td>
-      <td className={`cursor-pointer mt-1 hover:text-[#f52f57] border-2 px-5 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`} onClick={() => handleDropdown(item.id)}>
-        {dropdown[item.id] ? (
-          <>
-            <Dropdown patient={item} />
-          </>
-        ) : (
-          <p>Selengkapnya...</p>
-        )}
-      </td>
-      <td className={`border-2 border-black text-center bg-${item.heartrate ? item.heartrate.colors : ''}`}>
-        <Link href={`/detail/${item.slug}`}>Detail Pasien</Link>
-      </td>
-    </tr>
-  ))}
-</tbody>
-</table> */}
 export default Pasien;

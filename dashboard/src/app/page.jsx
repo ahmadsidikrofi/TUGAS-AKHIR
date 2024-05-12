@@ -12,7 +12,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
   const fetchData = async () => {
     axios
-      .get('https://dashboard-backend.000webhostapp.com/api/patients')
+      .get('https://flowbeat.web.id/api/patients')
       // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
       .then((response) => {
         setPasien(response.data)
