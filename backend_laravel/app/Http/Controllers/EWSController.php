@@ -180,7 +180,11 @@ class EWSController extends Controller
     {
         $pasien = $request->user();
         if ( $pasien ) {
-            $heartrate = HeartrateModel::where('patient_id', $pasien->id)->get();
+            $heartrate = HeartrateModel::where('patient_id', $pasien->id)->orderBy('created_at', 'desc')
+                ->take(20)
+                ->get()
+                ->toArray();
+            $heartrate = array_reverse($heartrate);
             return response()->json([
                 'success' => true,
                 'message' => 'Kamu sedang masa login',
@@ -198,7 +202,11 @@ class EWSController extends Controller
     {
         $pasien = $request->user();
         if ($pasien) {
-            $spo2 = OxygenSaturationModel::where('patient_id', $pasien->id)->get();
+            $spo2 = OxygenSaturationModel::where('patient_id', $pasien->id)->orderBy('created_at', 'desc')
+                ->take(20)
+                ->get()
+                ->toArray();
+            $spo2 = array_reverse($spo2);
             return response()->json([
                 'success' => true,
                 'message' => 'Kamu sedang masa login',
@@ -208,6 +216,50 @@ class EWSController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Kamu tidak berada pada masa login',
+            ], 401);
+        }
+    }
+
+    public function SystolicPatientMobileDetail( Request $request )
+    {
+        $pasien = $request->user();
+        if ($pasien) {
+            $nibp = NibpModel::where('patient_id', $pasien->id)->orderBy('created_at', 'desc')
+                ->take(20)
+                ->get()
+                ->toArray();
+            $nibp = array_reverse($nibp);
+            return response()->json([
+                'success' => true,
+                'message' => 'Kamu sedang masa login',
+                'blood_presure' => $nibp,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kamu tidak berada pada masa login',
+            ], 401);
+        }
+    }
+
+    public function TempPatientMobileDetail( Request $request )
+    {
+        $pasien = $request->user();
+        if ($pasien) {
+            $temp = TemperatureModel::where('patient_id', $pasien->id)->orderBy('created_at', 'desc')
+                ->take(20)
+                ->get()
+                ->toArray();
+            $temp = array_reverse($temp);
+            return response()->json([
+                'success' => true,
+                'message' => 'Kamu sedang masa login',
+                'patient_temp' => $temp
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kamu tidak berada pada masa login'
             ], 401);
         }
     }

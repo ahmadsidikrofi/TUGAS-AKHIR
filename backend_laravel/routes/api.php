@@ -57,6 +57,8 @@ Route::middleware('api')->group(function () {
     // Mobile Chart
     Route::get('/heartrate-patient-mobile', [EWSController::class, "HeartratePatientMobileDetail"]);
     Route::get('/oxymeter-patient-mobile', [EWSController::class, "OxymeterPatientMobileDetail"]);
+    Route::get('/systolic-patient-mobile', [EWSController::class, "SystolicPatientMobileDetail"]);
+    Route::get('/temp-patient-mobile', [EWSController::class, "TempPatientMobileDetail"]);
 
     // Notification WEB
     Route::get('/notifications', [EWSController::class, "EWSNotification"]);
