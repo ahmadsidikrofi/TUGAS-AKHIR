@@ -1,21 +1,17 @@
-'use client'
-import axios from "axios";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Skeleton } from "@/components/ui/skeleton"
+'use client';
+import axios from 'axios';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ListMiniPasien = ({ pasien, loading }) => {
-  const skeleton = <Skeleton className="w-[50px] h-[20px] rounded-full dark:bg-slate-200" />
-
+  const skeleton = <Skeleton className="w-[50px] h-[20px] rounded-full dark:bg-slate-200" />;
+  let redColor = 'bg-red-500';
+  let yellowColor = 'bg-yellow-400';
+  let orangeColor = 'bg-orange-500';
+  let greenColor = 'bg-green-500';
+  let codeBlue = 'bg-sky-500';
   return (
-    <div className="dark:bg-slate-800 bg-slate-200 w-1/2 rounded-lg shadow-lg p-10 text-center">
+    <div className="dark:bg-slate-800 bg-slate-200 w-max rounded-lg shadow-lg p-10 text-center">
       <h1 className="font-bold text-xl text-[#f52f57]">Early Warning Score Condition</h1>
       <Table className="w-max mt-8 overflow-x-scroll">
         <TableHeader>
@@ -24,6 +20,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
             <TableHead>Perawatan</TableHead>
             <TableHead>HR</TableHead>
             <TableHead>SpO2</TableHead>
+            <TableHead>Temp</TableHead>
             <TableHead>NIBP</TableHead>
           </TableRow>
         </TableHeader>
@@ -35,17 +32,67 @@ const ListMiniPasien = ({ pasien, loading }) => {
               <TableCell>{skeleton}</TableCell>
               <TableCell>{skeleton}</TableCell>
               <TableCell>{skeleton}</TableCell>
+              <TableCell>{skeleton}</TableCell>
             </TableRow>
           ) : (
-            pasien.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.nama_lengkap}</TableCell>
-                <TableCell>{item.perawatan}</TableCell>
-                <TableCell>{item.heartrate.heart_beats}</TableCell>
-                <TableCell>{item.oxygen_saturation.blood_oxygen}</TableCell>
-                <TableCell>{item.nibp.systolic}</TableCell>
-              </TableRow>
-            ))
+            pasien.slice(0, 5).map((item, index) => {
+              let colorcellHR = '';
+              let colorcellSpO2 = '';
+              let colorcellNIBP = '';
+              let colorcellTemp = '';
+              // Heart rate
+              if (item.heartrate?.heart_beats <= 40 || item.heartrate?.heart_beats >= 130) {
+                colorcellHR = redColor;
+              } else if (item.heartrate?.heart_beats >= 111 && item.heartrate?.heart_beats <= 130) {
+                colorcellHR = orangeColor;
+              } else if (item.heartrate?.heart_beats >= 51 && item.heartrate?.heart_beats <= 90) {
+                colorcellHR = greenColor;
+              } else if (item.heartrate?.heart_beats >= 41 && item.heartrate?.heart_beats <= 50) {
+                colorcellHR = yellowColor;
+              } else if (item.heartrate?.heart_beats >= 91 && item.heartrate?.heart_beats <= 110) {
+                colorcellHR = yellowColor;
+              } else {
+                colorcellHR = codeBlue; // Nilai tidak valid
+              }
+
+              // Oxygen saturation
+              if (item.oxygen_saturation?.blood_oxygen <= 91) {
+                colorcellSpO2 = redColor;
+              } else if (item.oxygen_saturation?.blood_oxygen == 92 && item.oxygen_saturation?.blood_oxygen == 93) {
+                colorcellSpO2 = orangeColor;
+              } else if (item.oxygen_saturation?.blood_oxygen >= 96) {
+                colorcellSpO2 = greenColor;
+              } else if (item.oxygen_saturation?.blood_oxygen == 94 && item.oxygen_saturation?.blood_oxygen == 95) {
+                colorcellSpO2 = yellowColor;
+              } else {
+                colorcellSpO2 = codeBlue; // Nilai tidak valid
+              }
+              // Temperature
+              if (item.temperature?.patient_temp <= 35) {
+                colorcellTemp = redColor;
+              } else if (item.temperature?.patient_temp <= 39) {
+                colorcellTemp = orangeColor;
+              } else if (item.temperature?.patient_temp <= 36.1 && item.temperature?.patient_temp >= 38) {
+                colorcellTemp = greenColor;
+              } else if (item.temperature?.patient_temp >= 35.1 && item.temperature?.patient_temp <= 36) {
+                colorcellTemp = yellowColor;
+              } else if (item.temperature?.patient_temp >= 38.1 && item.temperature?.patient_temp < 39) {
+                colorcellTemp = yellowColor;
+              } else {
+                colorcellTemp = codeBlue; // Nilai tidak valid
+              }
+
+              return (
+                <TableRow key={index}>
+                  <TableCell>{item.nama_lengkap}</TableCell>
+                  <TableCell>{item.perawatan}</TableCell>
+                  <TableCell className={`${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
+                  <TableCell className={`${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
+                  <TableCell className={`${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
+                  <TableCell>{item.nibp?.systolic || 0}</TableCell>
+                </TableRow>
+              );
+            })
           )}
         </TableBody>
       </Table>
@@ -53,58 +100,3 @@ const ListMiniPasien = ({ pasien, loading }) => {
   );
 };
 export default ListMiniPasien;
-
-// <div className="overflow-x-auto shadow-md sm:rounded-lg">
-// <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-//   <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
-//     <tr>
-//       <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-//         Nama
-//       </th>
-//       <th scope="col" className="text-center px-10 py-5 bg-gray-50 dark:bg-white-800">
-//         Tanggal
-//       </th>
-//       <th scope="col" className="text-center px-1 py-1 bg-gray-50 dark:bg-gray-800">
-//         Umur
-//       </th>
-//       <th scope="col" className="text-center px-1 py-1 bg-gray-50 dark:bg-white-800">
-//         Gender
-//       </th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     <tr className="border-b border-gray-200 dark:border-gray-700">
-//       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-//         Agus Suherman
-//       </th>
-//       <td className="px-6 py-4">12/10/2022</td>
-//       <td className="px-6 py-4 text-center bg-gray-50 dark:bg-gray-800">31</td>
-//       <td className="px-6 py-4">Male</td>
-//     </tr>
-//     <tr className="border-b border-gray-200 dark:border-gray-700">
-//       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-//         Agus Suherman
-//       </th>
-//       <td className="px-6 py-4">12/10/2022</td>
-//       <td className="px-6 py-4 text-center bg-gray-50 dark:bg-gray-800">31</td>
-//       <td className="px-6 py-4">Male</td>
-//     </tr>
-//     <tr className="border-b border-gray-200 dark:border-gray-700">
-//       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-//         Agus Suherman
-//       </th>
-//       <td className="px-6 py-4">12/10/2022</td>
-//       <td className="px-6 py-4 text-center bg-gray-50 dark:bg-gray-800">31</td>
-//       <td className="px-6 py-4">Male</td>
-//     </tr>
-//     <tr className="border-b border-gray-200 dark:border-gray-700">
-//       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-//         Agus Suherman
-//       </th>
-//       <td className="px-6 py-4">12/10/2022</td>
-//       <td className="px-6 py-4 text-center bg-gray-50 dark:bg-gray-800">31</td>
-//       <td className="px-6 py-4">Male</td>
-//     </tr>
-//   </tbody>
-// </table>
-// </div>

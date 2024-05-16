@@ -1,61 +1,47 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
-import ReactApexChart from 'react-apexcharts';
-import { useEffect, useState } from 'react';
 
-const ChartOxygen = ({slug}) => {
-  const [data, setData] = useState({
-    chart: {
-      id: 'apexchart-example',
-    },
-    xaxis: {
-      categories: [],
-    },
-  });
-  const [series, setSeries] = useState([
-    {
-      name: 'Oxygen Saturation (SpO2)',
-      data: [],
-    },
-  ]);
+export default function NewChartJantung({ slug }) {
+  const [data, setData] = useState([]);
 
+  const fetchData = async () => {
+    const res = await axios.get(`https://flowbeat.web.id/api/oxymeter-patient/${slug}`);
+    const formattedData = res.data.map((item) => ({
+      ...item,
+      created_at: new Date(item.created_at).toLocaleString(),
+    }));
+    setData(formattedData);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (typeof window !== "undefined") {
-          // const response = await axios.get(`http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/oxymeter-patient/${slug}`);
-          const response = await axios.get(`https://dashboard-backend.000webhostapp.com/api/oxymeter-patient/${slug}`);
-          const newData = response.data.map((patient) => ({
-            x: new Date(patient.created_at).toLocaleTimeString(),
-            y: parseInt(patient.blood_oxygen),
-          }));
-          // Perbarui data series untuk grafik
-          setSeries([
-            {
-              name: 'Oxygen Saturation (SpO2)',
-              data: newData,
-            },
-          ]);
-        } 
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    // Panggil fetchData pada saat komponen dimuat
     fetchData();
-    if (typeof window !== 'undefined') {
-      const intervalId = setInterval(fetchData, 5000);
-      return () => clearInterval(intervalId);
-    }
+    const interval = setInterval(fetchData, 1000);
+    return () => clearInterval(interval);
   }, [slug]);
+
+  const minBloodOxygen = Math.min(...data.map((item) => item.blood_oxygen));
+  const maxBloodOxygen = Math.max(...data.map((item) => item.blood_oxygen));
   return (
-    <div className="bg-white rounded-lg shadow-lg p-5 my-10 max-w-[768px]">
-      <div id="chart">
-        <ReactApexChart options={data} series={series} type="line" height={380} className="dark:text-slate-800 lg:w-[30vw]"/>
-      </div>
+    <div className="mt-10 bg-white rounded-lg shadow p-5 px-10 py-10">
+      <h1 className="text-xl mb-5 font-bold">Grafik SpO2</h1>
+      <LineChart
+        width={900}
+        height={350}
+        data={data}
+        margin={{
+          top: 10,
+          bottom: 20,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" horizontal={true} />
+        <XAxis dataKey="created_at" className="text-[13px]" />
+        <YAxis dataKey="blood_oxygen" domain={[minBloodOxygen, maxBloodOxygen]} />
+        <Tooltip contentStyle={{ backgroundColor: '#fff', color: '#000' }} />
+        <Legend />
+        <Line type="linear" dataKey="blood_oxygen" name="Spo2" strokeWidth={2} stroke="#f52f57" activeDot={{ r: 5 }} />
+      </LineChart>
     </div>
   );
-};
-export default ChartOxygen;
+}
