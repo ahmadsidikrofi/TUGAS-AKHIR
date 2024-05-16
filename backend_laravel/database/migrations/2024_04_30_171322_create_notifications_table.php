@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('heartrate', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('heart_beats')->default(0);
-            $table->integer('score')->nullable();
+            $table->integer('total_score')->default(0);
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('heartrate');
+        Schema::dropIfExists('notifications');
     }
 };

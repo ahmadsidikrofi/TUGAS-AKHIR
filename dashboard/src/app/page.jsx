@@ -33,7 +33,7 @@ const Home = () => {
     <div>
       <h1 className="ml-10 mt-10 text-3xl font-bold text-[#f52f57]">Dashboard</h1>
       <div className="p-5 pt-10 pl-10 flex flex-col justify-between">
-        <div className="flex gap-10">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 max-md:grid-cols-2 sm:grid-cols-1 max-sm:grid-cols-1 gap-10">
           <ManyPasien title="Jumlah Pasien" totPasien={totPasien} />
           <ManyPasien title="Pasien Login" is_Login={is_login} />
           <ManyPasien title="Pasien Logout" not_login={is_notLogin} />

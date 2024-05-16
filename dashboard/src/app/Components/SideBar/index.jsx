@@ -20,7 +20,7 @@ const Sidebar = () => {
     }
   };
   return (
-    <div className="flex flex-col w-80 sticky top-0 h-screen bg-transparent p-4 gap-4 shadow dark:shadow-[0_0_20px_-5px_rgba(253,247,255,0.3)] max-sm:hidden lg:visible">
+    <div className="flex flex-col w-80 sticky top-0 h-screen bg-transparent p-4 gap-4 shadow dark:shadow-[0_0_20px_-5px_rgba(253,247,255,0.3)] hidden sm:hidden md:hidden lg:flex xl:flex 2xl:flex">
       <div className="mx-5 mt-7 flex p-2 rounded-lg items-center gap-3 justify-center">
         <DarkTheme />
         <Notif />

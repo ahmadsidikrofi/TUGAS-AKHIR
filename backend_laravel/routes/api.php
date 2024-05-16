@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EWSController;
 use App\Http\Controllers\HeartrateController;
+use App\Http\Controllers\NotesController;
 use App\Http\Controllers\PatientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,8 @@ Route::get('/test', function() {
 Route::post('/signup', [AuthController::class, "SignupPasien"]);
 Route::post('/signin', [AuthController::class, "SigninPasien"]);
 // Route::get('/logged-in/{token}', [AuthController::class, "IsLoggedIn"]);
-Route::post('/forget-password', [AuthController::class, "ForgetPassword"]);
+Route::post('/lupa-password', [AuthController::class, "LupaPassword"]);
+Route::delete('/logout', [AuthController::class, "LogoutPasien"]);
 
 
 Route::middleware('api')->group(function () {
@@ -48,10 +50,25 @@ Route::middleware('api')->group(function () {
     Route::get('/heartrate', [EWSController::class, "StoreEWS"]);
 
     // Web Chart
-    // Route::get('/heartrate-patient', [EWSController::class, "HeartRatePatient"]);
     Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
     Route::get('/oxymeter-patient/{slug}', [EWSController::class, "OxymeterPatientDetail"]);
-
+    Route::get('/nibp-patient/{slug}', [EWSController::class, "NibpPatientDetail"]);
+    Route::get('/temp-patient/{slug}', [EWSController::class, "TempPatientDetail"]);
     // Mobile Chart
     Route::get('/heartrate-patient-mobile', [EWSController::class, "HeartratePatientMobileDetail"]);
+    Route::get('/oxymeter-patient-mobile', [EWSController::class, "OxymeterPatientMobileDetail"]);
+
+    // Notification WEB
+    Route::get('/notifications', [EWSController::class, "EWSNotification"]);
+    // Notification Mobile
+    Route::get('/notifications-mobile', [EWSController::class, "EWSNotificationMobile"]);
+
+    // Notes WEB
+    Route::get('/notes/{slug}', [NotesController::class, "GetNotesData"]);
+    Route::post('/notes/{slug}', [NotesController::class, "StoreNote"]);
+    Route::put('/notes/{id}', [NotesController::class, "UpdateNote"]);
+    Route::delete('/notes/{id}', [NotesController::class, "DeleteNotes"]);
+
+    // Notes Mobile
+    Route::get('/notes-mobile', [NotesController::class, "GetNotesMobile"]);
 });

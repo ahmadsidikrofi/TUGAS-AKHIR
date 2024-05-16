@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\StoreDataEwsJob;
 use App\Models\HeartrateModel;
 use App\Models\NibpModel;
+use App\Models\NotificationsModel;
 use App\Models\OxygenSaturationModel;
 use App\Models\PasienModel;
+use App\Models\TemperatureModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Queue;
 
 class EWSController extends Controller
 {
@@ -15,23 +19,37 @@ class EWSController extends Controller
         $heart_beats = $request->input('hr');
         $blood_oxygen = $request->input('SpO2');
         $systolic = $request->input('nibp');
+        $temp = $request->input('temp');
         $patient_id = $request->input('patient_id');
-        // $patient = PasienModel::where('is_login', 1)->first();
+
+        // Queue::push(new StoreDataEwsJob($dataToStore));
         $patient = PasienModel::find($patient_id);
         if ($patient) {
-            if ($patient->is_login === 1) {
+            if ($patient->is_login == '1' && $patient->is_active == 'active') {
                 // Heartrate data
                 $this->StoreHeartrate($patient, $heart_beats);
                 // Oxygen Saturation data
                 $this->StoreOxygenSaturation($patient, $blood_oxygen);
                 // Nibp data
                 $this->StoreNibp($patient, $systolic);
-                return response()->json(['message' => 'Detak jantung berhasil disimpan'], 200);
+                // Temperature Data
+                $this->StoreTemp($patient, $temp);
+
+                $heartrateScore = $patient->heartrate()->orderBy('created_at', 'desc')->first()->score;
+                $oxygenScore = $patient->oxygenSaturation()->orderBy('created_at', 'desc')->first()->score;
+                $nibpScore = $patient->nibp()->orderBy('created_at', 'desc')->first()->score;
+                $tempScore = $patient->temperature()->orderBy('created_at', 'desc')->first()->score;
+                $total_score = $heartrateScore + $oxygenScore + $nibpScore + $tempScore;
+                NotificationsModel::create([
+                    'patient_id' => $patient_id,
+                    'total_score' => $total_score
+                ]);
+                return response()->json(['message' => 'Data berhasil disimpan'], 200);
             } else {
-                return response()->json(['message' => 'Detak jantung gagal disimpan'], 500);
+                return response()->json(['message' => 'Pasien tidak berada pada masa login atau sedang tidak aktif, Data gagal disimpan'], 401);
             }
         } else {
-            return response()->json(['message' => 'Mungkin pasien belum login'], 500);
+            return response()->json(['message' => 'Pasien tidak terdaftar pada database rumah sakit'], 401);
         }
     }
 
@@ -106,6 +124,31 @@ class EWSController extends Controller
         }
     }
 
+    public function StoreTemp( $patient, $temp )
+    {
+        $tempCount = new TemperatureModel();
+        $redColor = 3;
+        $yellowColor = 1;
+        $orangeColor = 2;
+        $greenColor = 0;
+
+        $patient->temperature()->create(['patient_temp' => $temp]);
+        if ($temp <= 35) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $redColor]);
+        } else if ($temp >= 35.1 && $temp <= 36.0) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $yellowColor]);
+        } else if ($temp >= 36.1 && $temp <= 38.0) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $greenColor]);
+        } else if ($temp >= 38.1 && $temp <= 39.0) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $yellowColor]);
+        } else if ($temp >= 39.1) {
+            $patient->temperature()->where('patient_temp', $temp)->update(['score' => $orangeColor]);
+        }
+        if ($tempCount->count() > 100) {
+            $tempCount->orderBy('created_at')->limit(50)->delete();
+        }
+    }
+
     // WEB
     function HeartratePatientDetail($slug)
     {
@@ -119,13 +162,25 @@ class EWSController extends Controller
         $spo2 = OxygenSaturationModel::where('patient_id', $pasienId)->get();
         return response()->json($spo2, 200);
     }
+    public function NibpPatientDetail($slug)
+    {
+        $pasienId = PasienModel::where('slug', $slug)->value('id');
+        $nibp = NibpModel::where('patient_id', $pasienId)->get();
+        return response()->json($nibp, 200);
+    }
+    public function TempPatientDetail($slug)
+    {
+        $pasienId = PasienModel::where('slug', $slug)->value('id');
+        $temp = TemperatureModel::where('patient_id', $pasienId)->get();
+        return response()->json($temp, 200);
+    }
 
     // MOBILE
     public function HeartratePatientMobileDetail(Request $request)
     {
         $pasien = $request->user();
-        $heartrate = HeartrateModel::where('patient_id', $pasien->id)->get();
-        if ( $pasien->is_login === 1 ) {
+        if ( $pasien ) {
+            $heartrate = HeartrateModel::where('patient_id', $pasien->id)->get();
             return response()->json([
                 'success' => true,
                 'message' => 'Kamu sedang masa login',
@@ -135,9 +190,60 @@ class EWSController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Kamu tidak berada pada masa login',
-                'is_login' => $pasien->is_login,
             ], 401);
         }
-        return response()->json($heartrate, 200);
+    }
+
+    public function OxymeterPatientMobileDetail( Request $request )
+    {
+        $pasien = $request->user();
+        if ($pasien) {
+            $spo2 = OxygenSaturationModel::where('patient_id', $pasien->id)->get();
+            return response()->json([
+                'success' => true,
+                'message' => 'Kamu sedang masa login',
+                'oxygen' => $spo2,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kamu tidak berada pada masa login',
+            ], 401);
+        }
+    }
+
+    // Notification Perawat
+    public function EWSNotification()
+    {
+        $notifications = PasienModel::with(['notifications'])->latest()->get();
+        $dataPasien = $notifications->map(function($pasien) {
+            $namaLengkap = $pasien->nama_lengkap;
+            $totalScores = $pasien->notifications->pluck('total_score');
+            $message = [];
+            foreach($totalScores as $totalScore) {
+                $message[] = [
+                    'nama_lengkap' => $namaLengkap,
+                    'total_score' => $totalScore,
+                ];
+            }
+            return $message;
+        });
+        return response()->json($dataPasien, 200);
+    }
+
+    // Notification Pasien
+    public function EWSNotificationMobile( Request $request )
+    {
+        $pasien = $request->user();
+        if ($pasien !== null ) {
+            $notifications = NotificationsModel::where('patient_id', $pasien->id)
+            ->where('total_score', '>=', 5)->get();
+            return response()->json($notifications, 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pasien tidak berada pada masa login'
+            ], 401);
+        }
     }
 }

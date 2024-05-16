@@ -25,6 +25,7 @@ const Pasien = () => {
   const [dropdown, setDropdown] = useState({
     pasien: false,
   });
+  const [notifications, setNotifications] = useState([]);
 
   let redColor = 'bg-red-500';
   let yellowColor = 'bg-yellow-400';
@@ -40,6 +41,14 @@ const Pasien = () => {
         setLoading(false);
       })
       .catch((error) => console.log(error));
+  };
+  const fetchNotification = async () => {
+    await axios
+      .get('https://flowbeat.web.id/api/notifications')
+      // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications')
+      .then((res) => {
+        setNotifications(res.data);
+      });
   };
   useEffect(() => {
     fetchData();

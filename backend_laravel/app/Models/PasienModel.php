@@ -25,13 +25,21 @@ class PasienModel extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(OxygenSaturationModel::class, "patient_id");
     }
-    public function respirationrate()
-    {
-        return $this->hasOne(RespirationrateModel::class, "patient_id");
-    }
     public function nibp()
     {
         return $this->hasOne(NibpModel::class, "patient_id");
+    }
+    public function temperature()
+    {
+        return $this->hasOne(TemperatureModel::class, "patient_id");
+    }
+    public function notifications()
+    {
+        return $this->hasMany(NotificationsModel::class, "patient_id");
+    }
+    public function notes()
+    {
+        return $this->hasMany(NotesModel::class, "patient_id");
     }
     public function sluggable(): array
     {

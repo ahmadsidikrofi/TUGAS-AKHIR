@@ -21,6 +21,8 @@ class PatientController extends Controller
             $query->orderBy('created_at', 'desc');
         }, 'nibp' => function ($query) {
             $query->orderBy('created_at', 'desc');
+        }, 'temperature' => function ($query) {
+            $query->orderBy('created_at', 'desc');
         }])->get();
         return response()->json($patients, 200);
     }
@@ -38,7 +40,7 @@ class PatientController extends Controller
     public function ProfilePatient(Request $request)
     {
         $pasien = $request->user();
-        if ( $pasien->is_login === 1 ) {
+        if ( $pasien ) {
             return response()->json([
                 'success' => true,
                 'message' => 'Kamu sedang masa login',
