@@ -1,7 +1,7 @@
 import Sidebar from './Components/SideBar';
 import './globals.css';
 import { Poppins } from 'next/font/google';
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/ui/theme-providers';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] });
@@ -15,14 +15,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}>
       <body className="flex">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Sidebar />
-          <main>{children}</main>
+          <main className="mx-10">{children}</main>
           <Toaster />
         </ThemeProvider>
       </body>
