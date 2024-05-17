@@ -11,13 +11,13 @@ const ListMiniPasien = ({ pasien, loading }) => {
   let greenColor = 'bg-green-500';
   let codeBlue = 'bg-sky-500';
   return (
-    <div className="dark:bg-slate-800 bg-slate-200 rounded-lg shadow-lg p-10 text-center">
+    <div className="flex flex-col gap-8 ">
       <h1 className="font-bold text-xl text-[#f52f57]">Early Warning Score Condition</h1>
-      <div className="overflow-x-scroll">
-        <Table className="mt-8 min-w-full">
+      <div className="max-sm:w-[80%] ">
+        <Table className="mt-8">
           <TableHeader>
             <TableRow>
-              <TableHead>Nama pasien</TableHead>
+              <TableHead className="w-36">Nama pasien</TableHead>
               <TableHead>Perawatan</TableHead>
               <TableHead>HR</TableHead>
               <TableHead>SpO2</TableHead>
