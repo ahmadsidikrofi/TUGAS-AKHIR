@@ -9,8 +9,8 @@ use App\Models\NotificationsModel;
 use App\Models\OxygenSaturationModel;
 use App\Models\PasienModel;
 use App\Models\TemperatureModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Queue;
 
 class EWSController extends Controller
 {
@@ -270,19 +270,21 @@ class EWSController extends Controller
         $notifications = PasienModel::with(['notifications'])->latest()->get();
         $dataPasien = $notifications->map(function($pasien) {
             $namaLengkap = $pasien->nama_lengkap;
-            $totalScores = $pasien->notifications->pluck('total_score');
             $message = [];
-            foreach($totalScores as $totalScore) {
+
+            foreach ($pasien->notifications as $notification) {
                 $message[] = [
                     'nama_lengkap' => $namaLengkap,
-                    'total_score' => $totalScore,
+                    'total_score' => $notification->total_score,
+                    'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
                 ];
             }
+
             return $message;
         });
+
         return response()->json($dataPasien, 200);
     }
-
     // Notification Pasien
     public function EWSNotificationMobile( Request $request )
     {
