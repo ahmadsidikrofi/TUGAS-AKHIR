@@ -23,11 +23,8 @@ const Notif = () => {
           <Bell className="cursor-pointer pt-1" size={23} />
         </SheetTrigger>
       ) : (
-        <SheetTrigger className="border p-2 rounded-full">
-          <div className="relative">
-            <div className="w-3 h-3 bg-red-500 rounded-full absolute -top-2"></div>
-            <BellRinging className="cursor-pointer pt-1 text-[#5d87ff]" size={23} />
-          </div>
+        <SheetTrigger className="border text-center p-2 rounded-full">
+          <BellRinging className="cursor-pointer pt-1 text-[#5d87ff]" size={23} />
         </SheetTrigger>
       )}
       <SheetContent className="overflow-y-scroll">

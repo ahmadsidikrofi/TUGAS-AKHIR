@@ -30,13 +30,12 @@ export default function NewChartJantung({ slug }) {
     };
   }, [slug]);
 
-  const minHeartBeats = Math.min(...data.map((item) => item.heart_beats));
   const maxHeartBeats = Math.max(...data.map((item) => item.heart_beats));
   return (
-    <div className="mt-10 bg-white rounded-lg shadow p-5 px-10 py-10">
+    <div className="mt-10 justify-center bg-white rounded-lg shadow p-5 px-10 py-10">
       <h1 className="text-xl mb-5 font-bold">Grafik Detak Jantung</h1>
       <LineChart
-        width={900}
+        width={810}
         height={350}
         data={data}
         margin={{

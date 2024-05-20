@@ -34,7 +34,7 @@ const DetailNotes = ({ params: { slug } }) => {
         <button onClick={() => router.back()}>
           <ArrowCircleLeft size={40} />
         </button>
-        <h1>Notes Pasien</h1>
+        <h1 className="text-[#5d87ff]">Notes Pasien</h1>
       </div>
 
       <div className="py-20 px-10 w-full items-center">

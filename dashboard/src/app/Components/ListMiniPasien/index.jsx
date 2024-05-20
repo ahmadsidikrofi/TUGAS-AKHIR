@@ -11,18 +11,19 @@ const ListMiniPasien = ({ pasien, loading }) => {
   let greenColor = 'bg-green-500';
   let codeBlue = 'bg-sky-500';
   return (
-    <div className="flex flex-col gap-8 ">
-      <h1 className="font-bold text-xl text-[#f52f57]">Early Warning Score Condition</h1>
-      <div className="max-sm:w-[80%] ">
+    <div className="flex flex-col ">
+      <div className="max-sm:w-[80%] border rounded-lg py-7 px-10 shadow-lg">
+        <h1 className="font-bold text-xl text-[#5d87ff]">Early Warning Score Condition</h1>
         <Table className="mt-8">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-36">Nama pasien</TableHead>
-              <TableHead>Perawatan</TableHead>
-              <TableHead>HR</TableHead>
-              <TableHead>SpO2</TableHead>
-              <TableHead>Temp</TableHead>
-              <TableHead>NIBP</TableHead>
+              <TableHead className="w-10 text-center">No</TableHead>
+              <TableHead className="w-72 text-center">Nama pasien</TableHead>
+              <TableHead className="w-40 text-center">Perawatan</TableHead>
+              <TableHead className="w-16 text-center">HR</TableHead>
+              <TableHead className="w-16 text-center">SpO2</TableHead>
+              <TableHead className="w-16 text-center">Temp</TableHead>
+              <TableHead className="w-16 text-center">NIBP</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -83,12 +84,13 @@ const ListMiniPasien = ({ pasien, loading }) => {
 
                 return (
                   <TableRow key={index}>
-                    <TableCell>{item.nama_lengkap}</TableCell>
-                    <TableCell>{item.perawatan}</TableCell>
-                    <TableCell className={`${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
-                    <TableCell className={`${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
-                    <TableCell className={`${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
-                    <TableCell>{item.nibp?.systolic || 0}</TableCell>
+                    <TableCell className="text-center">{index + 1}</TableCell>
+                    <TableCell className="text-center">{item.nama_lengkap}</TableCell>
+                    <TableCell className="text-center">{item.perawatan}</TableCell>
+                    <TableCell className={`text-center border border-white ${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
+                    <TableCell className={`text-center border border-white ${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
+                    <TableCell className={`text-center border border-white ${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
+                    <TableCell className={`text-center border border-white ${colorcellNIBP} w-[10px]`}>{item.nibp?.systolic || 0}</TableCell>
                   </TableRow>
                 );
               })

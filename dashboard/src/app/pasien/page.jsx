@@ -21,6 +21,7 @@ const Pasien = () => {
   const [loading, setLoading] = useState(true);
   const skeleton = <Skeleton className="w-[100px] h-[20px] rounded-full" />;
   const [sortPerawatan, setSortPerawatan] = useState(false);
+  const [sortStatus, setSortStatus] = useState(false);
   const [sortTotalEws, setSortTotalEws] = useState(false);
   const [dropdown, setDropdown] = useState({
     pasien: false,
@@ -41,14 +42,6 @@ const Pasien = () => {
         setLoading(false);
       })
       .catch((error) => console.log(error));
-  };
-  const fetchNotification = async () => {
-    await axios
-      .get('https://flowbeat.web.id/api/notifications')
-      // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications')
-      .then((res) => {
-        setNotifications(res.data);
-      });
   };
   useEffect(() => {
     fetchData();
@@ -98,6 +91,38 @@ const Pasien = () => {
         });
     }
   };
+  const ubahStatus = async (slug, statusBaru) => {
+    if (typeof window !== 'undefined') {
+      axios
+        .put(`https://flowbeat.web.id/api/profile/${slug}`, {
+          is_active: statusBaru,
+        })
+        .then(() => {
+          const updateStatus = pasien.map((item) => {
+            if (item.slug === slug) {
+              return {
+                ...item,
+                is_active: statusBaru,
+              };
+            }
+            return item;
+          });
+          setPasien(updateStatus);
+          toast({
+            title: 'Ubah Status',
+            description: 'Status Berhasil Diubah',
+          });
+        })
+        .catch(() => {
+          toast({
+            variant: 'destructive',
+            title: 'Ubah Status',
+            description: 'Status yang sama tidak dapat diubah',
+            action: <ToastAction altText="Coba lagi">Coba lagi</ToastAction>,
+          });
+        });
+    }
+  };
 
   const DropdownPerawatan = ({ item }) => {
     return (
@@ -110,6 +135,23 @@ const Pasien = () => {
             <DropdownMenuRadioGroup value={item.perawatan} onValueChange={(val) => ubahPerawatan(item.slug, val)}>
               <DropdownMenuRadioItem value="Rawat inap">Rawat inap</DropdownMenuRadioItem>
               <DropdownMenuRadioItem value="Rawat jalan">Rawat jalan</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    );
+  };
+  const DropdownStatus = ({ item }) => {
+    return (
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">{item.is_active}</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuRadioGroup value={item.is_active} onValueChange={(val) => ubahStatus(item.slug, val)}>
+              <DropdownMenuRadioItem value="active">active</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="inactive">inactive</DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -137,6 +179,26 @@ const Pasien = () => {
       setSortPerawatan(false);
     }
   };
+  const handleSortStatus = () => {
+    if (!sortStatus) {
+      const sortedPasienAsc = [...pasien].sort((a, b) => {
+        if (a.is_active < b.is_active) return -1;
+        if (a.is_active > b.is_active) return 1;
+        return 0;
+      });
+      setPasien(sortedPasienAsc);
+      setSortStatus(true);
+    } else {
+      // Lakukan sorting secara descending
+      const sortedPasienDesc = [...pasien].sort((a, b) => {
+        if (a.is_active > b.is_active) return -1;
+        if (a.is_active < b.is_active) return 1;
+        return 0;
+      });
+      setPasien(sortedPasienDesc);
+      setSortStatus(false);
+    }
+  };
 
   const handleSortEWS = () => {
     if (!sortTotalEws) {
@@ -160,7 +222,7 @@ const Pasien = () => {
 
   return (
     <div className="flex flex-col">
-      <h1 className="ml-14 mt-10 text-3xl font-bold">Daftar Pasien</h1>
+      <h1 className="ml-14 mt-10 text-3xl text-[#5d87ff] font-bold">Daftar Pasien</h1>
       <div className="border-[1px] p-10 border-slate-200 dark:border-slate-800 rounded-lg mt-5 mx-20">
         <SearchInput onSearch={handleSearch} />
         <Table className="w-max flex flex-col gap-5">
@@ -179,6 +241,11 @@ const Pasien = () => {
                   <ArrowUpDown size={18} /> Total EWS
                 </Button>
               </TableHead>
+              <TableHead className="text-center">
+                <Button variant="ghost" onClick={handleSortStatus}>
+                  <ArrowUpDown size={18} /> Status
+                </Button>
+              </TableHead>
               <TableHead className="text-center">Detail</TableHead>
             </TableRow>
           </TableHeader>
@@ -194,13 +261,13 @@ const Pasien = () => {
               </TableRow>
             ) : filteredPasien.length > 0 ? (
               filteredPasien.map((item, i) => {
-                const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0);
+                const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0) + Number(item.temperature?.score || 0);
                 let cellColor = codeBlue;
                 if (calcEws >= 1 && calcEws <= 4) {
                   cellColor = yellowColor;
                 } else if (calcEws >= 5 && calcEws <= 6) {
                   cellColor = orangeColor;
-                } else if (calcEws >= 7 && calcEws <= 8) {
+                } else if (calcEws >= 7 && calcEws <= 10) {
                   cellColor = redColor;
                 } else {
                   cellColor;
@@ -224,6 +291,9 @@ const Pasien = () => {
                       )}
                     </TableCell>
                     <TableCell className={`text-center px-7  ${cellColor} w-[10px]`}>{calcEws}</TableCell>
+                    <TableCell className="-ml-5 text-center w-[100px]">
+                      <DropdownStatus item={item} />
+                    </TableCell>
                     <TableCell>
                       <button onClick={() => router.push(`/detail/${item.slug}`)} className="w-10 h-10 rounded-lg flex items-center justify-center bg-zinc-100">
                         <ChevronRightIcon className="h-4 w-4" />
@@ -234,13 +304,13 @@ const Pasien = () => {
               })
             ) : (
               pasien.map((item, i) => {
-                const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0);
+                const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0) + Number(item.temperature?.score || 0);
                 let cellColor = codeBlue;
-                if (calcEws >= 1 && calcEws <= 4) {
+                if (calcEws >= 1 && calcEws <= 3) {
                   cellColor = yellowColor;
-                } else if (calcEws >= 5 && calcEws <= 6) {
+                } else if (calcEws >= 4 && calcEws <= 6) {
                   cellColor = orangeColor;
-                } else if (calcEws >= 7 && calcEws <= 8) {
+                } else if (calcEws >= 7 && calcEws <= 10) {
                   cellColor = redColor;
                 } else {
                   cellColor;
@@ -263,12 +333,15 @@ const Pasien = () => {
                         </Button>
                       )}
                     </TableCell>
-                    <TableCell className={`text-center px-10 ${cellColor} w-[10px]`}>
+                    <TableCell className={`text-center ${cellColor} w-12`}>
                       <p className="text-center">{calcEws}</p>
                     </TableCell>
+                    <TableCell className="-ml-5 text-center w-[100px]">
+                      <DropdownStatus item={item} />
+                    </TableCell>
                     <TableCell>
-                      <button onClick={() => router.push(`/detail/${item.slug}`)} className="w-10 h-10 rounded-lg flex items-center justify-center bg-zinc-100">
-                        <ChevronRightIcon className="h-4 w-4" />
+                      <button onClick={() => router.push(`/detail/${item.slug}`)} className="w-10 ml-5 h-10 rounded-lg flex items-center justify-center bg-zinc-100">
+                        <ChevronRightIcon className="h-4 w-4" color="#000" />
                       </button>
                     </TableCell>
                   </TableRow>

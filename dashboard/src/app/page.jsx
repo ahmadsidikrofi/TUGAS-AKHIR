@@ -31,7 +31,7 @@ const Home = () => {
 
   return (
     <>
-      <h1 className="ml-10 mt-10 text-3xl font-bold text-[#f52f57]">Dashboard</h1>
+      <h1 className="ml-10 mt-10 text-3xl font-bold text-[#5d87ff]">Dashboard</h1>
       <div className="p-5 pt-10 pl-10 flex flex-col justify-between">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 max-md:grid-cols-2 sm:grid-cols-1 max-sm:grid-cols-1 gap-10">
           <ManyPasien title="Jumlah Pasien" totPasien={totPasien} />

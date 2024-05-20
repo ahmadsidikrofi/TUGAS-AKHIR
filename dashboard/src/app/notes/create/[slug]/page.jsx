@@ -41,7 +41,7 @@ const Create = ({ params: { slug } }) => {
         <button onClick={() => router.push(`/notes/${slug}`)}>
           <ArrowCircleLeft size={40} />
         </button>
-        <h1 className="text-3xl font-bold">Create Notes</h1>
+        <h1 className="text-3xl text-[#5d87ff] font-bold">Create Notes</h1>
       </div>
       <div className="mt-10 flex flex-col gap-3">
         <div>
