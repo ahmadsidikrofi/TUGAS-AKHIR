@@ -9,14 +9,14 @@ import images from '../../constants/images';
 import icons from '../../constants/icons';
 
 import LogoutAccount from '../../Components/LogoutAccount';
-import useProfile from '../../Components/useProfile';
+import { useProfileData } from '../../Components/ProfileContext';
 
 const Profile = () => {
 	const [isProfileUpdated, setIsProfileUpdated] = useState(false);
 	const navigation = useNavigation();
 	const [refresh, onRefresh] = useState(false)
 
-	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, datas, setNama_lengkap } = useProfile()
+	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, datas, setNama_lengkap } = useProfileData()
 
 	const editProfil = async (e) => {
 		e.preventDefault()

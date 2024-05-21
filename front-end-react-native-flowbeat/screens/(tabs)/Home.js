@@ -11,6 +11,8 @@ import LatestOxygen from '../../Components/LatestOxygen';
 import LatestHeart from '../../Components/LatestHeart';
 import LatestTemperature from '../../Components/LatestTemperature';
 import { Ionicons } from '@expo/vector-icons';
+import useProfile from '../../Components/useProfile';
+import { useProfileData } from '../../Components/ProfileContext';
 
 
 const getGreeting = () => {
@@ -31,6 +33,7 @@ const getGreeting = () => {
 const Home = () => {
 	const navigation = useNavigation();
 	const [salam, setSalam] = useState(getGreeting());
+	const { nama_lengkap } = useProfileData()
 
 	useEffect(() => {
 		const updateGreeting = () => {
@@ -49,7 +52,7 @@ const Home = () => {
 					<View className="flex-row items-center">
 						<Image source={images.profile} resizeMode='contain' className="w-[60] h-[60] rounded-full" />
 						<View className="ml-4">
-							<Text className="text-2xl text-black">Selamat {salam}</Text>
+							<Text className="text-2xl text-black">Selamat {nama_lengkap}</Text>
 							<Text className="text-gray-400">Have a good day</Text>
 						</View>
 					</View>

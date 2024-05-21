@@ -1,15 +1,17 @@
-import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { useEffect, useState, useContext, createContext } from "react";
 
-const useProfile = () => {
+const ProfileContext = createContext()
+
+export const ProfileProvider = ({ children }) => {
 	const [datas, setDatas] = useState("");
 	const [nama_lengkap, setNama_lengkap] = useState('');
 	const [alamat, setAlamat] = useState('');
 	const [tgl_lahir, setTgl_lahir] = useState('');
 	const [jenis_kelamin, setJenis_kelamin] = useState('');
-	useEffect(() => {
+
+    useEffect(() => {
 		const token = AsyncStorage.getItem('token');
 		if (token) {
 			const config = {
@@ -31,10 +33,21 @@ const useProfile = () => {
 			});
 		}
 	}, [])
-	return {
-		nama_lengkap, alamat, tgl_lahir, jenis_kelamin, datas,
-		setNama_lengkap, setAlamat, setTgl_lahir, setJenis_kelamin,
-	}
-}
 
-export default useProfile
+    return (
+        <ProfileContext.Provider value={{ 
+            nama_lengkap,
+            alamat,
+            tgl_lahir,
+            jenis_kelamin,
+            datas,
+            setNama_lengkap,
+            setAlamat,
+            setTgl_lahir,
+            setJenis_kelamin,
+        }}>
+            {children}
+        </ProfileContext.Provider>
+    )
+}
+export const useProfileData = () => useContext(ProfileContext)
