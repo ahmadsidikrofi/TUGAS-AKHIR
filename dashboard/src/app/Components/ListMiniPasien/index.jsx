@@ -12,7 +12,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
   let codeBlue = 'bg-sky-500';
   return (
     <div className="flex flex-col ">
-      <div className="max-sm:w-[80%] border rounded-lg py-7 px-10 shadow-lg">
+      <div className="max-sm:w-[80%] xl:w-[970px] 2xl:w-[1300px] mx-auto border rounded-lg py-7 px-10 shadow-lg">
         <h1 className="font-bold text-xl text-[#5d87ff]">Early Warning Score Condition</h1>
         <Table className="mt-8">
           <TableHeader>

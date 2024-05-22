@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 const Help = () => {
   return (
-    <div className="flex flex-col items-center w-[1300px]">
+    <div className="flex flex-col items-center xl:w-[1010px] 2xl:w-[1300px]">
       <div className="items-center justify-center py-20">
         <h1 className="text-5xl text-Black font-bold text-center">Pertanyaan yang Sering</h1>
         <h1 className="text-4xl text-[#5d87ff] font-bold text-center py-5 mb-5">Diajukan</h1>

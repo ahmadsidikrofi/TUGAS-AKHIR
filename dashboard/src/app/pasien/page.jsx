@@ -26,7 +26,6 @@ const Pasien = () => {
   const [dropdown, setDropdown] = useState({
     pasien: false,
   });
-  const [notifications, setNotifications] = useState([]);
 
   let redColor = 'bg-red-500';
   let yellowColor = 'bg-yellow-400';
@@ -48,8 +47,8 @@ const Pasien = () => {
   }, []);
 
   const handleSearch = (keyword) => {
-    const filtered = pasien.filter((item) => item.nama_lengkap.toLowerCase().includes(keyword.toLowerCase()));
-    setFilteredPasien(filtered);
+    setFilteredPasien(pasien.filter((item) => item.nama_lengkap.toLowerCase().includes(keyword.toLowerCase())))
+    // setFilteredPasien(filtered);
   };
 
   const handleDropdown = (ewsPatient) => {
@@ -187,6 +186,7 @@ const Pasien = () => {
         return 0;
       });
       setPasien(sortedPasienAsc);
+      setFilteredPasien(sortedPasienAsc);
       setSortStatus(true);
     } else {
       // Lakukan sorting secara descending
@@ -196,6 +196,7 @@ const Pasien = () => {
         return 0;
       });
       setPasien(sortedPasienDesc);
+      setFilteredPasien(sortedPasienDesc);
       setSortStatus(false);
     }
   };
@@ -208,6 +209,7 @@ const Pasien = () => {
         return calcEwsB - calcEwsA;
       });
       setPasien(sortedPasien);
+      setFilteredPasien(sortedPasien);
       setSortTotalEws(true);
     } else {
       const sortedPasien = pasien.slice().sort((b, a) => {
@@ -216,37 +218,38 @@ const Pasien = () => {
         return calcEwsB - calcEwsA;
       });
       setPasien(sortedPasien);
+      setFilteredPasien(sortedPasien);
       setSortTotalEws(false);
     }
   };
 
   return (
     <div className="flex flex-col">
-      <h1 className="ml-14 mt-10 text-3xl text-[#5d87ff] font-bold">Daftar Pasien</h1>
-      <div className="border-[1px] p-10 border-slate-200 dark:border-slate-800 rounded-lg mt-5 mx-20">
+      <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] font-bold">Daftar Pasien</h1>
+      <div className="border-[1px] w-[1250x] p-10 border-slate-200 dark:border-slate-800 rounded-lg my-10 mx-6">
         <SearchInput onSearch={handleSearch} />
         <Table className="w-max flex flex-col gap-5">
           <TableHeader className="w-max flex gap-12">
             <TableRow>
-              <TableHead className="w-[70px] text-center">MRN</TableHead>
-              <TableHead className="text-center w-[200px]">Nama Pasien</TableHead>
-              <TableHead className="text-center">
+              <TableHead className="w-[50px] text-center">MRN</TableHead>
+              <TableHead className="text-center w-[490px] ">Nama Pasien</TableHead>
+              <TableHead className="text-center  w-[180px]">
                 <Button variant="ghost" onClick={handleSortPerawatan}>
                   <ArrowUpDown size={18} /> Perawatan
                 </Button>
               </TableHead>
-              <TableHead className="text-center">EWS</TableHead>
+              <TableHead className="text-center w-[170px]">EWS</TableHead>
               <TableHead className="text-center">
                 <Button variant="ghost" onClick={handleSortEWS}>
                   <ArrowUpDown size={18} /> Total EWS
                 </Button>
               </TableHead>
-              <TableHead className="text-center">
-                <Button variant="ghost" onClick={handleSortStatus}>
+              <TableHead className="text-center w-[150px] ">
+                <Button variant="ghost" className="" onClick={handleSortStatus}>
                   <ArrowUpDown size={18} /> Status
                 </Button>
               </TableHead>
-              <TableHead className="text-center">Detail</TableHead>
+              <TableHead className="text-center ">Detail</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -273,13 +276,13 @@ const Pasien = () => {
                   cellColor;
                 }
                 return (
-                  <TableRow className="text-center flex gap-8" key={i}>
-                    <TableCell className="text-center w-[37px]">{i + 1}</TableCell>
-                    <TableCell className="text-center w-[200px]">{item.nama_lengkap}</TableCell>
-                    <TableCell className="-ml-5 text-center w-[100px]">
+                  <TableRow className="text-center flex" key={i}>
+                    <TableCell className="text-center w-[65px] ">{i + 1}</TableCell>
+                    <TableCell className="text-center w-[488px] ">{item.nama_lengkap}</TableCell>
+                    <TableCell className="text-center  w-[180px]">
                       <DropdownPerawatan item={item} />
                     </TableCell>
-                    <TableCell className="text-center w-[100px]" onClick={() => handleDropdown(item.id)}>
+                    <TableCell className="text-center w-[170px]" onClick={() => handleDropdown(item.id)}>
                       {dropdown[item.id] ? (
                         <>
                           <Dropdown patient={item} />
@@ -290,13 +293,15 @@ const Pasien = () => {
                         </Button>
                       )}
                     </TableCell>
-                    <TableCell className={`text-center px-7  ${cellColor} w-[10px]`}>{calcEws}</TableCell>
-                    <TableCell className="-ml-5 text-center w-[100px]">
+                    <TableCell className={`text-center ml-[55px] mr-[50px] ${cellColor} w-12`}>
+                      <p className="text-center mt-3">{calcEws}</p>
+                    </TableCell>
+                    <TableCell className=" items-center text-center w-[150px]">
                       <DropdownStatus item={item} />
                     </TableCell>
                     <TableCell>
                       <button onClick={() => router.push(`/detail/${item.slug}`)} className="w-10 h-10 rounded-lg flex items-center justify-center bg-zinc-100">
-                        <ChevronRightIcon className="h-4 w-4" />
+                        <ChevronRightIcon className="h-4 w-4" color="#000" />
                       </button>
                     </TableCell>
                   </TableRow>
@@ -316,13 +321,13 @@ const Pasien = () => {
                   cellColor;
                 }
                 return (
-                  <TableRow className="text-center flex gap-8" key={i}>
-                    <TableCell className="text-center w-[37px]">{i + 1}</TableCell>
-                    <TableCell className="text-center w-[200px]">{item.nama_lengkap}</TableCell>
-                    <TableCell className="-ml-5 text-center w-[100px]">
+                  <TableRow className="text-center flex" key={i}>
+                    <TableCell className="text-center w-[65px] ">{i + 1}</TableCell>
+                    <TableCell className="text-center w-[488px] ">{item.nama_lengkap}</TableCell>
+                    <TableCell className="text-center  w-[180px]">
                       <DropdownPerawatan item={item} />
                     </TableCell>
-                    <TableCell className="text-center w-[100px]" onClick={() => handleDropdown(item.id)}>
+                    <TableCell className="text-center w-[170px]" onClick={() => handleDropdown(item.id)}>
                       {dropdown[item.id] ? (
                         <>
                           <Dropdown patient={item} />
@@ -333,14 +338,14 @@ const Pasien = () => {
                         </Button>
                       )}
                     </TableCell>
-                    <TableCell className={`text-center ${cellColor} w-12`}>
-                      <p className="text-center">{calcEws}</p>
+                    <TableCell className={`text-center ml-[55px] mr-[50px] ${cellColor} w-12`}>
+                      <p className="text-center mt-3">{calcEws}</p>
                     </TableCell>
-                    <TableCell className="-ml-5 text-center w-[100px]">
+                    <TableCell className=" items-center text-center w-[150px]">
                       <DropdownStatus item={item} />
                     </TableCell>
                     <TableCell>
-                      <button onClick={() => router.push(`/detail/${item.slug}`)} className="w-10 ml-5 h-10 rounded-lg flex items-center justify-center bg-zinc-100">
+                      <button onClick={() => router.push(`/detail/${item.slug}`)} className="w-10 h-10 rounded-lg flex items-center justify-center bg-zinc-100">
                         <ChevronRightIcon className="h-4 w-4" color="#000" />
                       </button>
                     </TableCell>

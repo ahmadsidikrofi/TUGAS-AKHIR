@@ -36,14 +36,14 @@ const Create = ({ params: { slug } }) => {
       .catch((error) => console.log(error));
   };
   return (
-    <div className="px-20 py-12">
+    <div className="ml-2 mt-10">
       <div className="flex items-center gap-5">
         <button onClick={() => router.push(`/notes/${slug}`)}>
           <ArrowCircleLeft size={40} />
         </button>
         <h1 className="text-3xl text-[#5d87ff] font-bold">Create Notes</h1>
       </div>
-      <div className="mt-10 flex flex-col gap-3">
+      <div className="mt-10 ml-10 flex flex-col gap-3">
         <div>
           <label htmlFor="title" className="text-lg  block mb-2 font-medium text-gray-900">
             Title Notes
@@ -54,7 +54,6 @@ const Create = ({ params: { slug } }) => {
           <label htmlFor="description" className="text-lg block mb-2 font-medium text-gray-900">
             Description Notes
           </label>
-          {/* <textarea name="description" onChange={handleNotes} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-3  w-[50vw]" id="exampleFormControlTextarea1" rows="4" placeholder="Notes Description" /> */}
           <Editor
             apiKey="29beonzzetb88fq33tyhw6q6tghwk5qu44899is5yqtkp0gv"
             onInit={(evt, editor) => (editorRef.current = editor)}

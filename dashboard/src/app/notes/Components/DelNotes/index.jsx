@@ -4,14 +4,20 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Trash } from '@phosphor-icons/react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { useToast } from '@/components/ui/use-toast';
 
-const DelNotes = ({ id, slug }) => {
+const DelNotes = ({ id }) => {
+  const { toast } = useToast();
   const router = useRouter();
   const hapusData = async () => {
     await axios
       .delete(`https://flowbeat.web.id/api/notes/${id}`)
       .then((response) => {
         if (response.data.success === true) {
+          toast({
+            title: 'Notes Terhapus',
+            description: 'Notes berhasil Terhapus',
+          });
           router.push(`/notes`);
         }
       })
