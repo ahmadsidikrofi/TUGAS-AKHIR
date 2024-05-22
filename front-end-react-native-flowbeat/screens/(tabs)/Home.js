@@ -12,11 +12,30 @@ import LatestTemperature from '../../Components/LatestTemperature';
 import images from '../../constants/images';
 import useProfile from '../../Components/useProfile';
 import { useProfileData } from '../../Components/ProfileContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 
 const Home = () => {
 	const navigation = useNavigation();
 	const { nama_lengkap } = useProfileData()
+	const [token, setToken] = useState(null)
+	const [loading, setLoading] = useState(true)
+	useEffect(() => {
+		const checkToken = async () => {
+			const checkToken = async () => {
+				const storedToken = await AsyncStorage.getItem('token');
+				if (!storedToken) {
+					navigation.navigate('BeforeLogin');
+				} else {
+					setToken(storedToken);
+				}
+				setLoading(false);
+			};
+		}
+
+		checkToken()
+	}, [navigation])
 
 	return (
 		<SafeAreaView>
@@ -55,7 +74,7 @@ const Home = () => {
 				</View>
 			</View>
 		</SafeAreaView>
-	);
+	)
 };
 
 export default Home;

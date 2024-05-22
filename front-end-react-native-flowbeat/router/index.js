@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -19,6 +19,10 @@ import OxygenSaturation from '../screens/(tabs)/oxygen-saturation';
 import Systolic from '../screens/(tabs)/Systolic';
 import TemperatureBody from '../screens/(tabs)/temperature-body';
 import NotesDetail from '../screens/(tabs)/notes-detail';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,8 +38,35 @@ const MainApp = () => {
 }
 
 const Router = () => {
+	const [initialRouteName, setInitialRouteName] = useState(null)
+	const [isLoading, setIsLoading] = useState(true)
+
+	useEffect(() => {
+		const checkToken = async () => {
+			const token = await AsyncStorage.getItem('token');
+			if (token) {
+				setInitialRouteName('MainApp');
+			} else {
+				setInitialRouteName('BeforeLogin');
+			}
+			setIsLoading(false);
+		};
+
+		checkToken();
+	}, []);
+
+	if (isLoading) {
+		return (
+			<SafeAreaView>
+				<View className="flex-1 justify-center items-center">
+					<Text>Loading...</Text>
+					<ActivityIndicator color="#ff0" size="large" />
+				</View>
+			</SafeAreaView>
+		)
+	}
 	return (
-		<Stack.Navigator initialRouteName=''>
+		<Stack.Navigator initialRouteName={initialRouteName}>
 			<Stack.Screen name="BeforeLogin" component={BeforeLogin} options={{ headerShown: false }} />
 			<Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
 			<Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
