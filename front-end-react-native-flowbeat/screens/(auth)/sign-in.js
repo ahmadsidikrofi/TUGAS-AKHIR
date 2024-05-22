@@ -61,11 +61,11 @@ const SignIn = () => {
 					<Text className="font-bold text-3xl">Masuk</Text>
 					<Text className="text-md text-gray-500">Masuk dengan akun yang telah terdaftar</Text>
 					<View className="flex justify-center items-center">
-						<Image
+						{/* <Image
 							source={images.heartImg}
 							className="w-80 h-72"
 							resizeMode='contain'
-						/>
+						/> */}
 					</View>
 					<Text className="mb-2 mt-3">Nomor HP</Text>
 					<View className="mb-4">

@@ -1,5 +1,5 @@
-import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
+
+import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -10,27 +10,31 @@ const useProfile = () => {
 	const [tgl_lahir, setTgl_lahir] = useState('');
 	const [jenis_kelamin, setJenis_kelamin] = useState('');
 	useEffect(() => {
-		const token = AsyncStorage.getItem('token');
-		if (token) {
-			const config = {
-				headers: {
-					Authorization: `Bearer ${token}`
+		const fetchProfile = async () => {
+			const token = await AsyncStorage.getItem('token');
+			if (token) {
+				const config = {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				};
+				try {
+					const res = await axios.get('https://flowbeat.web.id/api/profile', config);
+					const data = res.data.pasien_data;
+					setDatas(data);
+					setNama_lengkap(data.nama_lengkap);
+					setAlamat(data.alamat);
+					setTgl_lahir(data.tgl_lahir);
+					setJenis_kelamin(data.jenis_kelamin);
+					console.log(res.data);
+				} catch (err) {
+					console.error(err);
 				}
-			};
-			axios.get('https://flowbeat.web.id/api/profile', config).then((res) => {
-				setDatas(res.data.pasien_data);
-				const datas = res.data.pasien_data;
-				setNama_lengkap(datas.nama_lengkap);
-				setAlamat(datas.alamat);
-				setTgl_lahir(datas.tgl_lahir);
-				setJenis_kelamin(datas.jenis_kelamin);
-				console.log(res.data);
+			}
+		};
 
-			}).catch((err) => {
-				console.log(err);
-			});
-		}
-	}, [])
+		fetchProfile();
+	}, []);
 	return {
 		nama_lengkap, alamat, tgl_lahir, jenis_kelamin, datas,
 		setNama_lengkap, setAlamat, setTgl_lahir, setJenis_kelamin,
