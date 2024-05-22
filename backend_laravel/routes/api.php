@@ -52,13 +52,13 @@ Route::middleware('api')->group(function () {
     // Web Chart
     Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
     Route::get('/oxymeter-patient/{slug}', [EWSController::class, "OxymeterPatientDetail"]);
-    Route::get('/nibp-patient/{slug}', [EWSController::class, "NibpPatientDetail"]);
     Route::get('/temp-patient/{slug}', [EWSController::class, "TempPatientDetail"]);
+    Route::get('/nibp-patient/{slug}', [EWSController::class, "NibpPatientDetail"]);
     // Mobile Chart
     Route::get('/heartrate-patient-mobile', [EWSController::class, "HeartratePatientMobileDetail"]);
     Route::get('/oxymeter-patient-mobile', [EWSController::class, "OxymeterPatientMobileDetail"]);
-    Route::get('/systolic-patient-mobile', [EWSController::class, "SystolicPatientMobileDetail"]);
     Route::get('/temp-patient-mobile', [EWSController::class, "TempPatientMobileDetail"]);
+    Route::get('/systolic-patient-mobile', [EWSController::class, "SystolicPatientMobileDetail"]);
 
     // Notification WEB
     Route::get('/notifications', [EWSController::class, "EWSNotification"]);
@@ -66,11 +66,12 @@ Route::middleware('api')->group(function () {
     Route::get('/notifications-mobile', [EWSController::class, "EWSNotificationMobile"]);
 
     // Notes WEB
-    Route::get('/notes/{slug}', [NotesController::class, "GetNotesData"]);
+    Route::get('/notes/{slug}', [NotesController::class, "GetNotesData"]); // API note berdasarkan user slug
     Route::post('/notes/{slug}', [NotesController::class, "StoreNote"]);
     Route::put('/notes/{id}', [NotesController::class, "UpdateNote"]);
     Route::delete('/notes/{id}', [NotesController::class, "DeleteNotes"]);
 
     // Notes Mobile
     Route::get('/notes-mobile', [NotesController::class, "GetNotesMobile"]);
+    Route::get('/notes-mobile/{id}', [NotesController::class, "GetNotesMobileById"]);
 });

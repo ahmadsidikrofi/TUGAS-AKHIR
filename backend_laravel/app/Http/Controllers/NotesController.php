@@ -14,12 +14,35 @@ class NotesController extends Controller
         $notes = NotesModel::where('patient_id', $pasienId)->latest()->get();
         return response()->json($notes, 200);
     }
+
+    // Notes Mobile API
     public function GetNotesMobile( Request $request )
     {
         $pasien = $request->user();
-        if ($pasien !== null ) {
+        if ($pasien !== null) {
             $notes = NotesModel::where('patient_id', $pasien->id)->latest()->get();
             return response()->json($notes, 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pasien tidak berada pada masa login'
+            ], 401);
+        }
+    }
+
+    public function GetNotesMobileById( Request $request, $id )
+    {
+        $pasien = $request->user();
+        if ($pasien !== null) {
+            $note = NotesModel::where('patient_id', $pasien->id)->find($id);
+            if ($note) {
+                return response()->json($note, 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Catatan tidak ditemukan'
+                ], 404);
+            }
         } else {
             return response()->json([
                 'success' => false,
@@ -55,18 +78,25 @@ class NotesController extends Controller
     public function UpdateNote( Request $request, $id )
     {
         $note = NotesModel::find($id);
-        $note->update($request->all());
-        if ($note->wasChanged()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Catatan berhasil diubah',
-                'note' => $note
-            ], 200);
+        if ($note) {
+            $note->update($request->all());
+            if ($note->wasChanged()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Catatan berhasil diubah',
+                    'note' => $note
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak ada catatan yang diubah',
+                ], 200);
+            }
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Tidak ada catatan yang diubah',
-            ], 200);
+                'message' => 'Catatan tidak ditemukan',
+            ], 404);
         }
     }
 
