@@ -24,7 +24,7 @@ export default function ChartNibp({ slug }) {
   const maxPatient_temp = Math.max(...data.map((item) => item.systolic));
   return (
     <div className="mt-10 bg-white rounded-lg shadow p-5 px-10 py-10">
-      <h1 className="text-xl mb-5 font-bold">Grafik Nibp</h1>
+      <h1 className="text-xl text-[#5d87ff] mb-5 font-bold">Grafik Nibp</h1>
       <LineChart
         width={810}
         height={350}
