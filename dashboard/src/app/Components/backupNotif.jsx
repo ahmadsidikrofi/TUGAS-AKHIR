@@ -3,19 +3,25 @@ import { Bell, BellRinging } from '@phosphor-icons/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Clock } from '@phosphor-icons/react';
-import { Button } from '@/components/ui/button';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
 
-const Notif = () => {
+const BackupNotif = () => {
   const [notif, setNotif] = useState([]);
   const [jumlah, setJumlah] = useState(0);
   const [pasien, setPasien] = useState([])
-  const [selectedPasien, setSelectedPasien] = useState(null)
   const dataNotif = async () => {
     // await axios.get('https://flowbeat.web.id/api/notifications').then((res) => {
     await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
       setNotif(res.data);
-      // setJumlah(res.data.length);
-      setJumlah(res.data.flat().length)
+      setJumlah(res.data.length);
     });
   };
   const fetchData = async () => {
@@ -31,16 +37,6 @@ const Notif = () => {
     fetchData()
     dataNotif();
   }, []);
-
-  const handleSortNotif = (nama_lengkap) => {
-    setSelectedPasien(nama_lengkap);
-  }
-  // const filteredNotif = selectedPasien
-  //   ? notif.filter(group => group.some(item => item.nama_lengkap === selectedPasien))
-  //       .flat()
-  //       .filter(item => item.nama_lengkap === selectedPasien)
-  //   : notif.flat();
-  const filteredNotif = selectedPasien ? notif.filter(group => group.some(item => item.nama_lengkap === selectedPasien)) : notif;
   return (
     <Sheet>
       {jumlah > 12 ? (
@@ -55,17 +51,17 @@ const Notif = () => {
       <SheetContent className="overflow-y-scroll">
         <SheetHeader>
           <SheetTitle className="text-2xl my-5">Notifikasi</SheetTitle>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3">
             {pasien.map((item, i) => (
-                <div key={i} className="w-28 border rounded-[15px] font-bold text-lg">
-                  <Button onClick={() => handleSortNotif(item.nama_lengkap)} variant="ghost" className="w-full p-3">{item.nama_lengkap}</Button>
-                </div>
+              <SheetDescription key={i} className="flex justify-between text-black py-5 rounded-lg shadow-lg px-5">
+                <p className="font-bold text-lg">{item.nama_lengkap}</p>
+              </SheetDescription>
             ))}
           </div>
           <div className="flex flex-col gap-3">
-            {filteredNotif.map((group, index) => (
+            {notif.map((items, index) => (
               <div className="flex flex-col gap-3" key={index}>
-                {group.slice(0, 12).map((item, index2) => {
+                {items.slice(0, 12).map((item, index2) => {
                   if (item.total_score >= 5 && item.total_score <= 6) {
                     return (
                       <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-orange-500 rounded-lg shadow-lg px-5">
@@ -124,4 +120,4 @@ const Notif = () => {
     </Sheet>
   );
 };
-export default Notif;
+export default BackupNotif;
