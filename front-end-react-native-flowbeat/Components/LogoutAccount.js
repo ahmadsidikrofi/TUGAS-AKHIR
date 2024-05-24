@@ -10,7 +10,7 @@ const LogoutAccount = () => {
 		const token = await AsyncStorage.getItem('token');
 		if (token) {
 			console.log('Token:', token)
-			const response = await axios.delete('https://flowbeat.web.id/api/logout', {
+			const response = await axios.delete('https://flowbeat.web.id/api/auth/logout', {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 
