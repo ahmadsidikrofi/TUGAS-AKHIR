@@ -25,9 +25,9 @@ const Notes = () => {
     dataUser();
   });
   return (
-    <div className="flex flex-col px-5 ">
-      <h1 className="ml-10 mt-10 text-3xl font-bold text-[#5d87ff]">Notes Pasien</h1>
-      <div className="py-10 my-10 rounded-lg mx-10 pl-20 items-center w-full border items-center">
+    <div className="flex flex-col ">
+      <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] font-bold">Notes Pasien</h1>
+      <div className="py-10 rounded-lg my-10 mx-6 pl-20 items-center w-full border items-center">
         <Table className="w-max flex flex-col  gap-2">
           <TableHeader className="w-max flex gap-12">
             <TableRow className="w-max flex">

@@ -1,50 +1,57 @@
 'use client';
-
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
-import axios from 'axios';
 
-export default function ChartNibp() {
-  const [data, setData] = useState([]);
-
-  const fetchData = async () => {
-    const res = await axios.get(`https://flowbeat.web.id/api/patients`);
-    const male = res.data.map((item) => ({
-      ...item,
-      gender: item.jenis_kelamin === '' ? 'Laki-laki' : 'Perempuan',
-    }));
-    setData(res.data);
-  };
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
-  const COLORS = ['#0088FE', '#00C49F'];
-
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    const RADIAN = Math.PI / 180;
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   return (
-    <div className="mt-10 bg-white rounded-lg shadow p-5 px-10 py-10">
-      <h1 className="text-xl mb-5 font-bold">Grafik Nibp</h1>
-      <PieChart width={400} height={400}>
-        <Pie data={data} cx={200} cy={200} labelLine={false} label={renderCustomizedLabel} outerRadius={80} fill="#8884d8" dataKey="value">
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
+
+const ChartGender = ({ genderPria, genderWanita }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+  const data = [
+    { name: 'Pria', value: genderPria.length, color: '#121481' },
+    { name: 'Wanita', value: genderWanita.length, color: '#FFC94A' },
+  ];
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+  return (
+    <div className="rounded-lg border shadow-lg">
+      <h1 className="text-xl mt-10 font-bold px-10 mb-5 text-[#5d87ff]">Jenis Kelamin</h1>
+      <PieChart width={400} height={340} className=" -mt-[90px]">
+        <Pie data={data} cx={200} cy={200} labelLine={false} label={renderCustomizedLabel} outerRadius={80} dataKey="value">
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell key={`cell-${index}`} fill={entry.color} />
           ))}
         </Pie>
       </PieChart>
+      <div className="flex flex-col gap-2 px-12 mb-[50px]">
+        <div className="flex gap-3 items-center">
+          <div className="bg-[#121481] rounded-full w-[15px] h-[15px]"></div>
+          <h1 className="font-bold ">Pria</h1>
+        </div>
+        <div className="flex gap-3 items-center">
+          <div className="bg-[#FFC94A] rounded-full w-[15px] h-[15px]"></div>
+          <h1 className="font-bold">Wanita</h1>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default ChartGender;

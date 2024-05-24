@@ -29,25 +29,27 @@ const DetailNotes = ({ params: { slug } }) => {
     fetchData();
   }, []);
   return (
-    <div className="flex flex-col px-10">
-      <div className="flex items-center gap-4 ml-10 mt-10 text-3xl font-bold">
+    <div className="flex flex-col">
+      <div className="flex items-center gap-4 ml-2 mt-10 text-3xl font-bold">
         <button onClick={() => router.back()}>
           <ArrowCircleLeft size={40} />
         </button>
         <h1 className="text-[#5d87ff]">Notes Pasien</h1>
       </div>
 
-      <div className="py-20 px-10 w-full items-center">
+      <div className="mt-10 ml-10 w-full items-center">
         <Link href={`/notes/create/${slug}`} className="mb-5 bg-rose-500 w-32 h-10 flex gap-2 items-center text-center justify-center rounded-lg p-1 text-white">
           <PlusCircle size={22} />
           <p className="font-bold">Create</p>
         </Link>
         <Table className="w-max flex flex-col p-10 border rounded-lg gap-2">
-          <TableHeader className="w-max flex gap-12">
-            <TableRow className="w-max justify-center  items-center flex">
-              <TableHead className="text-center">MRN</TableHead>
-              <TableHead className="mx-40 text-center w-full">Nama Title</TableHead>
-              <TableHead className="text-center ml-12 mr-10">Action</TableHead>
+          <TableHeader className="w-max flex">
+            <TableRow className="justify-center items-center flex">
+              <TableHead className="text-center xl:w-[80px]">MRN</TableHead>
+              <TableHead className="text-center xl:w-[300px]">Nama Title</TableHead>
+              <TableHead className="text-center xl:w-[190px]">Created</TableHead>
+              <TableHead className="text-center xl:w-[190px]">Update</TableHead>
+              <TableHead className="text-center  xl:w-[125px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -59,12 +61,14 @@ const DetailNotes = ({ params: { slug } }) => {
               </TableRow>
             ) : (
               data.map((item, index) => (
-                <TableRow className="w-90 text-center justify-center items-center flex gap-10" key={index}>
-                  <TableCell className="text-center">{index + 1}</TableCell>
-                  <TableCell className=" mx-32 text-center w-36">{item.title}</TableCell>
+                <TableRow className="w-90 flex" key={index}>
+                  <TableCell className="text-center xl:w-[80px]">{index + 1}</TableCell>
+                  <TableCell className=" text-center xl:w-[300px]">{item.title}</TableCell>
+                  <TableCell className=" flex xl:w-[190px] text-center">{new Date(item.created_at).toLocaleString()}</TableCell>
+                  <TableCell className=" flex xl:w-[190px] text-center">{new Date(item.updated_at).toLocaleString()}</TableCell>
                   <TableCell className=" flex gap-2 items-center  text-center">
                     <NotesDetail title={item.title} description={item.description} />
-                    <Link className="bg-[#5d87ff] h-8 rounded-lg p-1" href={`/notes/${item.slug}`}>
+                    <Link className="bg-[#5d87ff] h-8 rounded-lg p-1" href={`/notes/${slug}/update/${item.id}`}>
                       <Pencil size={22} />
                     </Link>
                     <DelNotes id={item.id} />

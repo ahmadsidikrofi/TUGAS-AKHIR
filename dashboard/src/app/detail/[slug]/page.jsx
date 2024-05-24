@@ -35,7 +35,7 @@ const Detail = ({ params: { slug } }) => {
       <div className="justify-center flex">
         <div className="flex gap-10 my-5 mt-10 w-[900px] 2xl:w-[1000px] border bg-white p-5 px-10 py-8 rounded-lg shadow-lg">
           <UserCircle size={90} />
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <h1 className="text-md">
               <span className="font-bold">Nama : </span>
               {datas.nama_lengkap === null ? '-' : datas.nama_lengkap}
@@ -61,8 +61,8 @@ const Detail = ({ params: { slug } }) => {
 
       <h1 className="text-3xl text-[#5d87ff] font-bold text-center mt-10">Monitoring Pasien</h1>
       <div className="flex flex-col lg:flex max-sm:block items-center lg:gap-5">
-        <ChartOxygen slug={datas.slug} />
         <NewChartJantung slug={datas.slug} />
+        <ChartOxygen slug={datas.slug} />
         <ChartSuhu slug={datas.slug} />
         <ChartNibp slug={datas.slug} />
       </div>
