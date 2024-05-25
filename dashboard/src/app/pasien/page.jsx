@@ -48,8 +48,7 @@ const Pasien = () => {
   }, []);
 
   const handleSearch = (keyword) => {
-    setFilteredPasien(pasien.filter((item) => item.nama_lengkap.toLowerCase().includes(keyword.toLowerCase())))
-    // setFilteredPasien(filtered);
+    setFilteredPasien(pasien.filter((item) => item.nama_lengkap.toLowerCase().includes(keyword.toLowerCase())));
   };
 
   const handleDropdown = (ewsPatient) => {
@@ -225,27 +224,27 @@ const Pasien = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] font-bold">Daftar Pasien</h1>
-      <div className="border-[1px] w-[1250x] p-10 border-slate-200 dark:border-slate-800 rounded-lg my-10 mx-6">
+      <div className="border-[1px] sm:w-[500px] xl:w-[1015px] 2xl:w-[1360px] p-10 border-slate-200 dark:border-slate-800 rounded-lg my-10 mx-6">
         <SearchInput onSearch={handleSearch} />
         <Table className="w-max flex flex-col gap-5">
           <TableHeader className="w-max flex gap-12">
             <TableRow>
               <TableHead className="w-[50px] text-center">MRN</TableHead>
-              <TableHead className="text-center w-[490px] ">Nama Pasien</TableHead>
-              <TableHead className="text-center  w-[180px]">
+              <TableHead className="text-center xl:w-[260px] 2xl:w-[490px]">Nama Pasien</TableHead>
+              <TableHead className="text-center xl:w-[80px] 2xl:w-[180px]">
                 <Button variant="ghost" onClick={handleSortPerawatan}>
                   <ArrowUpDown size={18} /> Perawatan
                 </Button>
               </TableHead>
-              <TableHead className="text-center w-[170px]">EWS</TableHead>
-              <TableHead className="text-center">
+              <TableHead className="text-center xl:w-[100px] 2xl:w-[170px]">EWS</TableHead>
+              <TableHead className="text-center xl:w-[70px] 2xl:w-[150px]">
                 <Button variant="ghost" onClick={handleSortEWS}>
                   <ArrowUpDown size={18} /> Total EWS
                 </Button>
               </TableHead>
-              <TableHead className="text-center w-[150px] ">
+              <TableHead className="text-center xl:w-[100px] 2xl:w-[150px] ">
                 <Button variant="ghost" className="" onClick={handleSortStatus}>
                   <ArrowUpDown size={18} /> Status
                 </Button>
@@ -279,17 +278,17 @@ const Pasien = () => {
                 return (
                   <TableRow className="text-center flex" key={i}>
                     <TableCell className="text-center w-[65px] ">{i + 1}</TableCell>
-                    <TableCell className="text-center w-[488px] ">{item.nama_lengkap}</TableCell>
-                    <TableCell className="text-center  w-[180px]">
+                    <TableCell className="text-center 2xl:w-[488px] xl:w-[260px]">{item.nama_lengkap}</TableCell>
+                    <TableCell className="text-center xl:w-[157px] 2xl:w-[180px]">
                       <DropdownPerawatan item={item} />
                     </TableCell>
-                    <TableCell className="text-center w-[170px]" onClick={() => handleDropdown(item.id)}>
+                    <TableCell className="text-center xl:w-[100px] 2xl:w-[170px]" onClick={() => handleDropdown(item.id)}>
                       {dropdown[item.id] ? (
                         <>
                           <Dropdown patient={item} />
                         </>
                       ) : (
-                        <Button variant="ghost">
+                        <Button className="xl:-mx-5" variant="ghost">
                           HR: {item.heartrate?.heart_beats} <ArrowDown size={14} />
                         </Button>
                       )}
@@ -297,7 +296,7 @@ const Pasien = () => {
                     <TableCell className={`text-center ml-[55px] mr-[50px] ${cellColor} w-12`}>
                       <p className="text-center mt-3">{calcEws}</p>
                     </TableCell>
-                    <TableCell className=" items-center text-center w-[150px]">
+                    <TableCell className=" items-center text-center xl:w-[125px] 2xl:w-[150px]">
                       <DropdownStatus item={item} />
                     </TableCell>
                     <TableCell>
@@ -324,17 +323,17 @@ const Pasien = () => {
                 return (
                   <TableRow className="text-center flex" key={i}>
                     <TableCell className="text-center w-[65px] ">{i + 1}</TableCell>
-                    <TableCell className="text-center w-[488px] ">{item.nama_lengkap}</TableCell>
-                    <TableCell className="text-center  w-[180px]">
+                    <TableCell className="text-center 2xl:w-[488px] xl:w-[260px]">{item.nama_lengkap}</TableCell>
+                    <TableCell className="text-center xl:w-[157px] 2xl:w-[180px]">
                       <DropdownPerawatan item={item} />
                     </TableCell>
-                    <TableCell className="text-center w-[170px]" onClick={() => handleDropdown(item.id)}>
+                    <TableCell className="text-center xl:w-[100px] 2xl:w-[170px]" onClick={() => handleDropdown(item.id)}>
                       {dropdown[item.id] ? (
                         <>
                           <Dropdown patient={item} />
                         </>
                       ) : (
-                        <Button variant="ghost">
+                        <Button className="xl:-mx-5" variant="ghost">
                           HR: {item.heartrate?.heart_beats} <ArrowDown size={14} />
                         </Button>
                       )}
@@ -342,7 +341,7 @@ const Pasien = () => {
                     <TableCell className={`text-center ml-[55px] mr-[50px] ${cellColor} w-12`}>
                       <p className="text-center mt-3">{calcEws}</p>
                     </TableCell>
-                    <TableCell className=" items-center text-center w-[150px]">
+                    <TableCell className=" items-center text-center xl:w-[125px] 2xl:w-[150px]">
                       <DropdownStatus item={item} />
                     </TableCell>
                     <TableCell>

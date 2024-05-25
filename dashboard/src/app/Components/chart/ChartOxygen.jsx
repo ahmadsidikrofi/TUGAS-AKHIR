@@ -21,10 +21,9 @@ export default function NewChartJantung({ slug }) {
     return () => clearInterval(interval);
   }, [slug]);
 
-  const minBloodOxygen = Math.min(...data.map((item) => item.blood_oxygen));
   const maxBloodOxygen = Math.max(...data.map((item) => item.blood_oxygen));
   return (
-    <div className="mt-10 bg-white rounded-lg shadow p-5 px-10 py-10">
+    <div className="mt-10 text-[#5d87ff] rounded-lg shadow p-5 px-10 py-10">
       <h1 className="text-xl mb-5 font-bold">Grafik SpO2</h1>
       <LineChart
         width={810}

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator } from 'react-native';
 
 // Auth Screens
 import BeforeLogin from '../screens/(auth)';
@@ -19,10 +23,6 @@ import OxygenSaturation from '../screens/(tabs)/oxygen-saturation';
 import Systolic from '../screens/(tabs)/Systolic';
 import TemperatureBody from '../screens/(tabs)/temperature-body';
 import NotesDetail from '../screens/(tabs)/notes-detail';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ActivityIndicator } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

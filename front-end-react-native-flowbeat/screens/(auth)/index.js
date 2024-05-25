@@ -13,10 +13,10 @@ const BeforeLogin = () => {
 				<View className='mt-10 px-4'>
 					<Text className='text-4xl font-bold mb-10'>Selalu Terhubung dengan Detak Jantungmu</Text>
 					<View className='justify-center items-center mt-5'>
-						{/* <Image source={images.nurse}
+						<Image source={images.nurse}
 							className='w-[310px] h-[310px]'
 							resizeMode='contain'
-						/> */}
+						/>
 					</View>
 					<TouchableOpacity
 						onPress={() => navigation.navigate('SignIn')}

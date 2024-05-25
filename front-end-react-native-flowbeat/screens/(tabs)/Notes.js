@@ -3,11 +3,13 @@ import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const Notes = () => {
 	const [originalDatas, setOriginalDatas] = useState([]); // Menyimpan data asli
 	const [datas, setDatas] = useState([]);
 	const [searchText, setSearchText] = useState('');
+	const navigation = useNavigation();
 
 	const dataNotes = async () => {
 		try {
@@ -69,6 +71,16 @@ const Notes = () => {
 							datas.map((data) => (
 								<TouchableOpacity
 									key={data.id}
+									title={data.title}
+									description={data.description}
+									jam={data.created_at}
+									onPress={() =>
+										navigation.navigate('NotesDetail', {
+											title: data.title,
+											description: data.description,
+											jam: data.created_at,
+										})
+									}
 									className="bg-blue-200 w-[48%] h-36 mb-4 rounded-xl p-3 shadow-lg relative"
 									style={{
 										shadowColor: "#000",

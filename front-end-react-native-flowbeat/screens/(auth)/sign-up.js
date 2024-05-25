@@ -43,7 +43,7 @@ const SignUp = () => {
 			password: password,
 		};
 
-		await axios.post('https://flowbeat.web.id/api/signup', payload)
+		await axios.post('https://flowbeat.web.id/api/auth/signup', payload)
 			.then((res) => {
 				setMassage('berhasil masuk ke database');
 				navigation.navigate('SignIn');

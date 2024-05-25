@@ -68,6 +68,7 @@ const Notification = () => {
 						<Text className='text-xl font-medium'>Notification</Text>
 					</View>
 
+					{/* Date */}
 					<View>
 						{firstLoad.map((data, i) => {
 							const totalScore = data.total_score
@@ -150,6 +151,7 @@ const Notification = () => {
 							}
 						})}
 					</View>
+					{/* End */}
 
 					{isLoading && <ActivityIndicator size="large" />}
 				</View>
