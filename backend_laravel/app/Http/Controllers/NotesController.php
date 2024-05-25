@@ -11,8 +11,15 @@ class NotesController extends Controller
     public function GetNotesData( $slug )
     {
         $pasienId = PasienModel::where('slug', $slug)->value('id');
-        $notes = NotesModel::where('patient_id', $pasienId)->latest()->get();
-        return response()->json($notes, 200);
+        if ($pasienId) {
+            $notes = NotesModel::where('patient_id', $pasienId)->latest()->get();
+            return response()->json($notes, 200);
+        } else {
+            return response()->json([
+                'success' => 'false',
+                'message' => 'Pasien tidak ditemukan'
+            ], 404);
+        }
     }
 
     // Notes Mobile API
@@ -72,6 +79,23 @@ class NotesController extends Controller
                     'message' => 'Catatan gagal dibuat',
                 ], 500);
             }
+        }
+    }
+
+    public function DetailNote( $id )
+    {
+        $note = NotesModel::find($id);
+        if ($note) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Catatan ditemukan!!',
+                'note' => $note
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Catatan tidak ditemukan waa',
+            ], 404);
         }
     }
 
