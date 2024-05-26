@@ -127,11 +127,11 @@ class AuthController extends Controller
         }
 
         if ( $valid ) {
-            $pasien = PasienModel::where('email', $request->email)->first();
+            $pasien = PasienModel::where('noHp', $request->noHp)->first();
             if ( !$pasien ) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Email pasien tidak ditemukan!'
+                    'message' => 'No handphone pasien tidak terdaftar!'
                 ], 401);
             }
             $pasien->update([

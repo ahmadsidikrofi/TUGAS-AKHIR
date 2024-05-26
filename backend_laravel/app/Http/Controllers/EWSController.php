@@ -267,11 +267,15 @@ class EWSController extends Controller
     // Notification Perawat
     public function EWSNotification()
     {
-        $notifications = PasienModel::with(['notifications'])->latest()->get();
+        // $notifications = PasienModel::with(['notifications' => function($query) {
+        //     $query->orderBy('created_at', 'desc');
+        // }])->get();
+        $notifications = PasienModel::with(['notifications' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }])->get();
         $dataPasien = $notifications->map(function($pasien) {
             $namaLengkap = $pasien->nama_lengkap;
             $message = [];
-
             foreach ($pasien->notifications as $notification) {
                 $message[] = [
                     'nama_lengkap' => $namaLengkap,
@@ -279,7 +283,6 @@ class EWSController extends Controller
                     'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
                 ];
             }
-
             return $message;
         });
 

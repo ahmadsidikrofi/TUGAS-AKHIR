@@ -31,7 +31,7 @@ class PatientController extends Controller
     //     $patients = PasienModel::with('heartrate', 'oxygenSaturation')->orderBy('updated_at', 'desc')->get();
     //     return response()->json($patients, 200);
     // }
-    public function PatientsDataDetail($slug)
+    public function PatientDataDetail($slug)
     {
         $patient = PasienModel::where('slug', $slug)->first();
         return response()->json($patient, 200);
