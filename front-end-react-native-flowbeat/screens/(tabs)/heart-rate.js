@@ -1,8 +1,7 @@
 import { View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, FlatList } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
 import { LineChart } from "react-native-chart-kit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -46,7 +45,7 @@ const HeartRate = () => {
 		const min = Math.min(...heartBeats);
 		const max = Math.max(...heartBeats);
 
-		setAverageHeartRate(Math.round(average)); // Set averageHeartRate as rounded integer
+		setAverageHeartRate(Math.round(average));
 		setMinHeartRate(min);
 		setMaxHeartRate(max);
 	}
@@ -60,7 +59,7 @@ const HeartRate = () => {
 
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1 justify-center mb-10'>
-			<Image source={icons.love} className='w-8 h-8 mr-1' />
+			<Image source={icons.love} className='w-8 h-8 mb-2' />
 			<Text className='text-3xl font-pmedium'>{item.heart_beats}</Text>
 			<Text className='font-pregular text-[12px]'>BPM</Text>
 		</View>
@@ -68,11 +67,15 @@ const HeartRate = () => {
 
 	const formatDataForChart = (datas) => {
 		if (!datas || datas.length === 0) return { labels: [], datasets: [{ data: [] }] };
-		const labels = datas.map(data => new Intl.DateTimeFormat('id-ID', {
-			hour: 'numeric',
-			minute: 'numeric',
-			second: 'numeric'
-		}).format(new Date(data.created_at)));
+
+		const step = Math.ceil(datas.length / 10);
+		const labels = datas
+			.filter((_, index) => index % step === 0)
+			.map(data => new Intl.DateTimeFormat('id-ID', {
+				hour: 'numeric',
+				minute: 'numeric',
+				second: 'numeric'
+			}).format(new Date(data.created_at)));
 
 		const heartBeats = datas.map(data => parseInt(data.heart_beats));
 
@@ -108,7 +111,7 @@ const HeartRate = () => {
 						ListFooterComponent={
 							<>
 								{isLoading ? (
-									<ActivityIndicator size="large" color="##1e88e5" />
+									<ActivityIndicator size="large" color="#FF6969" />
 								) : (
 									<View>
 										<LineChart
@@ -119,20 +122,29 @@ const HeartRate = () => {
 											yAxisSuffix=" BPM"
 											yAxisInterval={1}
 											chartConfig={{
-												backgroundColor: "#e3f2fd",
-												backgroundGradientFrom: "#bbdefb",
-												backgroundGradientTo: "#90caf9",
+												backgroundColor: "#ffe6e6",
+												backgroundGradientFrom: "#ffcccc",
+												backgroundGradientTo: "#ff9999",
 												decimalPlaces: 0,
-												color: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,  // Warna biru dengan sedikit transparansi
-												labelColor: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,
+												color: (opacity = 1) => `rgba(255, 105, 105, ${opacity})`,
+												labelColor: (opacity = 1) => `rgba(255, 105, 105, ${opacity})`,
 												style: {
 													borderRadius: 16
 												},
 												propsForDots: {
 													r: "3",
 													strokeWidth: "0",
-													stroke: "#1e88e5"
-												}
+													stroke: "#FF6969"
+												},
+												propsForHorizontalLabels: {
+													fontSize: 10,
+													fill: "#FF6969"
+												},
+												propsForVerticalLabels: {
+													fontSize: 10,
+													fill: "#FF6969",
+													rotation: 40,
+												},
 											}}
 											style={{
 												marginVertical: 8,
@@ -147,8 +159,7 @@ const HeartRate = () => {
 					/>
 				</View>
 
-
-				<View className='w-[100%] bg-blue-200 rounded-xl p-4'>
+				<View className='w-[100%] bg-[#FF6969] rounded-xl p-4'>
 					<Text className='text-sm font-pmedium'>Rata-rata</Text>
 					<View className='flex-row justify-center mt-3'>
 						<Text className='text-3xl font-pmedium mr-1'>{averageHeartRate}</Text>
@@ -156,14 +167,14 @@ const HeartRate = () => {
 					</View>
 				</View>
 				<View className='flex-row mt-5 justify-between'>
-					<View className='bg-blue-200 rounded-xl p-4 w-[48%]'>
+					<View className='bg-[#FF6969] rounded-xl p-4 w-[48%]'>
 						<Text className='text-sm font-pmedium'>Paling rendah</Text>
 						<View className='flex-row justify-center mt-3'>
 							<Text className='text-3xl font-pmedium mr-1'>{minHeartRate}</Text>
 							<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
 						</View>
 					</View>
-					<View className='bg-blue-200 rounded-xl p-4 w-[48%]'>
+					<View className='bg-[#FF6969] rounded-xl p-4 w-[48%]'>
 						<Text className='text-sm font-pmedium'>Paling tinggi</Text>
 						<View className='flex-row justify-center mt-3'>
 							<Text className='text-3xl font-pmedium mr-1'>{maxHeartRate}</Text>
@@ -171,8 +182,6 @@ const HeartRate = () => {
 						</View>
 					</View>
 				</View>
-
-
 			</View>
 		</SafeAreaView>
 	)
