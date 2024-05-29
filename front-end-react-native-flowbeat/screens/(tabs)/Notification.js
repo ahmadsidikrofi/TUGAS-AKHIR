@@ -1,9 +1,9 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, handleInfoPress, Alert } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { useState, useEffect } from 'react'
-
+import { MaterialIcons } from '@expo/vector-icons';
 
 import icons from '../../constants/icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -46,6 +46,11 @@ const Notification = () => {
 	useEffect(() => {
 		dataNotification();
 	}, [])
+
+	const handleInfoPress = () => {
+		Alert.alert('Informasi', 'Ini adalah halaman notifikasi, terus pantau untuk melihat kondisi anda.');
+	}
+
 	return (
 		<SafeAreaView>
 			<ScrollView
@@ -58,14 +63,20 @@ const Notification = () => {
 			>
 				<View className='w-full min-h-[85vh] px-4 my-6'>
 					<View
-						className='flex-row items-center gap-2 mb-10'>
-						<TouchableOpacity
-							onPress={() => navigation.navigate('MainApp')}>
-							<Image source={icons.back}
-								className='w-6 h-6'
-							/>
+						className='flex-row items-center justify-between gap-2 mb-10'>
+						<View className='flex-row items-center'>
+							<TouchableOpacity
+								className='	w-6 h-6'
+								onPress={() => navigation.navigate('MainApp')}>
+								<Image source={icons.back}
+									className='	w-6 h-6'
+								/>
+							</TouchableOpacity>
+							<Text className='text-xl font-pbold ml-2'>Notification</Text>
+						</View>
+						<TouchableOpacity onPress={handleInfoPress}>
+							<MaterialIcons name="info-outline" size={34} color="black" />
 						</TouchableOpacity>
-						<Text className='text-xl font-pbold'>Notification</Text>
 					</View>
 
 					{/* Date */}
