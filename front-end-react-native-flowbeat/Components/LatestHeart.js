@@ -4,12 +4,14 @@ import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 import images from '../constants/images';
 
 const LatestHeart = () => {
 	const navigation = useNavigation();
 	const [datas, setDatas] = useState([])
+	const [noNetwork, setNoNetwork] = useState('')
 
 	const dataHeart = async () => {
 		const token = await AsyncStorage.getItem('token')
@@ -22,7 +24,8 @@ const LatestHeart = () => {
 			await axios.get('https://flowbeat.web.id/api/heartrate-patient-mobile', config).then((res) => {
 				setDatas(res.data.heartrate.slice(-1))
 			}).catch((err) => {
-				console.log(err)
+				console.log("Tidak ada jaringan", err)
+				setNoNetwork("Tidak ada jaringan internet, mohon restart aplikasi")
 			})
 		}
 	}
@@ -34,34 +37,46 @@ const LatestHeart = () => {
 
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1'>
-			<Text className='text-3xl font-medium'>{item.heart_beats}</Text>
-			<Text className='font-light text-[12px]'>BPM</Text>
+			<Text className='text-3xl font-pbold'>{item.heart_beats}</Text>
 		</View>
 	);
 
 	return (
-		<View className='mt-3'>
+		<View className='w-full h-64 bg-[#d0e9bc] rounded-[40px]'
+			style={{
+				shadowColor: "#000",
+				shadowOffset: {
+					width: 0,
+					height: 5,
+				},
+				shadowOpacity: 0.34,
+				shadowRadius: 6.27,
+				elevation: 10,
+			}}
+		>
 			<TouchableOpacity
 				onPress={() => navigation.navigate('HeartRate')}
-				style={{
-					shadowColor: "#000",
-					shadowOffset: {
-						width: 0,
-						height: 5,
-					},
-					shadowOpacity: 0.34,
-					shadowRadius: 6.27,
-					elevation: 10,
-				}}
-				className='w-44 h-60 shadow-2xl bg-white rounded-[25px] p-5'
 			>
-				<Text className='text-md font-medium'>Detak Jantung</Text>
-				<Image source={images.heartRate} className='w-32 h-32' />
-				<FlatList
-					data={datas}
-					renderItem={renderItem}
-					keyExtractor={(item, index) => index.toString()}
-				/>
+				<View className='flex flex-row items-center justify-between'>
+					<View className='px-8 py-5 items-center'>
+						<View className='bg-white rounded-full w-16 h-16 items-center justify-center'>
+							<AntDesign name="hearto" size={35} color="black" />
+						</View>
+						<Text className='text-xl font-pmedium my-5'>Heartrate</Text>
+						{/* <Text className='p-2 text-red-500 font-pbold rounded-md bg-white'>{noNetwork}</Text> */}
+						<FlatList
+							data={datas}
+							renderItem={renderItem}
+							keyExtractor={(item, index) => index.toString()}
+						/>
+						<Text className='text-center text-xl'>BPM</Text>
+					</View>
+					<View className='p-2 flex-1 items-center justify-center '>
+						<View className='bg-white rounded-[30px] mr-2 p-2'>
+							<Image source={images.heartattack} width={300} height={300} className='w-40 h-full object-contain' />
+						</View>
+					</View>
+				</View>
 			</TouchableOpacity>
 		</View>
 	)

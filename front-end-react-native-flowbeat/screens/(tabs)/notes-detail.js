@@ -16,13 +16,13 @@ const NotesDetail = ({ route }) => {
 						<TouchableOpacity onPress={() => navigation.navigate('Notes')}>
 							<Image source={icons.back} className='w-6 h-6' />
 						</TouchableOpacity>
-						<Text className='text-xl font-medium'>My Notes</Text>
+						<Text className='text-2xl font-pbold'>Notes</Text>
 					</View>
-					<View className='px-4 py-5 bg-[#e2e4e4] rounded-xl h-[85vh] relative'>
-						<Text className='font-bold text-2xl mb-2'>{title}</Text>
-						<Text className='mb-2'>{description}</Text>
-						<View className='absolute bottom-4 right-4 bg-white py-1 px-2 rounded-full'>
-							<Text className='text-[11px] font-bold'>
+					<View className='px-4 py-5 bg-[##ecf0f1] rounded-xl h-[85vh] relative'>
+						<Text className='font-pbold text-2xl mb-2'>{title}</Text>
+						<Text className='font-pregular mb-2'>{description}</Text>
+						<View className='absolute bottom-4 right-4 bg-white py-2 px-4 rounded-full'>
+							<Text className='text-[11px] font-pbold'>
 								{new Intl.DateTimeFormat('id-ID', {
 									year: 'numeric',
 									month: 'long',

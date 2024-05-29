@@ -65,7 +65,7 @@ const Notification = () => {
 								className='w-6 h-6'
 							/>
 						</TouchableOpacity>
-						<Text className='text-xl font-medium'>Notification</Text>
+						<Text className='text-xl font-pbold'>Notification</Text>
 					</View>
 
 					{/* Date */}
@@ -77,9 +77,9 @@ const Notification = () => {
 									return (
 										<View key={i} className='bg-white rounded-xl shadow-lg mb-3'>
 											<View className='flex-row  items-center justify-between mb-3'>
-												<Text className='font-bold mb-2'>Info tanda vital</Text>
+												<Text className='font-pbold mb-2'>Info tanda vital</Text>
 
-												<Text className='text-[10px] mt-3 text-gray-800 text-right'> {new Intl.DateTimeFormat('id-ID', {
+												<Text className='font-pregular text-[10px] mt-3 text-gray-800 text-right'> {new Intl.DateTimeFormat('id-ID', {
 													year: 'numeric',
 													month: 'long',
 													day: 'numeric',
@@ -87,7 +87,7 @@ const Notification = () => {
 													minute: 'numeric'
 												}).format(new Date(data.created_at))}</Text>
 											</View>
-											<Text>Assessmen dilakukan oleh perawat senior, maks respon 5 menit dengan eskalasi perawatan monitoring per 4-6 jam</Text>
+											<Text className='font-pregular'>Assessmen dilakukan oleh perawat senior, maks respon 5 menit dengan eskalasi perawatan monitoring per 4-6 jam</Text>
 										</View>
 									)
 
@@ -107,8 +107,8 @@ const Notification = () => {
 
 											}}>
 											<View className='flex-row  items-center justify-between mb-3'>
-												<Text className='font-bold'>Info tanda vital</Text>
-												<Text className='text-[10px] text-gray-800 text-right'> {new Intl.DateTimeFormat('id-ID', {
+												<Text className='font-pbold'>Info tanda vital</Text>
+												<Text className='font-pregular text-[10px] text-gray-800 text-right'> {new Intl.DateTimeFormat('id-ID', {
 													year: 'numeric',
 													month: 'long',
 													day: 'numeric',
@@ -116,7 +116,7 @@ const Notification = () => {
 													minute: 'numeric'
 												}).format(new Date(data.created_at))}</Text>
 											</View>
-											<Text>Lakukan eskalasi perawatan dan frekuensi monitoring tiap jam. Pertimbangkan eskalasi perawatan ke unit intensif care edukasi keluarga pasien</Text>
+											<Text className='font-pregular text-[12px]'>Lakukan eskalasi perawatan dan frekuensi monitoring tiap jam. Pertimbangkan eskalasi perawatan ke unit intensif care edukasi keluarga pasien</Text>
 										</View>
 									)
 								} else if (totalScore >= 7) {
@@ -135,8 +135,8 @@ const Notification = () => {
 
 											}}>
 											<View className='flex-row  items-center justify-between mb-3'>
-												<Text className='font-bold'>Info tanda vital</Text>
-												<Text className='text-[10px] text-gray-800 text-right'> {new Intl.DateTimeFormat('id-ID', {
+												<Text className='font-pbold'>Info tanda vital</Text>
+												<Text className='font-pregular text-[10px] text-gray-800 text-right'> {new Intl.DateTimeFormat('id-ID', {
 													year: 'numeric',
 													month: 'long',
 													day: 'numeric',
@@ -144,7 +144,7 @@ const Notification = () => {
 													minute: 'numeric'
 												}).format(new Date(data.created_at))}</Text>
 											</View>
-											<Text>Respon maksimal 10 menit beri informasi ke DPJP dan edukasi keluarga pasien</Text>
+											<Text className='font-pregular text-[12px]'>Respon maksimal 10 menit beri informasi ke DPJP dan edukasi keluarga pasien</Text>
 										</View>
 									)
 								}

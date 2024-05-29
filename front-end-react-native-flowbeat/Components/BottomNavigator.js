@@ -4,7 +4,8 @@ import TabItem from './TabItem';
 
 const BottomNavigator = ({ state, descriptors, navigation }) => {
 	return (
-		<View className='flex-row bg-white justify-between px-3 py-3'>
+		<View className='flex-row bg-white justify-between px-3 py-3'
+		>
 			{state.routes.map((route, index) => {
 				const { options } = descriptors[route.key];
 				const label =

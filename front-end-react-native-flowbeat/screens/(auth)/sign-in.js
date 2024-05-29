@@ -9,6 +9,12 @@ import { useNavigation } from '@react-navigation/native';
 import icons from '../../constants/icons';
 import images from '../../constants/images';
 
+// Font
+import PoppinsBold from '../../Components/Fonts/PoppinsBold';
+import PoppinsRegular from '../../Components/Fonts/PoppinsRegular';
+import PoppinsMedium from '../../Components/Fonts/Poppins-Medium';
+import PoppinsThin from '../../Components/Fonts/Poppins-Thin';
+
 const SignIn = () => {
 	const navigation = useNavigation();
 	const [phone, setPhone] = useState('');
@@ -45,7 +51,7 @@ const SignIn = () => {
 				setError('Nomor HP atau password salah');
 			})
 			.finally(() => {
-				setIsLoading(false); // Mengatur isLoading menjadi false setelah proses login selesai
+				setIsLoading(false);
 			});
 	}
 
@@ -58,8 +64,8 @@ const SignIn = () => {
 		<SafeAreaView>
 			<ScrollView>
 				<View className="px-4 my-6">
-					<Text className="font-bold text-3xl">Masuk</Text>
-					<Text className="text-md text-gray-500">Masuk dengan akun yang telah terdaftar</Text>
+					<PoppinsBold><Text className="text-xl">Masuk</Text></PoppinsBold>
+					<PoppinsRegular><Text className='text-gray-500'>Masuk dengan akun yang telah terdaftar</Text></PoppinsRegular>
 					<View className="flex justify-center items-center">
 						<Image
 							source={images.heartImg}
@@ -67,19 +73,23 @@ const SignIn = () => {
 							resizeMode='contain'
 						/>
 					</View>
-					<Text className="mb-2 mt-3">Nomor HP</Text>
+					<View className='mt-5 mb-2'>
+						<PoppinsRegular><Text>Nomor Handphone</Text></PoppinsRegular>
+					</View>
 					<View className="mb-4">
 						<TextInput
-							className="h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
+							className="font-pregular h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
 							placeholder="Masukkan nomor HP Anda"
 							onChangeText={(text) => setPhone(text)}
 							keyboardType='numeric'
 						/>
 					</View>
-					<Text className="mb-2">Password</Text>
-					<View className="flex-row items-center border-2 border-[#DDDDDD] rounded-[8px]">
+					<View className='mb-2'>
+						<PoppinsRegular><Text className="mb-2">Password</Text></PoppinsRegular>
+					</View>
+					<View className="flex-row items-center border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500">
 						<TextInput
-							className="flex-1 h-[55px] px-4"
+							className="font-pregular flex-1 h-[55px] px-4"
 							placeholder="Masukkan kata sandi Anda"
 							secureTextEntry={!isPasswordShown}
 							onChangeText={(text) => setPassword(text)}
@@ -99,8 +109,10 @@ const SignIn = () => {
 						{error !== '' && <Image source={icons.error} className='w-4 h-4' />}
 						{error !== '' && <Text className="text-red-500">{error}</Text>}
 					</View>
-					<TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}>
-						<Text className="text-right mb-5 mt-3 text-rose-400">Lupa password?</Text>
+					<TouchableOpacity
+						className='mb-5 mt-3 flex flex-row justify-end'
+						onPress={() => navigation.navigate('ForgetPassword')} >
+						<PoppinsRegular><Text className="text-rose-400">Lupa password?</Text></PoppinsRegular>
 					</TouchableOpacity>
 
 					<TouchableOpacity
@@ -111,13 +123,13 @@ const SignIn = () => {
 						{isLoading ? (
 							<ActivityIndicator color="#ffffff" />
 						) : (
-							<Text className="font-bold text-[18px] text-white">Masuk</Text>
+							<PoppinsBold><Text className='text-lg text-white'>Masuk</Text></PoppinsBold>
 						)}
 					</TouchableOpacity>
-					<View className="flex-row justify-center">
-						<Text>Belum mempunyai akun?</Text>
+					<View className="flex-row justify-center gap-x-1">
+						<PoppinsRegular><Text>Belum mempunyai akun?</Text></PoppinsRegular>
 						<TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-							<Text className="font-bold text-blue-500 ml-1">Daftar</Text>
+							<PoppinsBold><Text className="font-bold text-blue-500">Daftar</Text></PoppinsBold>
 						</TouchableOpacity>
 					</View>
 				</View>

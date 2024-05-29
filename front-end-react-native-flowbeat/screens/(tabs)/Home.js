@@ -16,6 +16,7 @@ import useProfile from "../../Components/useProfile"
 import { useCallback, useEffect, useState } from 'react';
 
 
+
 const Home = () => {
 	const navigation = useNavigation();
 	const { nama_lengkap, fetchProfile } = useProfile()
@@ -43,49 +44,51 @@ const Home = () => {
 
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView >
 			<ScrollView
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 				}
 			>
 			</ScrollView>
-			<View className="w-full min-h-[85vh] px-4 my-6">
+			<View className="w-full min-h-[100vh] px-4 my-6">
 				<View className="flex-row items-center justify-between mb-10 mt-4">
 					<View className="flex-row items-center">
-						{/* <Image source={images.profile} resizeMode='contain' className="w-[60] h-[60] rounded-full" /> */}
+						<Image source={images.profile} resizeMode='contain' className="w-16 h-16 rounded-full" />
 						<View className="ml-4">
 							{loading ? (
-								<ActivityIndicator size="large" color="#0000ff" />
+								<ActivityIndicator size="large" color="#bce7f0" />
 							) : (
 								<>
-									<Text className="text-2xl text-black">Halo, {nama_lengkap}</Text>
-									<Text className="text-gray-400">Have a good day</Text>
+									<Text className="text-lg text-black font-pmedium">Halo, {nama_lengkap}!</Text>
 								</>
 							)}
 						</View>
 					</View>
+
 					<View>
 						<TouchableOpacity
+							className='bg-gray-200 w-16 h-16 justify-center items-center rounded-full'
 							onPress={() => navigation.navigate('Notification')}>
 							<View >
-								<Ionicons name="notifications" size={28} color="#FFC94A" />
+								<Ionicons name="notifications-outline" size={28} color="black" />
 							</View>
 						</TouchableOpacity>
 					</View>
+				</View>
+				<View>
+					<Text className='font-pregular text-2xl'>Heart Health</Text>
 				</View>
 				<View className='mt-5'>
 					<View className='flex flex-row justify-between'>
 
 						<LatestHeart />
 
-						<LatestOxygen />
+
 
 					</View>
 					<View className='flex flex-row justify-between mt-3 '>
-
-						<LatestSystolic />
-
+						<LatestOxygen />
 						<LatestTemperature />
 					</View>
 				</View>

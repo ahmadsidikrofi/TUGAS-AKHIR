@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -6,6 +6,12 @@ import axios from 'axios';
 
 import images from '../../constants/images';
 import icons from '../../constants/icons';
+
+// Fonts
+import PoppinsBold from '../../Components/Fonts/PoppinsBold';
+import PoppinsRegular from '../../Components/Fonts/PoppinsRegular';
+import PoppinsMedium from '../../Components/Fonts/Poppins-Medium';
+import PoppinsThin from '../../Components/Fonts/Poppins-Thin';
 
 const ForgetPassword = () => {
 	const navigation = useNavigation();
@@ -58,21 +64,23 @@ const ForgetPassword = () => {
 			<ScrollView>
 				<View className="px-4 my-6">
 					<View className='flex-row gap-3'>
-						<View className='pt-2'>
+						<View className='pt-1'>
 							<TouchableOpacity
 								onPress={() => navigation.navigate('SignIn')}>
 								<Image source={icons.back} className='w-6 h-6' />
 							</TouchableOpacity>
 						</View>
 						<View>
-							<Text className='font-bold text-3xl'>Lupa Password</Text>
-							<Text className='text-md text-gray-500'>Silakan isi data dengan benar untuk mereset password Anda</Text>
+							<PoppinsBold><Text className='text-xl'>Lupa Password</Text></PoppinsBold>
+							<PoppinsRegular><Text className='text-md text-gray-500'>Silakan isi data dengan benar untuk mereset password Anda</Text></PoppinsRegular>
 						</View>
 					</View>
 					<View className="flex justify-center items-center">
 						<Image source={images.forgotpassword} className="w-65 h-60" resizeMode='contain' />
 					</View>
-					<Text className="mb-2 mt-3">Nomor HP</Text>
+					<View className='mt-5 mb-2'>
+						<PoppinsRegular><Text>Nomor Handphone</Text></PoppinsRegular>
+					</View>
 					<View className="mb-4">
 						<TextInput
 							className="h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
@@ -81,7 +89,9 @@ const ForgetPassword = () => {
 							keyboardType='numeric'
 						/>
 					</View>
-					<Text className='mb-2'>Password Baru</Text>
+					<View className='mb-2'>
+						<PoppinsRegular><Text className="mb-2">Password baru</Text></PoppinsRegular>
+					</View>
 					<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 						<TextInput className=' w-full'
 							placeholder='Masukan kata sandi baru Anda'
@@ -99,7 +109,9 @@ const ForgetPassword = () => {
 							/>
 						</TouchableOpacity>
 					</View>
-					<Text className='mb-2'>Konfirmasi password baru</Text>
+					<View className='mb-2'>
+						<PoppinsRegular><Text className="mb-2">Konfirmasi password baru</Text></PoppinsRegular>
+					</View>
 					<View className='mb-3 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 						<TextInput className=' w-full'
 							placeholder='Konfirmasi kata sandi Anda'
@@ -123,14 +135,14 @@ const ForgetPassword = () => {
 						{error !== '' && <Text className="text-red-500">{error}</Text>}
 					</View>
 					<TouchableOpacity
-						className="bg-blue-500 rounded-[8px] h-[55px] justify-center items-center mb-3"
+						className="bg-blue-500 rounded-[8px] h-[55px] justify-center items-center mt-3"
 						onPress={handleForgetPassword}
 						disabled={isLoading}
 					>
 						{isLoading ? (
 							<ActivityIndicator color="#ffffff" />
 						) : (
-							<Text className="font-bold text-[18px] text-white">Perbarui</Text>
+							<PoppinsBold><Text className="text-lg text-white">Perbarui</Text></PoppinsBold>
 						)}
 					</TouchableOpacity>
 				</View>
@@ -138,5 +150,12 @@ const ForgetPassword = () => {
 		</SafeAreaView>
 	);
 };
+
+
+// const styles = StyleSheet.create({
+// 	poppinsBold: {
+// 		fontFamily: 'poppins-Bold'
+// 	}
+// })
 
 export default ForgetPassword;

@@ -45,8 +45,8 @@ const HeartRate = () => {
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1 justify-center mb-10'>
 			<Image source={icons.love} className='w-8 h-8 mr-1' />
-			<Text className='text-3xl font-medium'>{item.heart_beats}</Text>
-			<Text className='font-light text-[12px]'>BPM</Text>
+			<Text className='text-3xl font-pmedium'>{item.heart_beats}</Text>
+			<Text className='font-pregular text-[12px]'>BPM</Text>
 		</View>
 	);
 
@@ -54,8 +54,8 @@ const HeartRate = () => {
 		if (!datas || datas.length === 0) return { labels: [], datasets: [{ data: [] }] };
 		const labels = datas.map(data => new Intl.DateTimeFormat('id-ID', {
 			hour: 'numeric',
-			minute: 'numeric',
-			second: 'numeric'
+			// minute: 'numeric',
+			// second: 'numeric'
 		}).format(new Date(data.created_at)));
 
 		const heartBeats = datas.map(data => parseInt(data.heart_beats.slice(0, 10)));
@@ -80,7 +80,7 @@ const HeartRate = () => {
 						onPress={() => navigation.navigate('MainApp')}>
 						<Image source={icons.back} className='w-6 h-6' />
 					</TouchableOpacity>
-					<Text className='text-xl font-medium'>Detak Jantung</Text>
+					<Text className='text-xl font-pmedium'>Detak Jantung</Text>
 				</View>
 
 				<FlatList
@@ -95,8 +95,8 @@ const HeartRate = () => {
 								<View>
 									<LineChart
 										data={chartData}
-										width={Dimensions.get("window").width - 32}
-										height={220}
+										width={360}
+										height={320}
 										yAxisLabel=""
 										yAxisSuffix=" BPM"
 										yAxisInterval={1}

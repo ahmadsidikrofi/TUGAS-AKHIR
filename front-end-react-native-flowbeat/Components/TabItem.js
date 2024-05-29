@@ -39,7 +39,7 @@ const TabItem = ({ isFocused, onPress, onLongPress, label }) => {
 		>
 			<Icon />
 			<StyledText
-				className='text-[10px] mt-1'
+				className='text-[10px] font-pregular mt-1'
 				style={{ color: isFocused ? '#074173' : '#BFCFE7' }}>
 				{label}
 			</StyledText>

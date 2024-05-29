@@ -7,5 +7,6 @@ import heartRate from "../assets/images/heart-rate.png"
 import oksigen from "../assets/images/oksigen.png"
 import suhu from "../assets/images/suhu.png"
 import blood from "../assets/images/blood.png"
+import heartattack from "../assets/images/heartattack.png"
 
-export default { nurse, profile, login, heartImg, forgotpassword, heartRate, oksigen, suhu, blood };
+export default { nurse, profile, login, heartImg, forgotpassword, heartRate, oksigen, suhu, blood, heartattack };

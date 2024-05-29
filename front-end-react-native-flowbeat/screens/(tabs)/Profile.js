@@ -6,8 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 import images from '../../constants/images';
-import icons from '../../constants/icons';
-import { FontAwesome6 } from '@expo/vector-icons';
 
 import LogoutAccount from '../../Components/LogoutAccount';
 import useProfile from '../../Components/useProfile';
@@ -31,6 +29,7 @@ const Profile = () => {
 
 			// Update state with new profile data
 			setNama_lengkap(profilePasien.nama_lengkap);
+			setNama_lengkap(profilePasien.alamat);
 			setTgl_lahir(profilePasien.tgl_lahir);
 
 			setIsLoading(true);
@@ -54,60 +53,47 @@ const Profile = () => {
 					<Text className='mb-5 font-bold text-xl'>Profile</Text>
 					<View className='justify-center items-center'>
 						<Image source={images.profile} className='w-32 h-32 rounded-full' />
-						<View className="bg-blue-500 w-40 h-10 flex items-center justify-center rounded-full mt-5">
-							<TouchableOpacity className="flex flex-row items-center justify-center" onPress={updateProfile}>
-								{isLoading ? <Text>Loading...</Text> : (
-									<>
-										<Image source={icons.editProfile} className="w-5 h-5 mr-[5]" />
-										<Text className="text-[16px] font-bold">Edit Profile</Text>
-									</>
-								)}
-							</TouchableOpacity>
-						</View>
+
 					</View>
 
-					<View className='mb-5 mt-10'>
-						<Text className='text-md mb-2'>Nama</Text>
-						<View className='flex-row justify-between'>
-							<TextInput
-								value={nama_lengkap}
-								onChangeText={(text) => setNama_lengkap(text)}
-								className='text-md w-[280px] pl-3 py-1 border border-gray-400 rounded-md'
-							/>
-							<TouchableOpacity
-								className='w-10 h-10 bg-black rounded-md items-center justify-center'>
-								<FontAwesome6 name="edit" size={18} color="white" />
-							</TouchableOpacity>
+					<View className='mb-5 mt-10 border border-slate-400 border-opacity-40 rounded-md'>
+						<View>
+							<View className='border-b border-slate-400 border-opacity-40'>
+								<Text className='font-pmedium p-3'>Informasi Pasien</Text>
+							</View>
+							<View className='p-3'>
+								<Text className='font-pregular mb-2'>Nama</Text>
+
+								<TextInput
+									value={nama_lengkap}
+									onChangeText={(text) => setNama_lengkap(text)}
+									className='text-md w-full h-10 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
+								/>
+								<Text className='font-pregular mb-2 mt-3'>Alamat</Text>
+
+								<TextInput
+									value={alamat}
+									onChangeText={(text) => setAlamat(text)}
+									className='text-md w-full h-10 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
+								/>
+								<Text className='font-pregular mb-2 mt-3'>Tanggal Lahir</Text>
+
+								<Text className='font-pregular mb-2 mt-3'>Jenis Kelamin</Text>
+
+								<TouchableOpacity
+									className='rounded-md bg-blue-500 w-[120px] mt-3 items-center' onPress={updateProfile}>
+									{isLoading ? <Text>Loading...</Text> : (
+										<>
+											<Text className='font-pregular h-8 text-white mt-2'>Perbarui</Text>
+										</>
+									)}
+								</TouchableOpacity>
+
+							</View>
 						</View>
+
 					</View>
-					{/* <View className='mb-5'>
-						<Text className='text-md mb-2'>Alamat</Text>
-						<View className='flex-row justify-between'>
-							<TextInput
-								value={alamat}
-								onChangeText={(text) => setAlamat(text)}
-								className='text-md w-[280px] pl-3 py-1 border border-gray-400 rounded-md'
-							/>
-							<TouchableOpacity
-								className='w-10 h-10 bg-black rounded-md items-center justify-center'>
-								<FontAwesome6 name="edit" size={18} color="white" />
-							</TouchableOpacity>
-						</View>
-					</View> */}
-					<View className='mb-5'>
-						<Text className='text-md mb-2'>Tanggal Lahir</Text>
-						<View className='flex-row justify-between'>
-							<TextInput
-								value={tgl_lahir}
-								onChangeText={(text) => setTgl_lahir(text)}
-								className='text-md w-[280px] pl-3 py-1 border border-gray-400 rounded-md'
-							/>
-							<TouchableOpacity
-								className='w-10 h-10 bg-black rounded-md items-center justify-center'>
-								<FontAwesome6 name="edit" size={18} color="white" />
-							</TouchableOpacity>
-						</View>
-					</View>
+
 
 				</View>
 
@@ -118,30 +104,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-
-// const editProfil = async (e) => {
-// 	e.preventDefault()
-// 	const token = await AsyncStorage.getItem('token');
-// 	const edit = {
-// 		nama_lengkap,
-// 		alamat,
-// 		tgl_lahir,
-// 		jenis_kelamin,
-// 	};
-// 	try {
-// 		const res = await axios.put('https://flowbeat.web.id/api/profile', edit, {
-// 			headers: {
-// 				Authorization: `Bearer ${token}`
-// 			}
-// 		});
-// 		alert('Terupdate');
-// 		setNama_lengkap(edit.nama_lengkap);
-// 		setAlamat(edit.alamat);
-// 		setTgl_lahir(edit.tgl_lahir);
-// 		navigation.navigate('MainApp')
-// 		setIsProfileUpdated(!isProfileUpdated);
-// 	} catch (err) {
-// 		console.error('Error updating profile:', err);
-// 	}
-// };

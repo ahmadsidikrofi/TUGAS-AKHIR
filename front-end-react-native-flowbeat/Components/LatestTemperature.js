@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
 import images from '../constants/images';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LatestTemperature = () => {
 	const navigation = useNavigation();
@@ -34,8 +35,8 @@ const LatestTemperature = () => {
 
 	const renderItem = ({ item }) => (
 		<View className='flex-row gap-1'>
-			<Text className='text-3xl font-medium'>{item.patient_temp}</Text>
-			<Text className='font-light text-[12px]'>o</Text>
+			<Text className='text-4xl font-pmedium'>{item.patient_temp}</Text>
+			<Text className='font-preguler text-[18px]'>o</Text>
 		</View>
 	)
 	return (
@@ -54,11 +55,11 @@ const LatestTemperature = () => {
 					elevation: 10,
 
 				}}
-				className='w-44 h-60 shadow-2xl bg-white rounded-[25px] p-5'>
-				<Text className='text-md font-medium'>Suhu Tubuh</Text>
-				<Image source={images.suhu}
-					className='w-32 h-32'
-				/>
+				className='w-44 h-60 shadow-2xl bg-[#fbe285] rounded-[40px] p-5'>
+				<View className='bg-white rounded-full w-16 h-16 items-center justify-center  mb-9'>
+					<MaterialCommunityIcons name="temperature-celsius" size={35} color="black" />
+				</View>
+				<Text className='text-sm font-pmedium my-3'>Temperatur</Text>
 				<FlatList
 					data={datas}
 					renderItem={renderItem}
