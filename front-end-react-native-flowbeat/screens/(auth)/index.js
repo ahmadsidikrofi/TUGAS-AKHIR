@@ -16,8 +16,8 @@ const BeforeLogin = () => {
 	return (
 		<SafeAreaView>
 			<ScrollView contentContainerStyle={{ height: '100%' }}>
-				<View className='mt-10 px-4'>
-					<PoppinsBold><Text className='text-[30px]'>Selalu Terhubung dengan Detak Jantungmu</Text></PoppinsBold>
+				<View className='mt-8 px-4'>
+					<PoppinsBold><Text className='text-[31px]'>Selalu Terhubung dengan Detak Jantungmu</Text></PoppinsBold>
 					<View className='justify-center items-center mb-5 mt-14'>
 						<Image source={images.nurse}
 							className='w-[310px] h-[310px]'

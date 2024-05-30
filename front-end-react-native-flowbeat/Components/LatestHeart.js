@@ -42,7 +42,7 @@ const LatestHeart = () => {
 	);
 
 	return (
-		<View className='w-full h-64 bg-[#d0e9bc] rounded-[40px]'
+		<View className='w-full h-64 bg-[#FF6969] rounded-[40px]'
 			style={{
 				shadowColor: "#000",
 				shadowOffset: {

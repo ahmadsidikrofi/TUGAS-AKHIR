@@ -59,7 +59,6 @@ const Router = () => {
 		return (
 			<SafeAreaView>
 				<View className="flex-1 justify-center items-center">
-					<Text>Loading...</Text>
 					<ActivityIndicator color="#ff0" size="large" />
 				</View>
 			</SafeAreaView>
