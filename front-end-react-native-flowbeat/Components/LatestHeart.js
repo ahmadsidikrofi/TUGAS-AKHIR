@@ -37,7 +37,7 @@ const LatestHeart = () => {
 
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1'>
-			<Text className='text-3xl font-pbold'>{item.heart_beats}</Text>
+			<Text className='text-4xl font-pbold'>{item.heart_beats}</Text>
 		</View>
 	);
 
@@ -69,7 +69,7 @@ const LatestHeart = () => {
 							renderItem={renderItem}
 							keyExtractor={(item, index) => index.toString()}
 						/>
-						<Text className='text-center text-xl'>BPM</Text>
+						<Text className='text-center text-2xl'>BPM</Text>
 					</View>
 					<View className='p-2 flex-1 items-center justify-center '>
 						<View className='bg-white rounded-[30px] mr-2 p-2'>

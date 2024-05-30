@@ -77,15 +77,12 @@ const Home = () => {
 					</View>
 				</View>
 				<View>
-					<Text className='font-pregular text-2xl'>Heart Health</Text>
+					<Text className='font-pmedium text-2xl ml-3'>Flowbeat</Text>
 				</View>
 				<View className='mt-5'>
 					<View className='flex flex-row justify-between'>
 
 						<LatestHeart />
-
-
-
 					</View>
 					<View className='flex flex-row justify-between mt-3 '>
 						<LatestOxygen />
