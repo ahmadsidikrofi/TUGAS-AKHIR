@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, RefreshControl, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,7 +20,6 @@ import { useCallback, useEffect, useState } from 'react';
 const Home = () => {
 	const navigation = useNavigation();
 	const { nama_lengkap, fetchProfile } = useProfile()
-	const [token, setToken] = useState(null)
 	const [loading, setLoading] = useState(true)
 	const [refreshing, setRefreshing] = useState(false);
 
@@ -36,21 +35,15 @@ const Home = () => {
 		}, [])
 	);
 
-	const onRefresh = useCallback(async () => {
-		setRefreshing(true);
-		await fetchProfile();
-		setRefreshing(false);
-	}, [fetchProfile]);
+	// const onRefresh = useCallback(async () => {
+	// 	setRefreshing(true);
+	// 	await fetchProfile();
+	// 	setRefreshing(false);
+	// }, [fetchProfile]);
 
 
 	return (
 		<SafeAreaView >
-			<ScrollView
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-				}
-			>
-			</ScrollView>
 			<View className="w-full min-h-[100vh] px-4 my-6">
 				<View className="flex-row items-center justify-between mb-10 mt-4">
 					<View className="flex-row items-center">
