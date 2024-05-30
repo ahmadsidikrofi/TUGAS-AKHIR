@@ -94,7 +94,7 @@ const OxygenSaturation = () => {
 										width={Dimensions.get("window").width - 32}
 										height={220}
 										yAxisLabel=""
-										yAxisSuffix=" BPM"
+										yAxisSuffix=" %"
 										yAxisInterval={1}
 										chartConfig={{
 											backgroundColor: "#e3f2fd",
@@ -110,7 +110,8 @@ const OxygenSaturation = () => {
 												r: "3",
 												strokeWidth: "0",
 												stroke: "#1e88e5"
-											}
+											},
+
 										}}
 										style={{
 											marginVertical: 8,
