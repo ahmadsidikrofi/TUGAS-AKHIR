@@ -294,7 +294,7 @@ class EWSController extends Controller
         $pasien = $request->user();
         if ($pasien !== null ) {
             $notifications = NotificationsModel::where('patient_id', $pasien->id)
-            ->where('total_score', '>=', 5)->get();
+            ->where('total_score', '>=', 5)->latest()->get();
             return response()->json($notifications, 200);
         } else {
             return response()->json([
