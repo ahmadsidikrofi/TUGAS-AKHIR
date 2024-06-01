@@ -24,7 +24,7 @@ const BottomNavigator = ({ state, descriptors, navigation }) => {
 	}
 
 	return (
-		<View className='flex-row bg-white justify-between px-3 py-3 absolute bottom-0 w-full'>
+		<View className='flex-row bg-white justify-between px-3 py-3 w-full'>
 			{state.routes.map((route, index) => {
 				const { options } = descriptors[route.key];
 				const label =
