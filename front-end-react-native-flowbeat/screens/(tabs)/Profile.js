@@ -52,7 +52,7 @@ const Profile = () => {
 				<View className='w-full min-h-[85vh] px-4 my-6'>
 					<Text className='mb-5 font-bold text-xl'>Profile</Text>
 					<View className='justify-center items-center'>
-						<Image source={images.profile} className='w-32 h-32 rounded-full' />
+						<Image source={{ uri: "https://xsgames.co/randomusers/avatar.php?g=pixel" }} className='w-32 h-32 rounded-full' />
 					</View>
 
 					<View className='mb-5 mt-10 border border-slate-400 border-opacity-40 rounded-md'>
@@ -65,16 +65,19 @@ const Profile = () => {
 								<TextInput
 									value={isLoading ? "Loading..." : nama_lengkap}
 									onChangeText={(text) => setNama_lengkap(text)}
-									className='text-md w-full h-10 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
+									className='text-md w-full pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
 								/>
 								<Text className='font-pregular mb-2 mt-3'>Alamat</Text>
 
 								<TextInput
 									value={isLoading ? "Loading..." : alamat}
 									onChangeText={(text) => setAlamat(text)}
-									className='text-md w-full h-10 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
+									numberOfLines={4}
+									multiline={true}
+									className='text-md w-full h-14 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
 								/>
 								<Text className='font-pregular mb-2 mt-3'>Tanggal Lahir</Text>
+								<TextInput keyboardType='date' />
 
 								<Text className='font-pregular mb-2 mt-3'>Jenis Kelamin</Text>
 
@@ -86,16 +89,13 @@ const Profile = () => {
 										</>
 									)}
 								</TouchableOpacity>
-
 							</View>
 						</View>
-
 					</View>
-
-
+					<View>
+						<LogoutAccount />
+					</View>
 				</View>
-
-				<LogoutAccount />
 			</ScrollView>
 		</SafeAreaView>
 	);

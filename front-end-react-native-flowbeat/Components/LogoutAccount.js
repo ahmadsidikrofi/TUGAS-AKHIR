@@ -26,11 +26,11 @@ const LogoutAccount = () => {
 	};
 
 	return (
-		<View className='justify-center items-center mt-32'>
+		<View className='items-center'>
 			<TouchableOpacity
-				className='w-32 h-14 bg-red-500 rounded-md'
+				className='bg-rose-500 w-1/2 p-4 rounded-[15px]'
 				onPress={handleLogout}>
-				<Text className='text-center font-medium text-white mt-4'>LOGOUT</Text>
+				<Text className='text-center font-medium text-white'>LOGOUT</Text>
 			</TouchableOpacity>
 		</View>
 	);
