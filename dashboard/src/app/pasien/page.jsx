@@ -13,8 +13,10 @@ import { Button } from '@/components/ui/button';
 import { ToastAction } from '@/components/ui/toast';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import SearchInput from '../Components/SearchInput';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 
 const Pasien = () => {
+  const { axios } = useFlowbeatApi() 
   const router = useRouter();
   const [pasien, setPasien] = useState([]);
   const [filteredPasien, setFilteredPasien] = useState([]);
@@ -34,9 +36,8 @@ const Pasien = () => {
 
   const { toast } = useToast();
   const fetchData = async () => {
-    await axios
-    // .get('https://flowbeat.web.id/api/patients')
-      .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+    await axios.get('/patients')
+      // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
       .then((response) => {
         setPasien(response?.data);
         setLoading(false);
@@ -61,7 +62,7 @@ const Pasien = () => {
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
     if (typeof window !== 'undefined') {
       axios
-        .put(`https://flowbeat.web.id/api/profile/${slug}`, {
+        .put(`/patient/${slug}/profile`, {
           perawatan: jenisPerawatanBaru,
         })
         .then(() => {
@@ -93,7 +94,7 @@ const Pasien = () => {
   const ubahStatus = async (slug, statusBaru) => {
     if (typeof window !== 'undefined') {
       axios
-        .put(`https://flowbeat.web.id/api/profile/${slug}`, {
+        .put(`/patient/${slug}/profile`, {
           is_active: statusBaru,
         })
         .then(() => {

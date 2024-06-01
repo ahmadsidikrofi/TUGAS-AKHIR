@@ -6,28 +6,30 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Note } from '@phosphor-icons/react';
 import Link from 'next/link';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 const Notes = () => {
+  const { axios } = useFlowbeatApi() 
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const skeleton = <Skeleton className="w-[50px] h-[20px] rounded-full dark:bg-slate-200" />;
-  const dataUser = async () => {
-    await axios
-      .get(`https://flowbeat.web.id/api/patients`)
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          setUser(response.data);
-          setLoading(false);
-        }
-      })
-      .catch((error) => console.log(error));
-  };
+
   useEffect(() => {
-    dataUser();
-  });
+    const dataUser = async () => {
+      await axios.get(`/patients`)
+        .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            setUser(response.data);
+            setLoading(false);
+          }
+        })
+        .catch((error) => console.log(error));
+    };
+    dataUser()
+  }, [axios]);
   return (
     <div className="flex flex-col ">
       <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] font-bold">Notes Pasien</h1>
-      <div className="py-10 rounded-lg my-10 mx-6 pl-20 items-center w-full border items-center">
+      <div className="py-10 rounded-lg my-10 mx-6 pl-20 items-center w-full border">
         <Table className="w-max flex flex-col  gap-2">
           <TableHeader className="w-max flex gap-12">
             <TableRow className="w-max flex">

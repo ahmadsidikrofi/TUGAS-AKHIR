@@ -14,7 +14,7 @@ const Detail = ({ params: { slug } }) => {
   const [datas, setDatas] = useState({});
   const fetchData = async () => {
     if (typeof window !== 'undefined') {
-      axios.get(`https://flowbeat.web.id/api/patients/${slug}`).then((response) => {
+      axios.get(`https://flowbeat.web.id/api/patient/${slug}`).then((response) => {
         setDatas(response.data);
       });
     }

@@ -23,7 +23,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
               <TableHead className="w-16 text-center">HR</TableHead>
               <TableHead className="w-16 text-center">SpO2</TableHead>
               <TableHead className="w-16 text-center">Temp</TableHead>
-              <TableHead className="w-16 text-center">NIBP</TableHead>
+              {/* <TableHead className="w-16 text-center">NIBP</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -70,13 +70,13 @@ const ListMiniPasien = ({ pasien, loading }) => {
                 // Temperature
                 if (item.temperature?.patient_temp <= 35) {
                   colorcellTemp = redColor;
-                } else if (item.temperature?.patient_temp <= 39) {
+                } else if (item.temperature?.patient_temp > 39) {
                   colorcellTemp = orangeColor;
-                } else if (item.temperature?.patient_temp <= 36.1 && item.temperature?.patient_temp >= 38) {
+                } else if (item.temperature?.patient_temp >= 36.1 && item.temperature?.patient_temp <= 38) {
                   colorcellTemp = greenColor;
                 } else if (item.temperature?.patient_temp >= 35.1 && item.temperature?.patient_temp <= 36) {
                   colorcellTemp = yellowColor;
-                } else if (item.temperature?.patient_temp >= 38.1 && item.temperature?.patient_temp < 39) {
+                } else if (item.temperature?.patient_temp >= 38.1 && item.temperature?.patient_temp <= 39) {
                   colorcellTemp = yellowColor;
                 } else {
                   colorcellTemp = codeBlue; // Nilai tidak valid
@@ -90,7 +90,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
                     <TableCell className={`text-center border border-white ${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
                     <TableCell className={`text-center border border-white ${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
                     <TableCell className={`text-center border border-white ${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
-                    <TableCell className={`text-center border border-white ${colorcellNIBP} w-[10px]`}>{item.nibp?.systolic || 0}</TableCell>
+                    {/* <TableCell className={`text-center border border-white ${colorcellNIBP} w-[10px]`}>{item.nibp?.systolic || 0}</TableCell> */}
                   </TableRow>
                 );
               })

@@ -7,10 +7,10 @@ const NotesDetail = ({ title, description }) => {
         <DialogTrigger className="bg-amber-500 h-8 rounded-lg p-1">
           <Eye size={22} />
         </DialogTrigger>
-        <DialogContent className="w-1/2 h-36 px-8 items-center">
+        <DialogContent className="w-1/2 min-h-8 px-8 items-center">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            <DialogDescription dangerouslySetInnerHTML={{ __html: description }} className="font-medium mt-4" />
           </DialogHeader>
         </DialogContent>
       </Dialog>

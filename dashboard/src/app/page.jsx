@@ -6,8 +6,10 @@ import { useEffect, useState } from 'react';
 import ChartGender from './Components/chart/ChartGender';
 import ChartKondisi from './Components/chart/ChartKondisi';
 import { User, SignIn, SignOut, Pulse } from '@phosphor-icons/react/dist/ssr';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 
 const Home = () => {
+  const { axios } = useFlowbeatApi()
   const [pasien, setPasien] = useState([]);
   const [totPasien, setTotPasien] = useState('');
   const [loading, setLoading] = useState(true);
@@ -19,11 +21,9 @@ const Home = () => {
   const [kondisiRingan, setKondisiRingan] = useState('');
   const [kondisiSedang, setKondisiSedang] = useState('');
   const [kondisiBerat, setKondisiBerat] = useState('');
-
-  const fetchData = async () => {
-    axios
-      .get('https://flowbeat.web.id/api/patients')
-      .then((response) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get('/patients').then((response) => {
         setPasien(response.data);
         setTotPasien(response.data.length);
         setLoading(false);
@@ -62,12 +62,11 @@ const Home = () => {
           setKondisiBerat(beratCount);
         }
       })
-      .catch((error) => console.error(error));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+        .catch((error) => {
+        });
+    };
+    fetchData()
+  }, [loading, totPasien, is_notLogin, is_login, kondisiBerat, kondisiSedang, kondisiRingan, genderWanita, genderPria, monitoring, axios])
 
   return (
     <>

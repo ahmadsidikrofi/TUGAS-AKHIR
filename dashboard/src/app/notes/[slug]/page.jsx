@@ -9,25 +9,25 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import DelNotes from '../Components/DelNotes';
 import NotesDetail from '@/app/Components/NotesDetail';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 const DetailNotes = ({ params: { slug } }) => {
+  const { axios } = useFlowbeatApi() 
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState([]);
   const [data, setData] = useState([]);
   const skeleton = <Skeleton className="w-[50px] h-[20px] rounded-full dark:bg-slate-200" />;
-  const fetchData = async () => {
-    await axios.get(`https://flowbeat.web.id/api/notes/${slug}`).then((response) => {
-      console.log(response.data);
-      for (let i = 0; i < response.data.length; i++) {
-        setData(response.data);
-        setLoading(false);
-      }
-    });
-  };
-
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchData = async () => {
+      await axios.get(`/notes/${slug}`).then((response) => {
+        console.log(response.data);
+        for (let i = 0; i < response.data.length; i++) {
+          setData(response.data);
+          setLoading(false);
+        }
+      });
+    };
+    fetchData()
+  }, [slug, axios]);
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-4 ml-2 mt-10 text-3xl font-bold">

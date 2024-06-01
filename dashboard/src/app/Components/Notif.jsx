@@ -4,23 +4,24 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Clock } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 
 const Notif = () => {
+  const { axios } = useFlowbeatApi()
   const [notif, setNotif] = useState([]);
   const [jumlah, setJumlah] = useState(0);
   const [pasien, setPasien] = useState([])
   const [selectedPasien, setSelectedPasien] = useState(null)
   const dataNotif = async () => {
-    // await axios.get('https://flowbeat.web.id/api/notifications').then((res) => {
-    await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
+    await axios.get('/notifications').then((res) => {
+    // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
       setNotif(res.data);
       // setJumlah(res.data.length);
       setJumlah(res.data.flat().length)
     });
   };
   const fetchData = async () => {
-    await axios
-      .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+    await axios.get('/patients')
       .then((response) => {
         setPasien(response?.data);
         setLoading(false);
@@ -30,22 +31,17 @@ const Notif = () => {
   useEffect(() => {
     fetchData()
     dataNotif();
-  }, []);
+  }, [axios]);
 
   const handleSortNotif = (nama_lengkap) => {
     setSelectedPasien(nama_lengkap);
   }
-  // const filteredNotif = selectedPasien
-  //   ? notif.filter(group => group.some(item => item.nama_lengkap === selectedPasien))
-  //       .flat()
-  //       .filter(item => item.nama_lengkap === selectedPasien)
-  //   : notif.flat();
   const filteredNotif = selectedPasien ? notif.filter(group => group.some(item => item.nama_lengkap === selectedPasien)) : notif;
   return (
     <Sheet>
       {jumlah > 12 ? (
-        <SheetTrigger>
-          <Bell className="cursor-pointer pt-1" size={23} />
+        <SheetTrigger className='border p-2 rounded-lg'>
+          <BellRinging className="cursor-pointer pt-1" size={24} />
         </SheetTrigger>
       ) : (
         <SheetTrigger className="border text-center p-2 rounded-lg">
@@ -78,7 +74,7 @@ const Notif = () => {
                         </p>
                       </SheetDescription>
                     );
-                  } else if (item.total_score >= 3 && item.total_score <= 4) {
+                  } else if (item.total_score >= 0 && item.total_score <= 4) {
                     return (
                       <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-yellow-400 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-2xl">{item.nama_lengkap}</p>
