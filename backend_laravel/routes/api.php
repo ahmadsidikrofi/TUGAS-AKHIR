@@ -52,12 +52,10 @@ Route::middleware('api')->group(function () {
     Route::get('/heartrate-patient/{slug}', [EWSController::class, "HeartratePatientDetail"]);
     Route::get('/oxymeter-patient/{slug}', [EWSController::class, "OxymeterPatientDetail"]);
     Route::get('/temp-patient/{slug}', [EWSController::class, "TempPatientDetail"]);
-    Route::get('/nibp-patient/{slug}', [EWSController::class, "NibpPatientDetail"]);
     // Mobile Chart
     Route::get('/heartrate-patient-mobile', [EWSController::class, "HeartratePatientMobileDetail"]);
     Route::get('/oxymeter-patient-mobile', [EWSController::class, "OxymeterPatientMobileDetail"]);
     Route::get('/temp-patient-mobile', [EWSController::class, "TempPatientMobileDetail"]);
-    Route::get('/systolic-patient-mobile', [EWSController::class, "SystolicPatientMobileDetail"]);
 
     // Notification WEB
     Route::get('/notifications', [EWSController::class, "EWSNotification"]);

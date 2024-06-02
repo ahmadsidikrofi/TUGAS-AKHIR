@@ -19,8 +19,6 @@ class PatientController extends Controller
             $query->orderBy('created_at', 'desc');
         }, 'oxygenSaturation' => function ($query) {
             $query->orderBy('created_at', 'desc');
-        }, 'nibp' => function ($query) {
-            $query->orderBy('created_at', 'desc');
         }, 'temperature' => function ($query) {
             $query->orderBy('created_at', 'desc');
         }])->get();

@@ -18,7 +18,6 @@ class EWSController extends Controller
     {
         $heart_beats = $request->input('hr');
         $blood_oxygen = $request->input('SpO2');
-        $systolic = $request->input('nibp');
         $temp = $request->input('temp');
         $patient_id = $request->input('patient_id');
 
@@ -30,16 +29,13 @@ class EWSController extends Controller
                 $this->StoreHeartrate($patient, $heart_beats);
                 // Oxygen Saturation data
                 $this->StoreOxygenSaturation($patient, $blood_oxygen);
-                // Nibp data
-                $this->StoreNibp($patient, $systolic);
                 // Temperature Data
                 $this->StoreTemp($patient, $temp);
 
                 $heartrateScore = $patient->heartrate()->orderBy('created_at', 'desc')->first()->score;
                 $oxygenScore = $patient->oxygenSaturation()->orderBy('created_at', 'desc')->first()->score;
-                $nibpScore = $patient->nibp()->orderBy('created_at', 'desc')->first()->score;
                 $tempScore = $patient->temperature()->orderBy('created_at', 'desc')->first()->score;
-                $total_score = $heartrateScore + $oxygenScore + $nibpScore + $tempScore;
+                $total_score = $heartrateScore + $oxygenScore + $tempScore;
                 NotificationsModel::create([
                     'patient_id' => $patient_id,
                     'total_score' => $total_score
@@ -101,29 +97,6 @@ class EWSController extends Controller
         }
     }
 
-    public function StoreNibp( $patient, $systolic )
-    {
-        $nibpCount = new NibpModel();
-        $redColor = 3;
-        $yellowColor = 1;
-        $orangeColor = 2;
-        $greenColor = 0;
-
-        $patient->nibp()->create(['systolic' => $systolic]);
-        if ($systolic <= 91 && $systolic <= 100) {
-            $patient->nibp()->where('systolic', $systolic)->update(['score' => $orangeColor]);
-        } else if ($systolic > 100 && $systolic <= 110) {
-            $patient->nibp()->where('systolic', $systolic)->update(['score' => $yellowColor]);
-        } else if ($systolic > 110 && $systolic <= 219) {
-            $patient->nibp()->where('systolic', $systolic)->update(['score' => $greenColor]);
-        } else {
-            $patient->nibp()->where('systolic', $systolic)->update(['score' => $redColor]);
-        }
-        if ($nibpCount->count() > 100) {
-            $nibpCount->orderBy('created_at')->limit(50)->delete();
-        }
-    }
-
     public function StoreTemp( $patient, $temp )
     {
         $tempCount = new TemperatureModel();
@@ -161,12 +134,6 @@ class EWSController extends Controller
         $pasienId = PasienModel::where('slug', $slug)->value('id');
         $spo2 = OxygenSaturationModel::where('patient_id', $pasienId)->get();
         return response()->json($spo2, 200);
-    }
-    public function NibpPatientDetail($slug)
-    {
-        $pasienId = PasienModel::where('slug', $slug)->value('id');
-        $nibp = NibpModel::where('patient_id', $pasienId)->get();
-        return response()->json($nibp, 200);
     }
     public function TempPatientDetail($slug)
     {
@@ -220,28 +187,6 @@ class EWSController extends Controller
         }
     }
 
-    public function SystolicPatientMobileDetail( Request $request )
-    {
-        $pasien = $request->user();
-        if ($pasien) {
-            $nibp = NibpModel::where('patient_id', $pasien->id)->orderBy('created_at', 'desc')
-                ->take(20)
-                ->get()
-                ->toArray();
-            $nibp = array_reverse($nibp);
-            return response()->json([
-                'success' => true,
-                'message' => 'Kamu sedang masa login',
-                'blood_presure' => $nibp,
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kamu tidak berada pada masa login',
-            ], 401);
-        }
-    }
-
     public function TempPatientMobileDetail( Request $request )
     {
         $pasien = $request->user();
@@ -267,9 +212,6 @@ class EWSController extends Controller
     // Notification Perawat
     public function EWSNotification()
     {
-        // $notifications = PasienModel::with(['notifications' => function($query) {
-        //     $query->orderBy('created_at', 'desc');
-        // }])->get();
         $notifications = PasienModel::with(['notifications' => function($query) {
             $query->orderBy('created_at', 'desc');
         }])->get();
@@ -288,6 +230,7 @@ class EWSController extends Controller
 
         return response()->json($dataPasien, 200);
     }
+
     // Notification Pasien
     public function EWSNotificationMobile( Request $request )
     {

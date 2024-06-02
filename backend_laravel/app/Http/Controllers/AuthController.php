@@ -61,15 +61,11 @@ class AuthController extends Controller
             'patient_id' => $pasienBaru->id,
             'blood_oxygen' => '0',
         ]);
-        $nibp = NibpModel::create([
-            'patient_id' => $pasienBaru->id,
-            'systolic' => '0'
-        ]);
         $temp = TemperatureModel::create([
             'patient_id' => $pasienBaru->id,
             'patient_temp' => '0'
         ]);
-        if ($pasienBaru && $heartRate && $oxygenSaturation && $nibp && $temp) {
+        if ($pasienBaru && $heartRate && $oxygenSaturation && $temp) {
             return response()->json([
                 'success' => true,
                 'message' => 'Pasien berhasil didaftarkan',
