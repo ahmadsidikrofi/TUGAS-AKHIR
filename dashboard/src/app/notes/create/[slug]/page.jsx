@@ -5,8 +5,10 @@ import { useRef, useState } from 'react';
 import { ArrowCircleLeft } from '@phosphor-icons/react';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
 const Create = ({ params: { slug } }) => {
   const router = useRouter();
+  const { toast } = useToast();
   const editorRef = useRef(null);
   const [notes, setNotes] = useState({
     title: '',
@@ -26,10 +28,13 @@ const Create = ({ params: { slug } }) => {
       description: cleanDescription,
     };
     await axios
-      .post(`https://flowbeat.web.id/api/notes/${slug}`, payload)
+      .post(`https://flowbeat.web.id/api/note/${slug}`, payload)
       .then((response) => {
         if (response.data.success === true) {
-          alert('Notes Created');
+          toast({
+            title: 'Notes Terhapus',
+            description: 'Notes berhasil Terhapus',
+          });
           router.push(`/notes/${slug}`);
         }
       })

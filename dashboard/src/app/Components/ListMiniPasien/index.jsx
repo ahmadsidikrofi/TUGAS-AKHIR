@@ -23,7 +23,6 @@ const ListMiniPasien = ({ pasien, loading }) => {
               <TableHead className="w-16 text-center">HR</TableHead>
               <TableHead className="w-16 text-center">SpO2</TableHead>
               <TableHead className="w-16 text-center">Temp</TableHead>
-              <TableHead className="w-16 text-center">NIBP</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -34,14 +33,12 @@ const ListMiniPasien = ({ pasien, loading }) => {
                 <TableCell>{skeleton}</TableCell>
                 <TableCell>{skeleton}</TableCell>
                 <TableCell>{skeleton}</TableCell>
-                <TableCell>{skeleton}</TableCell>
               </TableRow>
             ) : (
-              pasien.slice(0, 10).map((item, index) => {
+              pasien.slice(0, 5).map((item, index) => {
                 let colorcellHR = '';
                 let colorcellSpO2 = '';
                 let colorcellTemp = '';
-                let colorcellNIBP = '';
                 // Heart rate
                 if (item.heartrate?.heart_beats <= 40 || item.heartrate?.heart_beats >= 130) {
                   colorcellHR = redColor;
@@ -60,12 +57,14 @@ const ListMiniPasien = ({ pasien, loading }) => {
                 // Oxygen saturation
                 if (item.oxygen_saturation?.blood_oxygen <= 91) {
                   colorcellSpO2 = redColor;
-                } else if (item.oxygen_saturation?.blood_oxygen <= 92 && item.oxygen_saturation?.blood_oxygen <= 93) {
+                } else if (item.oxygen_saturation?.blood_oxygen > 91 && item.oxygen_saturation?.blood_oxygen < 94) {
                   colorcellSpO2 = orangeColor;
                 } else if (item.oxygen_saturation?.blood_oxygen >= 96) {
                   colorcellSpO2 = greenColor;
                 } else if (item.oxygen_saturation?.blood_oxygen >= 94 && item.oxygen_saturation?.blood_oxygen <= 95) {
                   colorcellSpO2 = yellowColor;
+                } else {
+                  colorcellSpO2 = codeBlue;
                 }
                 // Temperature
                 if (item.temperature?.patient_temp <= 35) {
@@ -90,7 +89,6 @@ const ListMiniPasien = ({ pasien, loading }) => {
                     <TableCell className={`text-center border border-white ${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
                     <TableCell className={`text-center border border-white ${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
                     <TableCell className={`text-center border border-white ${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
-                    <TableCell className={`text-center border border-white ${colorcellNIBP} w-[10px]`}>{item.nibp?.systolic || 0}</TableCell>
                   </TableRow>
                 );
               })

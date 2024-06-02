@@ -8,8 +8,7 @@ export default function NewChartJantung({ slug }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const res = await axios.get(`https://flowbeat.web.id/api/heartrate-patient/${slug}`);
-        const res = await axios.get(`http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/heartrate-patient/${slug}`);
+        const res = await axios.get(`https://flowbeat.web.id/api/heartrate-patient/${slug}`);
         const formattedData = res.data.map((item) => ({
           ...item,
           created_at: new Date(item.created_at).toLocaleString(),

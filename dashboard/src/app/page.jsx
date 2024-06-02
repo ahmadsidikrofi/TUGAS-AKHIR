@@ -110,9 +110,6 @@ const Home = () => {
               <h1 className="2xl:text-3xl xl:text-2xl font-bold">{monitoring}</h1>
             </div>
           </div>
-          {/* <ManyPasien title="Jumlah Pasien" totPasien={totPasien} />
-          <ManyPasien title="Pasien Login" is_Login={is_login} />
-          <ManyPasien title="Pasien Logout" not_login={is_notLogin} /> */}
         </div>
         <ListMiniPasien pasien={pasien} loading={loading} />
         <div className="flex gap-10">
