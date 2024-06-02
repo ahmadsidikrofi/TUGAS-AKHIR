@@ -13,6 +13,14 @@ const Notes = () => {
 	const [searchText, setSearchText] = useState('');
 	const navigation = useNavigation();
 
+	const parseHtmlToText = (htmlString) => {
+		return htmlString
+			.replace(/<h1>(.*?)<\/h1>/g, "\n\n$1\n")
+			.replace(/<li>(.*?)<\/li>/g, "• $1\n")
+			.replace(/<\/?[^>]+(>|$)/g, "")
+			.trim()
+	};
+
 	const dataNotes = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
@@ -112,7 +120,7 @@ const Notes = () => {
 										{data.title}</Text>
 									<Text ellipsizeMode='tail' numberOfLines={2}
 										className='font-pregular text-[12px]'>
-										{data.description}</Text>
+										{parseHtmlToText(data.description)}</Text>
 									<Text className="font-pregular text-[9px] text-gray-800 absolute bottom-2 right-3">
 										{new Intl.DateTimeFormat('id-ID', {
 											year: 'numeric',

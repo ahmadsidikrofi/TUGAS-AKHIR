@@ -6,8 +6,17 @@ import { useNavigation } from '@react-navigation/native'
 import icons from '../../constants/icons'
 
 const NotesDetail = ({ route }) => {
+
+	const parseHtmlToText = (htmlString) => {
+		return htmlString
+			.replace(/<h1>(.*?)<\/h1>/g, "\n\n$1\n")
+			.replace(/<li>(.*?)<\/li>/g, "• $1\n")
+			.replace(/<\/?[^>]+(>|$)/g, "")
+			.trim()
+	};
 	const navigation = useNavigation();
 	const { title, description, jam } = route.params
+	const cleanDescription = parseHtmlToText(description)
 	return (
 		<SafeAreaView>
 			<ScrollView>
@@ -16,11 +25,11 @@ const NotesDetail = ({ route }) => {
 						<TouchableOpacity onPress={() => navigation.navigate('Notes')}>
 							<Image source={icons.back} className='w-6 h-6' />
 						</TouchableOpacity>
-						<Text className='text-2xl font-pbold'>Notes</Text>
+						<Text className='text-2xl font-pbold'>Detail Notes</Text>
 					</View>
 					<View className='px-4 py-5 bg-[#ecf0f1] rounded-xl h-[85vh] relative'>
 						<Text className='font-pbold text-2xl mb-2'>{title}</Text>
-						<Text className='font-pregular mb-2'>{description}</Text>
+						<Text className='font-pregular mb-2'>{cleanDescription}</Text>
 						<View className='absolute bottom-4 right-4 bg-white py-2 px-4 rounded-full'>
 							<Text className='text-[11px] font-pbold'>
 								{new Intl.DateTimeFormat('id-ID', {

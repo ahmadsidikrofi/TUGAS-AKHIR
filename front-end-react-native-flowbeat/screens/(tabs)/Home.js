@@ -35,13 +35,6 @@ const Home = () => {
 		}, [])
 	);
 
-	// const onRefresh = useCallback(async () => {
-	// 	setRefreshing(true);
-	// 	await fetchProfile();
-	// 	setRefreshing(false);
-	// }, [fetchProfile]);
-
-
 	return (
 		<SafeAreaView >
 			<View className="w-full min-h-[100vh] px-4 my-6">

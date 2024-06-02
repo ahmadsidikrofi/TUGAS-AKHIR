@@ -58,7 +58,8 @@ const Router = () => {
 	if (isLoading) {
 		return (
 			<SafeAreaView>
-				<View className="flex-1 justify-center items-center">
+				<View className="my-auto mx-auto">
+					<Text className='font-pbold text-2xl'>Memuat aplikasi</Text>
 					<ActivityIndicator color="#ff0" size="large" />
 				</View>
 			</SafeAreaView>

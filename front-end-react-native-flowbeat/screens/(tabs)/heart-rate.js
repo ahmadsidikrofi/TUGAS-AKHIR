@@ -60,7 +60,7 @@ const HeartRate = () => {
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1 justify-center mb-10'>
 			<Image source={icons.love} className='w-8 h-8 mb-2' />
-			<Text className='text-3xl font-pmedium'>{item.heart_beats}</Text>
+			{/* <Text className='text-3xl font-pmedium'>{item.heart_beats}</Text> */}
 			<Text className='font-pregular text-[12px]'>BPM</Text>
 		</View>
 	);
@@ -159,29 +159,29 @@ const HeartRate = () => {
 					/>
 				</View>
 
-				<View className='w-[100%] bg-[#FF6969] rounded-xl p-4'>
-					<Text className='text-sm font-pmedium'>Rata-rata</Text>
-					<View className='flex-row justify-center mt-3'>
-						<Text className='text-3xl font-pmedium mr-1'>{averageHeartRate}</Text>
+				<View className='flex-row gap-1 bg-[#FF6969]'>
+					<View className='justify-center rounded-md p-3 mt-3 '>
+						<Text className='text-sm font-pmedium'>Rata-rata</Text>
+						<Text className='text-3xl font-pmedium mr-1 mt-5'>{averageHeartRate}</Text>
 						<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
 					</View>
-				</View>
-				<View className='flex-row mt-5 justify-between'>
-					<View className='bg-[#FF6969] rounded-xl p-4 w-[48%]'>
+					<View className=' rounded-md p-3'>
 						<Text className='text-sm font-pmedium'>Paling rendah</Text>
-						<View className='flex-row justify-center mt-3'>
+						<View className='mt-3'>
 							<Text className='text-3xl font-pmedium mr-1'>{minHeartRate}</Text>
 							<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
 						</View>
 					</View>
-					<View className='bg-[#FF6969] rounded-xl p-4 w-[48%]'>
+					<View className=' rounded-md p-3'>
 						<Text className='text-sm font-pmedium'>Paling tinggi</Text>
-						<View className='flex-row justify-center mt-3'>
+						<View className='mt-3'>
 							<Text className='text-3xl font-pmedium mr-1'>{maxHeartRate}</Text>
 							<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
 						</View>
 					</View>
 				</View>
+				{/* <View className='flex-row mt-5 justify-between'>
+				</View> */}
 			</View>
 		</SafeAreaView>
 	)
