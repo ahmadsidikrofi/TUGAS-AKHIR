@@ -38,7 +38,7 @@ const DelNotes = ({ id }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => hapusData()}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={hapusData}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
