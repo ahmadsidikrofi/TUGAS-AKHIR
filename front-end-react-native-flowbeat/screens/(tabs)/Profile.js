@@ -110,7 +110,7 @@ const Profile = () => {
 													backgroundColor: '#090C08',
 													textHeaderColor: '#FFA25B',
 													textDefaultColor: '#F6E7C1',
-													selectedTextColor: '#fff',
+													selectedTextColor: '#aeaeae',
 													mainColor: '#F4722B',
 													textSecondaryColor: '#D6C7A1',
 													borderColor: 'rgba(122, 146, 165, 0.1)',
