@@ -15,32 +15,32 @@ const Notif = () => {
   const [pasien, setPasien] = useState([]);
   const [selectedPasien, setSelectedPasien] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dataNotif = async () => {
-    await axios.get('/notifications').then((res) => {
-      // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
-      setNotif(res.data);
-      // setJumlah(res.data.length);
-      setJumlah(res.data.flat().length);
-    });
-  };
-  const handleDropdown = (ewsPatient) => {
-    setDropdownOpen((prevState) => ({
-      ...prevState,
-      [ewsPatient]: !prevState[ewsPatient],
-    }));
-  };
-  const fetchData = async () => {
-    await axios
-      .get('/patients')
-      .then((response) => {
-        setPasien(response?.data);
-        setLoading(false);
-      })
-      .catch((error) => console.log(error));
-  };
+
   useEffect(() => {
-    fetchData();
-    dataNotif();
+    const fetchData = async () => {
+      await axios
+        .get('/patients')
+        .then((response) => {
+          setPasien(response?.data);
+          setLoading(false);
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const dataNotif = async () => {
+      await axios.get('/notifications').then((res) => {
+        // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
+        setNotif(res.data);
+        // setJumlah(res.data.length);
+        setJumlah(res.data.flat().length);
+      });
+    };
+    const handleDropdown = (ewsPatient) => {
+      setDropdownOpen((prevState) => ({
+        ...prevState,
+        [ewsPatient]: !prevState[ewsPatient],
+      }));
+    };
   }, [axios]);
 
   const handleSortNotif = (nama_lengkap) => {
