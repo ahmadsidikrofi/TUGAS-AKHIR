@@ -9,6 +9,7 @@ import images from '../../constants/images';
 
 import LogoutAccount from '../../Components/LogoutAccount';
 import useProfile from '../../Components/useProfile';
+import DropdownGender from '../../Components/Dropdown';
 
 const Profile = () => {
 	const [isProfileUpdated, setIsProfileUpdated] = useState(false);
@@ -108,7 +109,10 @@ const Profile = () => {
 										</View>
 									</View>
 								</Modal>
-								<Text className='font-pregular mb-2 mt-3'>Jenis Kelamin</Text>
+								<View>
+									<Text className='font-pregular mb-2 mt-3'>Jenis Kelamin</Text>
+									<DropdownGender setJenis_kelamin={setJenis_kelamin} jenis_kelamin={jenis_kelamin} />
+								</View>
 
 								<TouchableOpacity
 									className='rounded-[15px] bg-blue-500 w-[120px] mt-3 items-center p-1' onPress={updateProfile}>
