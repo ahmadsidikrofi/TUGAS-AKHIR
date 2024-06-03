@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, RefreshControl, ActivityIndicator } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, ScrollView, Image, TextInput, RefreshControl, ActivityIndicator } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,18 +10,21 @@ import images from '../../constants/images';
 import LogoutAccount from '../../Components/LogoutAccount';
 import useProfile from '../../Components/useProfile';
 import DropdownGender from '../../Components/Dropdown';
+import ReactNativeModernDatepicker from 'react-native-modern-datepicker';
 
 const Profile = () => {
 	const [isProfileUpdated, setIsProfileUpdated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false)
 	const navigation = useNavigation()
+	const [open, setOpen] = useState(false)
+	const [tanggal, setTanggal] = useState('')
 
-	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, setNama_lengkap, setAlamat, setTgl_lahir, fetchProfile } = useProfile()
+	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, setJenis_kelamin, setNama_lengkap, setAlamat, setTgl_lahir, fetchProfile } = useProfile()
 
 	const updateProfile = async (e) => {
 		e.preventDefault()
 		const token = await AsyncStorage.getItem('token')
-		const profilePasien = { nama_lengkap, tgl_lahir }
+		const profilePasien = { nama_lengkap, tgl_lahir, jenis_kelamin }
 		await axios.put(`https://flowbeat.web.id/api/profile`, profilePasien, {
 			headers: { Authorization: `Bearer ${token}` }
 		}).then(() => {
@@ -46,6 +49,10 @@ const Profile = () => {
 			loadData()
 		}, [])
 	)
+
+	const handleOpenModal = () => {
+		setOpen(!open)
+	}
 
 	return (
 		<SafeAreaView>
@@ -77,18 +84,14 @@ const Profile = () => {
 									multiline={true}
 									className='text-md w-full h-14 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
 								/>
-								<Text className='font-pregular mb-2 mt-3'>Tanggal Lahir</Text>
-								<TextInput keyboardType='date' />
-
+								<TouchableOpacity onPress={handleOpenModal} className='font-pregular mb-2 mt-3'><Text>Pilih Kelahiranmu</Text></TouchableOpacity>
+								<Text>{tgl_lahir}</Text>
 								<Modal
 									animationType='slide'
 									transparent={true}
 									visible={open}
 								>
 
-									{/* <View>
-									
-								</View> */}
 									<View className='flex justify-center items-center my-auto p-4  '>
 										<View className='w-full bg-[#090C08]'>
 											<ReactNativeModernDatepicker
