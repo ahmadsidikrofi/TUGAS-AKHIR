@@ -11,7 +11,8 @@ const DelNotes = ({ id }) => {
   const { axios } = useFlowbeatApi();
   const { toast } = useToast();
   // const router = useRouter();
-  const hapusData = async () => {
+  const hapusData = async (e) => {
+    e.preventDefault();
     await axios
       .delete(`/note/${id}`)
       .then((response) => {
@@ -20,7 +21,6 @@ const DelNotes = ({ id }) => {
             title: 'Notes Terhapus',
             description: 'Notes berhasil Terhapus',
           });
-          router.push(`/notes/${slug}`);
         }
       })
       .catch((error) => console.log(error));
@@ -38,7 +38,7 @@ const DelNotes = ({ id }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={hapusData}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={() => hapusData()}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

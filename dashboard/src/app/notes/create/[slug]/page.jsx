@@ -61,7 +61,7 @@ const Create = ({ params: { slug } }) => {
             Description Notes
           </label>
           <Editor
-            apiKey="29beonzzetb88fq33tyhw6q6tghwk5qu44899is5yqtkp0gv"
+            apiKey="o61nnuwogclhd3z601n2k0zh479m9kbnsivauhaxrlu4jco0"
             onInit={(evt, editor) => (editorRef.current = editor)}
             onEditorChange={handleDescription}
             textareaName="description"
