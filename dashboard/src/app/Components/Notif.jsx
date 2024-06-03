@@ -35,12 +35,9 @@ const Notif = () => {
         setJumlah(res.data.flat().length);
       });
     };
-    const handleDropdown = (ewsPatient) => {
-      setDropdownOpen((prevState) => ({
-        ...prevState,
-        [ewsPatient]: !prevState[ewsPatient],
-      }));
-    };
+
+    fetchData();
+    dataNotif();
   }, [axios]);
 
   const handleSortNotif = (nama_lengkap) => {
