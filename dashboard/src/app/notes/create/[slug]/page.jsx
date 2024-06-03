@@ -6,9 +6,11 @@ import { ArrowCircleLeft } from '@phosphor-icons/react';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/navigation';
 import { useFlowbeatApi } from '@/context/ApiProvider';
+import { useToast } from '@/components/ui/use-toast';
 const Create = ({ params: { slug } }) => {
-  const { axios } = useFlowbeatApi()
+  const { axios } = useFlowbeatApi();
   const router = useRouter();
+  const { toast } = useToast();
   const editorRef = useRef(null);
   const [notes, setNotes] = useState({
     title: '',
@@ -30,14 +32,17 @@ const Create = ({ params: { slug } }) => {
       .post(`/note/${slug}`, payload)
       .then((response) => {
         if (response.data.success === true) {
-          alert('Notes Created');
+          toast({
+            title: 'Notes Terhapus',
+            description: 'Notes berhasil Terhapus',
+          });
           router.push(`/notes/${slug}`);
         }
       })
       .catch((error) => console.log(error));
   };
   return (
-    <div className="ml-2 mt-10">
+    <div className="ml-2 mt-10 mb-10">
       <div className="flex items-center gap-5">
         <button onClick={() => router.push(`/notes/${slug}`)}>
           <ArrowCircleLeft size={40} />
@@ -56,7 +61,7 @@ const Create = ({ params: { slug } }) => {
             Description Notes
           </label>
           <Editor
-            apiKey="29beonzzetb88fq33tyhw6q6tghwk5qu44899is5yqtkp0gv"
+            apiKey="o61nnuwogclhd3z601n2k0zh479m9kbnsivauhaxrlu4jco0"
             onInit={(evt, editor) => (editorRef.current = editor)}
             onEditorChange={handleDescription}
             textareaName="description"

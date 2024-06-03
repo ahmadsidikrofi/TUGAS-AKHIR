@@ -85,7 +85,7 @@ const MasterData = () => {
                     <TableCell className="text-center py-10 w-[70px]">{i + 1}</TableCell>
                     <TableCell className="text-center py-10 w-[200px]">{item.nama_lengkap}</TableCell>
                     <TableCell className="text-center py-10 w-[140px]">{item.noHp}</TableCell>
-                    <TableCell className="text-center py-10 justify-center w-[220px] h-[100px]">{item.alamat === null ? '-' : item.alamat}</TableCell>
+                    <TableCell className="text-center py-auto w-[220px] h-[100px]">{item.alamat === null ? <p className="py-6">-</p> : item.alamat}</TableCell>
                     <TableCell className="text-center py-10 w-[150px]">{item.tgl_lahir === null ? '-' : item.tgl_lahir}</TableCell>
                     <TableCell className="w-[100px] py-10 text-center">{item.jenis_kelamin === null ? '-' : item.jenis_kelamin}</TableCell>
                   </TableRow>

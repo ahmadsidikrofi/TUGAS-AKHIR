@@ -1,47 +1,54 @@
+'use client';
+
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Bell, BellRinging } from '@phosphor-icons/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Clock } from '@phosphor-icons/react';
+import { Clock, CaretDown, CaretUp } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { useFlowbeatApi } from '@/context/ApiProvider';
 
 const Notif = () => {
-  const { axios } = useFlowbeatApi()
+  const { axios } = useFlowbeatApi();
   const [notif, setNotif] = useState([]);
   const [jumlah, setJumlah] = useState(0);
-  const [pasien, setPasien] = useState([])
-  const [selectedPasien, setSelectedPasien] = useState(null)
-  const dataNotif = async () => {
-    await axios.get('/notifications').then((res) => {
-    // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
-      setNotif(res.data);
-      // setJumlah(res.data.length);
-      setJumlah(res.data.flat().length)
-    });
-  };
-  const fetchData = async () => {
-    await axios.get('/patients')
-      .then((response) => {
-        setPasien(response?.data);
-        setLoading(false);
-      })
-      .catch((error) => console.log(error));
-  };
+  const [pasien, setPasien] = useState([]);
+  const [selectedPasien, setSelectedPasien] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   useEffect(() => {
-    fetchData()
+    const fetchData = async () => {
+      await axios
+        .get('/patients')
+        .then((response) => {
+          setPasien(response?.data);
+          setLoading(false);
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const dataNotif = async () => {
+      await axios.get('/notifications').then((res) => {
+        // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
+        setNotif(res.data);
+        // setJumlah(res.data.length);
+        setJumlah(res.data.flat().length);
+      });
+    };
+
+    fetchData();
     dataNotif();
   }, [axios]);
 
   const handleSortNotif = (nama_lengkap) => {
     setSelectedPasien(nama_lengkap);
-  }
-  const filteredNotif = selectedPasien ? notif.filter(group => group.some(item => item.nama_lengkap === selectedPasien)) : notif;
+  };
+  const filteredNotif = selectedPasien ? notif.filter((group) => group.some((item) => item.nama_lengkap === selectedPasien)) : notif;
   return (
     <Sheet>
-      {jumlah > 12 ? (
-        <SheetTrigger className='border p-2 rounded-lg'>
-          <BellRinging className="cursor-pointer pt-1" size={24} />
+      {jumlah === 12 ? (
+        <SheetTrigger>
+          <Bell className="cursor-pointer pt-1" size={23} />
         </SheetTrigger>
       ) : (
         <SheetTrigger className="border text-center p-2 rounded-lg">
@@ -51,18 +58,48 @@ const Notif = () => {
       <SheetContent className="overflow-y-scroll">
         <SheetHeader>
           <SheetTitle className="text-2xl my-5">Notifikasi</SheetTitle>
-          <div className="flex gap-3">
-            {pasien.map((item, i) => (
-                <div key={i} className="w-28 border rounded-[15px] font-bold text-lg">
-                  <Button onClick={() => handleSortNotif(item.nama_lengkap)} variant="ghost" className="w-full p-3">{item.nama_lengkap}</Button>
+          <div>
+            <button className="flex gap-3">
+              {dropdownOpen ? (
+                <>
+                  <div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {pasien.map((item, i) => (
+                        <div key={i} className="w-[150px] border rounded-[15px] font-bold text-lg">
+                          <Button onClick={() => handleSortNotif(item.nama_lengkap)} variant="ghost" className="w-[100px] p-3">
+                            {item.nama_lengkap.length > 10 ? item.nama_lengkap.slice(0, 10) + '...' : item.nama_lengkap}
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                    <button className="mt-5" onClick={() => setDropdownOpen(false)}>
+                      <CaretUp className="hover:cursor-pointer hover:text-[#5d87ff]" size={20} />
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col gap-3 mb-2">
+                  <div className="flex gap-3">
+                    {pasien.slice(0, 2).map((item, i) => (
+                      <div key={i} className="w-[150px] border rounded-[15px] font-bold text-lg">
+                        <Button onClick={() => handleSortNotif(item.nama_lengkap)} variant="ghost" className="w-[100px] p-3">
+                          {item.nama_lengkap.length > 10 ? item.nama_lengkap.slice(0, 10) + '...' : item.nama_lengkap}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="mt-3 mx-auto" onClick={() => setDropdownOpen(true)}>
+                    <CaretDown className="hover:cursor-pointer hover:text-[#5d87ff]" size={20} />
+                  </button>
                 </div>
-            ))}
+              )}
+            </button>
           </div>
           <div className="flex flex-col gap-3">
             {filteredNotif.map((group, index) => (
               <div className="flex flex-col gap-3" key={index}>
                 {group.slice(0, 12).map((item, index2) => {
-                  if (item.total_score >= 5 && item.total_score <= 6) {
+                  if (item.total_score >= 5 && item.total_score < 7) {
                     return (
                       <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-orange-500 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-lg">{item.nama_lengkap}</p>
@@ -86,7 +123,7 @@ const Notif = () => {
                         </p>
                       </SheetDescription>
                     );
-                  } else if (item.total_score >= 7 && item.total_score <= 8) {
+                  } else if (item.total_score >= 7 && item.total_score <= 9) {
                     return (
                       <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-red-500 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-2xl">{item.nama_lengkap}</p>
@@ -109,7 +146,7 @@ const Notif = () => {
                           <p className="text-black">{item.created_at}</p>
                         </p>
                       </SheetDescription>
-                    )
+                    );
                   }
                 })}
               </div>

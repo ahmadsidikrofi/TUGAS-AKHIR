@@ -16,7 +16,7 @@ import SearchInput from '../Components/SearchInput';
 import { useFlowbeatApi } from '@/context/ApiProvider';
 
 const Pasien = () => {
-  const { axios } = useFlowbeatApi() 
+  const { axios } = useFlowbeatApi();
   const router = useRouter();
   const [pasien, setPasien] = useState([]);
   const [filteredPasien, setFilteredPasien] = useState([]);
@@ -36,7 +36,8 @@ const Pasien = () => {
 
   const { toast } = useToast();
   const fetchData = async () => {
-    await axios.get('/patients')
+    await axios
+      .get('/patients')
       // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
       .then((response) => {
         setPasien(response?.data);
@@ -62,7 +63,7 @@ const Pasien = () => {
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
     if (typeof window !== 'undefined') {
       axios
-        .put(`/patient/${slug}/profile`, {
+        .put(`https://flowbeat.web.id/api/profile/${slug}`, {
           perawatan: jenisPerawatanBaru,
         })
         .then(() => {
@@ -94,7 +95,7 @@ const Pasien = () => {
   const ubahStatus = async (slug, statusBaru) => {
     if (typeof window !== 'undefined') {
       axios
-        .put(`/patient/${slug}/profile`, {
+        .put(`https://flowbeat.web.id/api/profile/${slug}`, {
           is_active: statusBaru,
         })
         .then(() => {
@@ -265,13 +266,13 @@ const Pasien = () => {
               </TableRow>
             ) : filteredPasien.length > 0 ? (
               filteredPasien.map((item, i) => {
-                const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0) + Number(item.temperature?.score || 0);
+                const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.temperature?.score || 0);
                 let cellColor = codeBlue;
                 if (calcEws >= 1 && calcEws <= 4) {
                   cellColor = yellowColor;
-                } else if (calcEws >= 5 && calcEws <= 6) {
+                } else if (calcEws >= 5 && calcEws < 7) {
                   cellColor = orangeColor;
-                } else if (calcEws >= 7 && calcEws <= 10) {
+                } else if (calcEws >= 7 && calcEws <= 9) {
                   cellColor = redColor;
                 } else {
                   cellColor;
@@ -312,11 +313,11 @@ const Pasien = () => {
               pasien.map((item, i) => {
                 const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0) + Number(item.temperature?.score || 0);
                 let cellColor = codeBlue;
-                if (calcEws >= 1 && calcEws <= 3) {
+                if (calcEws >= 1 && calcEws <= 4) {
                   cellColor = yellowColor;
-                } else if (calcEws >= 4 && calcEws <= 6) {
+                } else if (calcEws >= 5 && calcEws < 7) {
                   cellColor = orangeColor;
-                } else if (calcEws >= 7 && calcEws <= 10) {
+                } else if (calcEws >= 7 && calcEws <= 9) {
                   cellColor = redColor;
                 } else {
                   cellColor;

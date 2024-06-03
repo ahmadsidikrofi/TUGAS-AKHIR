@@ -64,7 +64,6 @@ const Detail = ({ params: { slug } }) => {
         <NewChartJantung slug={datas.slug} />
         <ChartOxygen slug={datas.slug} />
         <ChartSuhu slug={datas.slug} />
-        <ChartNibp slug={datas.slug} />
       </div>
     </div>
   );

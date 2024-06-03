@@ -89,7 +89,7 @@ const TemperatureBody = () => {
 					ListFooterComponent={
 						<>
 							{isLoading ? (
-								<ActivityIndicator size="large" color="##1e88e5" />
+								<ActivityIndicator size="large" color="#fbe285" />
 							) : (
 								<View>
 									<LineChart
@@ -97,12 +97,12 @@ const TemperatureBody = () => {
 										width={Dimensions.get("window").width - 32}
 										height={220}
 										yAxisLabel=""
-										yAxisSuffix=" BPM"
+										yAxisSuffix="o"
 										yAxisInterval={1}
 										chartConfig={{
-											backgroundColor: "#e3f2fd",
-											backgroundGradientFrom: "#bbdefb",
-											backgroundGradientTo: "#90caf9",
+											backgroundColor: "#fbe285",
+											backgroundGradientFrom: "#fbe285",
+											backgroundGradientTo: "#fbe285",
 											decimalPlaces: 0,
 											color: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,  // Warna biru dengan sedikit transparansi
 											labelColor: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,
@@ -112,8 +112,13 @@ const TemperatureBody = () => {
 											propsForDots: {
 												r: "3",
 												strokeWidth: "0",
-												stroke: "#1e88e5"
-											}
+												stroke: "#fff",
+											},
+											propsForVerticalLabels: {
+												fontSize: 10,
+												fill: "#000",
+												rotation: 40,
+											},
 										}}
 										style={{
 											marginVertical: 8,
@@ -126,6 +131,28 @@ const TemperatureBody = () => {
 						</>
 					}
 				/>
+			</View>
+
+			<View className='flex-row gap-1 bg-[#FF6969]'>
+				<View className='justify-center rounded-md p-3 mt-3 '>
+					<Text className='text-sm font-pmedium'>Rata-rata</Text>
+					<Text className='text-3xl font-pmedium mr-1 mt-5'>36.53</Text>
+					<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
+				</View>
+				<View className=' rounded-md p-3'>
+					<Text className='text-sm font-pmedium'>Paling rendah</Text>
+					<View className='mt-3'>
+						<Text className='text-3xl font-pmedium mr-1'>33</Text>
+						<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
+					</View>
+				</View>
+				<View className=' rounded-md p-3'>
+					<Text className='text-sm font-pmedium'>Paling tinggi</Text>
+					<View className='mt-3'>
+						<Text className='text-3xl font-pmedium mr-1'>41.0</Text>
+						<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
+					</View>
+				</View>
 			</View>
 		</SafeAreaView>
 	)

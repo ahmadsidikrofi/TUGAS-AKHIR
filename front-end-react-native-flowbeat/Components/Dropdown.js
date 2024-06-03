@@ -11,6 +11,7 @@ const data = [
 const DropdownGender = ({ setJenis_kelamin, jenis_kelamin }) => {
 	const [value, setValue] = useState(jenis_kelamin);
 	const [isFocus, setIsFocus] = useState(false);
+	const [test, setTest] = useState('')
 
 	useEffect(() => { setValue(jenis_kelamin) }, [jenis_kelamin])
 

@@ -8,10 +8,11 @@ import { useToast } from '@/components/ui/use-toast';
 import { useFlowbeatApi } from '@/context/ApiProvider';
 
 const DelNotes = ({ id }) => {
-  const { axios } = useFlowbeatApi()
+  const { axios } = useFlowbeatApi();
   const { toast } = useToast();
-  const router = useRouter();
-  const hapusData = async () => {
+  // const router = useRouter();
+  const hapusData = async (e) => {
+    e.preventDefault();
     await axios
       .delete(`/note/${id}`)
       .then((response) => {
@@ -20,7 +21,6 @@ const DelNotes = ({ id }) => {
             title: 'Notes Terhapus',
             description: 'Notes berhasil Terhapus',
           });
-          router.push(`/notes`);
         }
       })
       .catch((error) => console.log(error));

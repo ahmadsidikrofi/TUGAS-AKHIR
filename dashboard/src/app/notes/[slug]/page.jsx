@@ -11,7 +11,7 @@ import DelNotes from '../Components/DelNotes';
 import NotesDetail from '@/app/Components/NotesDetail';
 import { useFlowbeatApi } from '@/context/ApiProvider';
 const DetailNotes = ({ params: { slug } }) => {
-  const { axios } = useFlowbeatApi() 
+  const { axios } = useFlowbeatApi();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -26,12 +26,12 @@ const DetailNotes = ({ params: { slug } }) => {
         }
       });
     };
-    fetchData()
+    fetchData();
   }, [slug, axios]);
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-4 ml-2 mt-10 text-3xl font-bold">
-        <button onClick={() => router.back()}>
+        <button onClick={() => router.push(`/notes`)}>
           <ArrowCircleLeft size={40} />
         </button>
         <h1 className="text-[#5d87ff]">Notes Pasien</h1>
@@ -49,32 +49,42 @@ const DetailNotes = ({ params: { slug } }) => {
               <TableHead className="text-center xl:w-[300px]">Nama Title</TableHead>
               <TableHead className="text-center xl:w-[190px]">Created</TableHead>
               <TableHead className="text-center xl:w-[190px]">Update</TableHead>
-              <TableHead className="text-center  xl:w-[125px]">Action</TableHead>
+              <TableHead className="text-center xl:w-[125px]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow className="w-full text-center flex gap-2">
-                <TableCell className="text-center">{skeleton}</TableCell>
-                <TableCell className="text-center ml-36 w-full">{skeleton}</TableCell>
+                <TableCell className="text-center">{}</TableCell>
+                <TableCell className="text-center ml-36 w-skeletonfull">{skeleton}</TableCell>
                 <TableCell className="text-center ml-40 mr-10">{skeleton}</TableCell>
               </TableRow>
-            ) : (
+            ) : data.length > 0 ? (
               data.map((item, index) => (
                 <TableRow className="w-90 flex" key={index}>
                   <TableCell className="text-center xl:w-[80px]">{index + 1}</TableCell>
-                  <TableCell className=" text-center xl:w-[300px]">{item.title}</TableCell>
-                  <TableCell className=" flex xl:w-[190px] text-center">{new Date(item.created_at).toLocaleString()}</TableCell>
-                  <TableCell className=" flex xl:w-[190px] text-center">{new Date(item.updated_at).toLocaleString()}</TableCell>
-                  <TableCell className=" flex gap-2 items-center  text-center">
+                  <TableCell className="text-center xl:w-[300px]">{item.title}</TableCell>
+                  <TableCell className="flex xl:w-[190px] text-center">
+                    {new Date(item.created_at).toLocaleTimeString()},{new Date(item.created_at).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="flex xl:w-[190px] text-center">
+                    {new Date(item.updated_at).toLocaleTimeString()},{new Date(item.updated_at).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="flex gap-2 items-center text-center">
                     <NotesDetail title={item.title} description={item.description} />
                     <Link className="bg-[#5d87ff] h-8 rounded-lg p-1" href={`/notes/${slug}/update/${item.id}`}>
                       <Pencil size={22} />
                     </Link>
-                    <DelNotes id={item.id} />
+                    <DelNotes id={item.id} slug={slug} />
                   </TableCell>
                 </TableRow>
               ))
+            ) : (
+              <TableRow className="w-full text-center flex gap-2">
+                <TableCell className="text-center w-full" colSpan={5}>
+                  No data available
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

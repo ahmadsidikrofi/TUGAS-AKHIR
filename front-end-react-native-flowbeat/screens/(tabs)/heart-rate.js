@@ -183,6 +183,8 @@ const HeartRate = () => {
 						</View>
 					</View>
 				</View>
+				{/* <View className='flex-row mt-5 justify-between'>
+				</View> */}
 			</View>
 		</SafeAreaView>
 	)
