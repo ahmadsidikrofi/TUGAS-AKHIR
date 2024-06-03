@@ -9,29 +9,25 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import DelNotes from '../Components/DelNotes';
 import NotesDetail from '@/app/Components/NotesDetail';
-
+import { useFlowbeatApi } from '@/context/ApiProvider';
 const DetailNotes = ({ params: { slug } }) => {
+  const { axios } = useFlowbeatApi();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const skeleton = <Skeleton className="w-[50px] h-[20px] rounded-full dark:bg-slate-200" />;
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`https://flowbeat.web.id/api/notes/${slug}`);
-      console.log(response.data);
-      setData(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching data', error);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      await axios.get(`/notes/${slug}`).then((response) => {
+        console.log(response.data);
+        for (let i = 0; i < response.data.length; i++) {
+          setData(response.data);
+          setLoading(false);
+        }
+      });
+    };
     fetchData();
-  }, []);
-
+  }, [slug, axios]);
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-4 ml-2 mt-10 text-3xl font-bold">
@@ -59,8 +55,8 @@ const DetailNotes = ({ params: { slug } }) => {
           <TableBody>
             {loading ? (
               <TableRow className="w-full text-center flex gap-2">
-                <TableCell className="text-center">{skeleton}</TableCell>
-                <TableCell className="text-center ml-36 w-full">{skeleton}</TableCell>
+                <TableCell className="text-center">{}</TableCell>
+                <TableCell className="text-center ml-36 w-skeletonfull">{skeleton}</TableCell>
                 <TableCell className="text-center ml-40 mr-10">{skeleton}</TableCell>
               </TableRow>
             ) : data.length > 0 ? (

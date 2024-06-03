@@ -1,108 +1,101 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, RefreshControl } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, RefreshControl, ActivityIndicator } from 'react-native';
+import React, { useCallback, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
 import images from '../../constants/images';
-import icons from '../../constants/icons';
-import { FontAwesome6 } from '@expo/vector-icons';
 
 import LogoutAccount from '../../Components/LogoutAccount';
-import { useProfileData } from '../../Components/ProfileContext';
+import useProfile from '../../Components/useProfile';
 
 const Profile = () => {
 	const [isProfileUpdated, setIsProfileUpdated] = useState(false);
-	const [refresh, onRefresh] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+	const navigation = useNavigation()
 
-	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, setNama_lengkap, setAlamat, setTgl_lahir } = useProfileData()
+	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, setNama_lengkap, setAlamat, setTgl_lahir, fetchProfile } = useProfile()
 
-	const editProfil = async (e) => {
+	const updateProfile = async (e) => {
 		e.preventDefault()
-		const token = await AsyncStorage.getItem('token');
-		const edit = {
-			nama_lengkap,
-			alamat,
-			tgl_lahir,
-			jenis_kelamin,
-		};
-		axios.put('https://flowbeat.web.id/api/profile', edit, {
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		}).then((res) => {
-			alert('Terupdate');
-			setIsProfileUpdated(!isProfileUpdated);
+		const token = await AsyncStorage.getItem('token')
+		const profilePasien = { nama_lengkap, tgl_lahir }
+		await axios.put(`https://flowbeat.web.id/api/profile`, profilePasien, {
+			headers: { Authorization: `Bearer ${token}` }
+		}).then(() => {
+			setIsLoading(true);
+			setTimeout(() => {
+				setIsLoading(false);
+				setIsProfileUpdated(true);
+				alert('Success', 'Profile updated successfully');
+			}, 1000);
 		}).catch((err) => {
-			console.log('Error updating profile:', err);
-		});
-	};
+			alert('Sepertinya kamu gagal ubah data yaa')
+		})
+	}
+
+	useFocusEffect(
+		useCallback(() => {
+			const loadData = async () => {
+				setIsLoading(true)
+				await fetchProfile()
+				setIsLoading(false)
+			}
+			loadData()
+		}, [])
+	)
 
 	return (
 		<SafeAreaView>
-			<ScrollView
-				refreshControl={
-					<RefreshControl refreshing={refresh} />
-				}
-			>
+			<ScrollView>
 				<View className='w-full min-h-[85vh] px-4 my-6'>
 					<Text className='mb-5 font-bold text-xl'>Profile</Text>
 					<View className='justify-center items-center'>
-						{/* <Image source={images.profile} className='w-32 h-32 rounded-full' /> */}
-						<View className="bg-blue-500 w-40 h-10 flex items-center justify-center rounded-full mt-5">
-							<TouchableOpacity className="flex flex-row items-center justify-center" onPress={editProfil}>
-								{/* <Image source={icons.editProfile} className="w-5 h-5 mr-[5]" /> */}
-								<Text className='text-[16px] font-bold'>Edit Profile</Text>
-							</TouchableOpacity>
-						</View>
+						<Image source={{ uri: "https://xsgames.co/randomusers/avatar.php?g=pixel" }} className='w-32 h-32 rounded-full' />
 					</View>
 
-					<View className='mb-5 mt-10'>
-						<Text className='text-md mb-2'>Nama</Text>
-						<View className='flex-row justify-between'>
-							<TextInput
-								value={nama_lengkap}
-								onChangeText={(text) => setNama_lengkap(text)}
-								className='text-md w-[280px] pl-3 py-1 border border-gray-400 rounded-md'
-							/>
-							<TouchableOpacity
-								className='w-10 h-10 bg-black rounded-md items-center justify-center'>
-								<FontAwesome6 name="edit" size={18} color="white" />
-							</TouchableOpacity>
-						</View>
-					</View>
-					<View className='mb-5'>
-						<Text className='text-md mb-2'>Alamat</Text>
-						<View className='flex-row justify-between'>
-							<TextInput
-								value={alamat}
-								onChangeText={(text) => setAlamat(text)}
-								className='text-md w-[280px] pl-3 py-1 border border-gray-400 rounded-md'
-							/>
-							<TouchableOpacity
-								className='w-10 h-10 bg-black rounded-md items-center justify-center'>
-								<FontAwesome6 name="edit" size={18} color="white" />
-							</TouchableOpacity>
-						</View>
-					</View>
-					<View className='mb-5'>
-						<Text className='text-md mb-2'>Tanggal Lahir</Text>
-						<View className='flex-row justify-between'>
-							<TextInput
-								value={tgl_lahir}
-								onChangeText={(text) => setTgl_lahir(text)}
-								className='text-md w-[280px] pl-3 py-1 border border-gray-400 rounded-md'
-							/>
-							<TouchableOpacity
-								className='w-10 h-10 bg-black rounded-md items-center justify-center'>
-								<FontAwesome6 name="edit" size={18} color="white" />
-							</TouchableOpacity>
-						</View>
-					</View>
+					<View className='mb-5 mt-10 border border-slate-400 border-opacity-40 rounded-md'>
+						<View>
+							<View className='border-b border-slate-400 border-opacity-40'>
+								<Text className='font-pmedium p-3'>Informasi Pasien</Text>
+							</View>
+							<View className='p-3'>
+								<Text className='font-pregular mb-2'>Nama</Text>
+								<TextInput
+									value={isLoading ? "Loading..." : nama_lengkap}
+									onChangeText={(text) => setNama_lengkap(text)}
+									className='text-md w-full pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
+								/>
+								<Text className='font-pregular mb-2 mt-3'>Alamat</Text>
 
+								<TextInput
+									value={isLoading ? "Loading..." : alamat}
+									onChangeText={(text) => setAlamat(text)}
+									numberOfLines={4}
+									multiline={true}
+									className='text-md w-full h-14 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
+								/>
+								<Text className='font-pregular mb-2 mt-3'>Tanggal Lahir</Text>
+								<TextInput keyboardType='date' />
+
+								<Text className='font-pregular mb-2 mt-3'>Jenis Kelamin</Text>
+
+								<TouchableOpacity
+									className='rounded-[15px] bg-blue-500 w-[120px] mt-3 items-center p-1' onPress={updateProfile}>
+									{isLoading ? <ActivityIndicator size="medium" color="#fff"/> : (
+										<>
+											<Text className='font-pregular h-8 text-white mt-2'>Perbarui</Text>
+										</>
+									)}
+								</TouchableOpacity>
+							</View>
+						</View>
+					</View>
+					<View>
+						<LogoutAccount />
+					</View>
 				</View>
-
-				<LogoutAccount />
 			</ScrollView>
 		</SafeAreaView>
 	);

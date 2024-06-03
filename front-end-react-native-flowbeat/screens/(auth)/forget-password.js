@@ -1,83 +1,105 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import images from '../../constants/images';
 import icons from '../../constants/icons';
 
+// Fonts
+import PoppinsBold from '../../Components/Fonts/PoppinsBold';
+import PoppinsRegular from '../../Components/Fonts/PoppinsRegular';
+import PoppinsMedium from '../../Components/Fonts/Poppins-Medium';
+import PoppinsThin from '../../Components/Fonts/Poppins-Thin';
+
 const ForgetPassword = () => {
 	const navigation = useNavigation();
-	const [phone, setPhone] = useState('');
+	const [noHp, setPhone] = useState('');
 	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 	const [isPasswordShown, setIsPasswordShown] = useState(false);
 	const [isConfirmPasswordShown, setIsConfirmPasswordShown] = useState(false);
 	const [error, setError] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
-	const handleForgetPassword = async () => {
-		if (!phone || !password) {
-			setError('Nomor Hp dan password harus diisi');
+	const handleForgetPassword = async (e) => {
+		setIsLoading(true);
+		e.preventDefault();
+
+		const payload = {
+			noHp,
+			password,
+		};
+
+		if (!noHp || !password || !confirmPassword) {
+			setError('Semua kolom harus diisi');
+			setIsLoading(false);
 			return;
 		}
 
-		const payload = {
-			noHp: phone,
-			password: password,
-		};
-
-		try {
-			const res = await axios.post('https://flowbeat.web.id/api/forget-password', payload);
-			console.log(res.data);
-			const token = res?.data?.access_token;
-			await AsyncStorage.setItem('token', token);
-			navigate.navigate('SignIn');
-		} catch (error) {
-			setError('Nomor HP atau Password salah');
+		if (password !== confirmPassword) {
+			setError('Password harus sama');
+			setIsLoading(false);
+			return;
 		}
 
-		setIsPasswordShown(false);
-		setIsConfirmPasswordShown(false);
+		try {
+			await axios.post('https://flowbeat.web.id/api/auth/lupa-password', payload);
+			setIsLoading(false);
+			alert('Password anda telah diperbarahui');
+			navigation.navigate('SignIn');
+		} catch (error) {
+			console.error('Terjadi kesalahan:', error);
+			setError('Nomor HP Anda tidak terdaftar');
+			setIsLoading(false);
+		}
 	};
+
+
+
 
 	return (
 		<SafeAreaView>
 			<ScrollView>
-				<View className='w-full min-h-[85vh] px-4 my-6'>
+				<View className="px-4 my-6">
 					<View className='flex-row gap-3'>
-						<View className='pt-2'>
+						<View className='pt-1'>
 							<TouchableOpacity
 								onPress={() => navigation.navigate('SignIn')}>
 								<Image source={icons.back} className='w-6 h-6' />
 							</TouchableOpacity>
 						</View>
 						<View>
-							<Text className='font-bold text-3xl'>Lupa Password</Text>
-							<Text className='text-md text-gray-500'>Silakan isi data dengan benar untuk mereset password Anda</Text>
+							<PoppinsBold><Text className='text-xl'>Lupa Password</Text></PoppinsBold>
+							<PoppinsRegular><Text className='text-md text-gray-500'>Silakan isi data dengan benar untuk mereset password Anda</Text></PoppinsRegular>
 						</View>
 					</View>
 					<View className="flex justify-center items-center">
 						<Image source={images.forgotpassword} className="w-65 h-60" resizeMode='contain' />
 					</View>
-					<Text className='mb-2 mt-3'>Nomor HP</Text>
-					<View className='mb-2 h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
+					<View className='mt-5 mb-2'>
+						<PoppinsRegular><Text>Nomor Handphone</Text></PoppinsRegular>
+					</View>
+					<View className="mb-4">
 						<TextInput
-							className='w-full'
-							placeholder='Masukkan nomor HP Anda'
+							className="h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
+							placeholder="Masukkan nomor HP Anda"
 							onChangeText={(text) => setPhone(text)}
+							keyboardType='numeric'
 						/>
 					</View>
-					<Text className='mb-2 mt-3'>Password</Text>
-					<View className='mb-2 h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row relative'>
-						<TextInput
-							className='w-full'
-							placeholder='Masukkan kata sandi Anda'
+					<View className='mb-2'>
+						<PoppinsRegular><Text className="mb-2">Password baru</Text></PoppinsRegular>
+					</View>
+					<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
+						<TextInput className=' w-full'
+							placeholder='Masukan kata sandi baru Anda'
 							secureTextEntry={!isPasswordShown}
-							onChangeText={(text) => setPassword(text)}
+							onChangeText={(e) => setPassword(e)}
 						/>
 						<TouchableOpacity
-							style={{ position: 'absolute', right: 20, top: 15 }}
+							className='absolute right-[20]'
 							onPress={() => setIsPasswordShown(!isPasswordShown)}>
 							<Image
 								source={isPasswordShown ? icons.eyeHide : icons.eye}
@@ -87,15 +109,17 @@ const ForgetPassword = () => {
 							/>
 						</TouchableOpacity>
 					</View>
-					<Text className='mb-2 mt-3'>Konfirmasi password</Text>
-					<View className='h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row relative'>
-						<TextInput
-							className='w-full'
+					<View className='mb-2'>
+						<PoppinsRegular><Text className="mb-2">Konfirmasi password baru</Text></PoppinsRegular>
+					</View>
+					<View className='mb-3 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
+						<TextInput className=' w-full'
 							placeholder='Konfirmasi kata sandi Anda'
 							secureTextEntry={!isConfirmPasswordShown}
+							onChangeText={(e) => setConfirmPassword(e)}
 						/>
 						<TouchableOpacity
-							style={{ position: 'absolute', right: 20, top: 15 }}
+							className='absolute right-[20]'
 							onPress={() => setIsConfirmPasswordShown(!isConfirmPasswordShown)}>
 							<Image
 								source={isConfirmPasswordShown ? icons.eyeHide : icons.eye}
@@ -105,16 +129,33 @@ const ForgetPassword = () => {
 							/>
 						</TouchableOpacity>
 					</View>
-					{error !== '' && <Text className="text-red-500 mb-2">{error}</Text>}
+
+					<View className='flex-row gap-1 items-center mb-2'>
+						{error !== '' && <Image source={icons.error} className='w-4 h-4' />}
+						{error !== '' && <Text className="text-red-500">{error}</Text>}
+					</View>
 					<TouchableOpacity
-						className='mt-8 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
-						onPress={handleForgetPassword}>
-						<Text className='font-bold text-[18px] text-white'>Perbarui</Text>
+						className="bg-blue-500 rounded-[8px] h-[55px] justify-center items-center mt-3"
+						onPress={handleForgetPassword}
+						disabled={isLoading}
+					>
+						{isLoading ? (
+							<ActivityIndicator color="#ffffff" />
+						) : (
+							<PoppinsBold><Text className="text-lg text-white">Perbarui</Text></PoppinsBold>
+						)}
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
-	)
-}
+	);
+};
 
-export default ForgetPassword
+
+// const styles = StyleSheet.create({
+// 	poppinsBold: {
+// 		fontFamily: 'poppins-Bold'
+// 	}
+// })
+
+export default ForgetPassword;

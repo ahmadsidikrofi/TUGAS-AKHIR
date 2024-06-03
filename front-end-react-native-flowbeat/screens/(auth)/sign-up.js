@@ -6,6 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 
 import icons from '../../constants/icons';
 
+// Fonts
+import PoppinsBold from '../../Components/Fonts/PoppinsBold';
+import PoppinsRegular from '../../Components/Fonts/PoppinsRegular';
+import PoppinsMedium from '../../Components/Fonts/Poppins-Medium';
+import PoppinsThin from '../../Components/Fonts/Poppins-Thin';
+
 const SignUp = () => {
 	const navigation = useNavigation();
 	const [nama, setNama] = useState('');
@@ -43,7 +49,7 @@ const SignUp = () => {
 			password: password,
 		};
 
-		await axios.post('https://flowbeat.web.id/api/signup', payload)
+		await axios.post('https://flowbeat.web.id/api/auth/signup', payload)
 			.then((res) => {
 				setMassage('berhasil masuk ke database');
 				navigation.navigate('SignIn');
@@ -67,10 +73,12 @@ const SignUp = () => {
 		<SafeAreaView>
 			<ScrollView>
 				<View className="w-full min-h-[85vh] px-4 my-6">
-					<Text className='font-bold text-3xl '>Buat akun</Text>
-					<Text className='text-md text-gray-500'>Daftarkan akun anda sebelum melakukan login</Text>
+					<PoppinsBold><Text className='text-xl '>Buat Akun</Text></PoppinsBold>
+					<PoppinsRegular><Text className='text-md text-gray-500'>Daftarkan akun anda sebelum melakukan login</Text></PoppinsRegular>
 					<View className='mt-24'>
-						<Text className='mb-2'>Nama lengkap</Text>
+						<View className='mb-2'>
+							<PoppinsRegular><Text>Nama lengkap</Text></PoppinsRegular>
+						</View>
 						<View className='mb-4 h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput
 								className=' w-full'
@@ -79,7 +87,9 @@ const SignUp = () => {
 							/>
 						</View>
 
-						<Text className='mb-2'>Nomor HP</Text>
+						<View className='mb-2'>
+							<PoppinsRegular><Text>Nomor handphone</Text></PoppinsRegular>
+						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput
 								className=' w-full'
@@ -89,7 +99,9 @@ const SignUp = () => {
 							/>
 						</View>
 
-						<Text className='mb-2'>Password</Text>
+						<View className='mb-2'>
+							<PoppinsRegular><Text>Password</Text></PoppinsRegular>
+						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput className=' w-full'
 								placeholder='Masukan kata sandi Anda'
@@ -107,7 +119,9 @@ const SignUp = () => {
 								/>
 							</TouchableOpacity>
 						</View>
-						<Text className='mb-2'>Konfirmasi password</Text>
+						<View className='mb-2'>
+							<PoppinsRegular><Text>Konfirmasi password</Text></PoppinsRegular>
+						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput className=' w-full'
 								placeholder='Konfirmasi kata sandi Anda'
@@ -136,14 +150,14 @@ const SignUp = () => {
 						<TouchableOpacity
 							className='mt-5 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
 							onPress={handleRegis}>
-							<Text className='font-bold text-[18px] text-white'>Daftar</Text>
+							<PoppinsBold><Text className='font-bold text-lg text-white'>Daftar</Text></PoppinsBold>
 						</TouchableOpacity>
 
 						{/* Tautan untuk login */}
-						<View className="justify-center pt-5 flex-row gap-1">
-							<Text className="text-black-200">Sudah mempunyai akun?</Text>
+						<View className="justify-center pt-5 flex-row gap-x-1">
+							<PoppinsRegular><Text className="text-black-200">Sudah mempunyai akun?</Text></PoppinsRegular>
 							<TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-								<Text className='font-bold text-blue-500'>Masuk</Text>
+								<PoppinsBold><Text className='font-bold text-blue-500'>Masuk</Text></PoppinsBold>
 							</TouchableOpacity>
 						</View>
 					</View>

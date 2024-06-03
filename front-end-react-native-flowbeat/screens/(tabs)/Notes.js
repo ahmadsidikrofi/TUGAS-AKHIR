@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Notes = () => {
 	const [originalDatas, setOriginalDatas] = useState([]); // Menyimpan data asli
 	const [datas, setDatas] = useState([]);
 	const [searchText, setSearchText] = useState('');
+	const navigation = useNavigation();
+
+	const parseHtmlToText = (htmlString) => {
+		return htmlString
+			.replace(/<h1>(.*?)<\/h1>/g, "\n\n$1\n")
+			.replace(/<li>(.*?)<\/li>/g, "• $1\n")
+			.replace(/<\/?[^>]+(>|$)/g, "")
+			.trim()
+	};
 
 	const dataNotes = async () => {
 		try {
@@ -45,23 +57,36 @@ const Notes = () => {
 		setDatas(originalDatas); // Setel kembali ke data asli
 	}
 
+	const handleInfoPress = () => {
+		Alert.alert('Informasi', 'Ini adalah halaman catatan Anda. Anda dapat mencari dan melihat catatan Anda di sini.');
+	}
+
 	return (
 		<SafeAreaView className="flex-1">
 			<ScrollView>
 				<View className="w-full min-h-[85vh] px-4 my-6">
 					<View className="mb-5">
-						<Text className="font-medium text-2xl">Notes</Text>
-						<View style={{ flexDirection: 'row' }}>
-							<TextInput
-								style={{ borderWidth: 1, borderColor: '#000', borderRadius: 5, marginTop: 5, padding: 5, flex: 1 }}
-								placeholder="Search..."
-								value={searchText}
-								onChangeText={text => setSearchText(text)}
-								onSubmitEditing={handleSearch}
-							/>
-							<TouchableOpacity onPress={handleClearSearch} style={{ marginLeft: 10, justifyContent: 'center' }}>
-								<Text style={{ color: 'blue' }}>Clear</Text>
+						<View className='flex-row justify-between'>
+							<Text className="font-pbold text-2xl">Notes</Text>
+							<TouchableOpacity onPress={handleInfoPress}>
+								<MaterialIcons name="info-outline" size={34} color="black" />
 							</TouchableOpacity>
+						</View>
+						<View className='flex-row items-center'>
+							<View className='relative flex-1'>
+								<TextInput
+									className='font-pregular p-3 border-gray-300 rounded-2xl w-full mt-5 bg-gray-200 pr-10'
+									placeholder="Telusuri"
+									value={searchText}
+									onChangeText={text => setSearchText(text)}
+									onSubmitEditing={handleSearch}
+								/>
+								{searchText !== '' && (
+									<TouchableOpacity onPress={handleClearSearch} className='absolute right-3 top-7'>
+										<Ionicons name="close-outline" size={34} color="black" />
+									</TouchableOpacity>
+								)}
+							</View>
 						</View>
 					</View>
 					<View className="flex-row flex-wrap justify-between">
@@ -69,7 +94,17 @@ const Notes = () => {
 							datas.map((data) => (
 								<TouchableOpacity
 									key={data.id}
-									className="bg-blue-200 w-[48%] h-36 mb-4 rounded-xl p-3 shadow-lg relative"
+									title={data.title}
+									description={data.description}
+									jam={data.created_at}
+									onPress={() =>
+										navigation.navigate('NotesDetail', {
+											title: data.title,
+											description: data.description,
+											jam: data.created_at,
+										})
+									}
+									className="bg-[#ecf0f1] w-[48%] h-52 mb-4 rounded-xl p-3 shadow-lg relative"
 									style={{
 										shadowColor: "#000",
 										shadowOffset: {
@@ -81,12 +116,12 @@ const Notes = () => {
 										elevation: 5,
 									}}>
 									<Text ellipsizeMode='tail' numberOfLines={2}
-										className="font-medium mb-1 text-[15px]">
+										className="font-pbold mb-2 text-[15px]">
 										{data.title}</Text>
 									<Text ellipsizeMode='tail' numberOfLines={2}
-										className='text-[12px]'>
-										{data.description}</Text>
-									<Text className="text-[9px] text-gray-800 absolute bottom-2 right-3">
+										className='font-pregular text-[12px]'>
+										{parseHtmlToText(data.description)}</Text>
+									<Text className="font-pregular text-[9px] text-gray-800 absolute bottom-2 right-3">
 										{new Intl.DateTimeFormat('id-ID', {
 											year: 'numeric',
 											month: 'long',

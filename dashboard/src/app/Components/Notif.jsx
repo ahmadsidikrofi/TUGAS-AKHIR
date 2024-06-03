@@ -6,15 +6,18 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Clock, CaretDown, CaretUp } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 
 const Notif = () => {
+  const { axios } = useFlowbeatApi();
   const [notif, setNotif] = useState([]);
   const [jumlah, setJumlah] = useState(0);
   const [pasien, setPasien] = useState([]);
   const [selectedPasien, setSelectedPasien] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dataNotif = async () => {
-    await axios.get('https://flowbeat.web.id/api/notifications').then((res) => {
+    await axios.get('/notifications').then((res) => {
+      // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
       setNotif(res.data);
       // setJumlah(res.data.length);
       setJumlah(res.data.flat().length);
@@ -28,7 +31,7 @@ const Notif = () => {
   };
   const fetchData = async () => {
     await axios
-      .get('https://flowbeat.web.id/api/patients')
+      .get('/patients')
       .then((response) => {
         setPasien(response?.data);
         setLoading(false);
@@ -38,7 +41,7 @@ const Notif = () => {
   useEffect(() => {
     fetchData();
     dataNotif();
-  }, []);
+  }, [axios]);
 
   const handleSortNotif = (nama_lengkap) => {
     setSelectedPasien(nama_lengkap);
@@ -111,7 +114,7 @@ const Notif = () => {
                         </p>
                       </SheetDescription>
                     );
-                  } else if (item.total_score >= 1 && item.total_score <= 4) {
+                  } else if (item.total_score >= 0 && item.total_score <= 4) {
                     return (
                       <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-yellow-400 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-2xl">{item.nama_lengkap}</p>

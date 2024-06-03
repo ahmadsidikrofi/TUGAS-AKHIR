@@ -19,8 +19,6 @@ class PatientController extends Controller
             $query->orderBy('created_at', 'desc');
         }, 'oxygenSaturation' => function ($query) {
             $query->orderBy('created_at', 'desc');
-        }, 'nibp' => function ($query) {
-            $query->orderBy('created_at', 'desc');
         }, 'temperature' => function ($query) {
             $query->orderBy('created_at', 'desc');
         }])->get();
@@ -31,7 +29,7 @@ class PatientController extends Controller
     //     $patients = PasienModel::with('heartrate', 'oxygenSaturation')->orderBy('updated_at', 'desc')->get();
     //     return response()->json($patients, 200);
     // }
-    public function PatientsDataDetail($slug)
+    public function PatientDataDetail($slug)
     {
         $patient = PasienModel::where('slug', $slug)->first();
         return response()->json($patient, 200);

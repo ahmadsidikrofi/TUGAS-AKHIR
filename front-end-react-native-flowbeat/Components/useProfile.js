@@ -9,35 +9,39 @@ const useProfile = () => {
 	const [alamat, setAlamat] = useState('');
 	const [tgl_lahir, setTgl_lahir] = useState('');
 	const [jenis_kelamin, setJenis_kelamin] = useState('');
-	useEffect(() => {
-		const fetchProfile = async () => {
-			const token = await AsyncStorage.getItem('token');
-			if (token) {
-				const config = {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				};
-				try {
-					const res = await axios.get('https://flowbeat.web.id/api/profile', config);
-					const data = res.data.pasien_data;
-					setDatas(data);
-					setNama_lengkap(data.nama_lengkap);
-					setAlamat(data.alamat);
-					setTgl_lahir(data.tgl_lahir);
-					setJenis_kelamin(data.jenis_kelamin);
-					console.log(res.data);
-				} catch (err) {
-					console.error(err);
-				}
+	const [noHp, setNoHp] = useState('')
+	const [perawatan, setJenisPerawatan] = useState('')
+	const fetchProfile = async () => {
+		const token = await AsyncStorage.getItem('token');
+		if (token) {
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+			try {
+				const res = await axios.get('https://flowbeat.web.id/api/profile', config);
+				const data = res.data.pasien_data;
+				setDatas(data);
+				setNama_lengkap(data.nama_lengkap);
+				setAlamat(data.alamat);
+				setTgl_lahir(data.tgl_lahir);
+				setNoHp(data.noHp)
+				setJenis_kelamin(data.jenis_kelamin)
+				setJenisPerawatan(data.perawatan)
+			} catch (err) {
+				console.error(err);
 			}
-		};
-
+		}
+	};
+	useEffect(() => {
 		fetchProfile();
 	}, []);
+
 	return {
-		nama_lengkap, alamat, tgl_lahir, jenis_kelamin, datas,
+		nama_lengkap, alamat, tgl_lahir, jenis_kelamin, datas, noHp, perawatan,
 		setNama_lengkap, setAlamat, setTgl_lahir, setJenis_kelamin,
+		fetchProfile
 	}
 }
 

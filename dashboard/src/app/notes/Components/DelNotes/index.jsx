@@ -5,13 +5,15 @@ import axios from 'axios';
 import { Trash } from '@phosphor-icons/react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/use-toast';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 
-const DelNotes = ({ id, slug }) => {
+const DelNotes = ({ id }) => {
+  const { axios } = useFlowbeatApi();
   const { toast } = useToast();
   // const router = useRouter();
   const hapusData = async () => {
     await axios
-      .delete(`https://flowbeat.web.id/api/note/${id}`)
+      .delete(`/note/${id}`)
       .then((response) => {
         if (response.data.success === true) {
           toast({

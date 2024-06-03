@@ -5,8 +5,10 @@ import { useRef, useState } from 'react';
 import { ArrowCircleLeft } from '@phosphor-icons/react';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRouter } from 'next/navigation';
+import { useFlowbeatApi } from '@/context/ApiProvider';
 import { useToast } from '@/components/ui/use-toast';
 const Create = ({ params: { slug } }) => {
+  const { axios } = useFlowbeatApi();
   const router = useRouter();
   const { toast } = useToast();
   const editorRef = useRef(null);
@@ -21,14 +23,13 @@ const Create = ({ params: { slug } }) => {
     setNotes({ ...notes, title: e.target.value });
   };
   const createData = async (e) => {
-    const cleanDescription = notes.description.replace(/(<([^>]+)>)/gi, '');
     e.preventDefault();
     const payload = {
       title: notes.title,
-      description: cleanDescription,
+      description: notes.description,
     };
     await axios
-      .post(`https://flowbeat.web.id/api/note/${slug}`, payload)
+      .post(`/note/${slug}`, payload)
       .then((response) => {
         if (response.data.success === true) {
           toast({
@@ -41,7 +42,7 @@ const Create = ({ params: { slug } }) => {
       .catch((error) => console.log(error));
   };
   return (
-    <div className="ml-2 mt-10">
+    <div className="ml-2 mt-10 mb-10">
       <div className="flex items-center gap-5">
         <button onClick={() => router.push(`/notes/${slug}`)}>
           <ArrowCircleLeft size={40} />
@@ -69,9 +70,9 @@ const Create = ({ params: { slug } }) => {
               height: 300,
               width: 700,
               menubar: true,
-              plugins: ['advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'],
+              plugins: ['advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount', 'bullish'],
               toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
-              content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+              content_style: 'body { font-family:Poppins,Arial,sans-serif; font-size:14px }',
             }}
           />
         </div>

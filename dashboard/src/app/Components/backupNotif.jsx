@@ -18,15 +18,16 @@ const BackupNotif = () => {
   const [jumlah, setJumlah] = useState(0);
   const [pasien, setPasien] = useState([])
   const dataNotif = async () => {
-    // await axios.get('https://flowbeat.web.id/api/notifications').then((res) => {
-    await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
+    await axios.get('https://flowbeat.web.id/api/notifications').then((res) => {
+    // await axios.get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/notifications').then((res) => {
       setNotif(res.data);
       setJumlah(res.data.length);
     });
   };
   const fetchData = async () => {
     await axios
-      .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+      // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+      .get('https://flowbeat.web.id/api/notifications')
       .then((response) => {
         setPasien(response?.data);
         setLoading(false);

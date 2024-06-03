@@ -13,6 +13,7 @@ export default function NewChartJantung({ slug }) {
           ...item,
           created_at: new Date(item.created_at).toLocaleString(),
         }));
+        ``;
         setData(formattedData);
       } catch (error) {
         console.error('Error fetching data:', error);

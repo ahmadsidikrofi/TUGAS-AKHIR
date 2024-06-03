@@ -1,5 +1,4 @@
 'use client';
-import axios from 'axios';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -69,13 +68,13 @@ const ListMiniPasien = ({ pasien, loading }) => {
                 // Temperature
                 if (item.temperature?.patient_temp <= 35) {
                   colorcellTemp = redColor;
-                } else if (item.temperature?.patient_temp <= 39) {
+                } else if (item.temperature?.patient_temp > 39) {
                   colorcellTemp = orangeColor;
-                } else if (item.temperature?.patient_temp <= 36.1 && item.temperature?.patient_temp >= 38) {
+                } else if (item.temperature?.patient_temp >= 36.1 && item.temperature?.patient_temp <= 38) {
                   colorcellTemp = greenColor;
                 } else if (item.temperature?.patient_temp >= 35.1 && item.temperature?.patient_temp <= 36) {
                   colorcellTemp = yellowColor;
-                } else if (item.temperature?.patient_temp >= 38.1 && item.temperature?.patient_temp < 39) {
+                } else if (item.temperature?.patient_temp >= 38.1 && item.temperature?.patient_temp <= 39) {
                   colorcellTemp = yellowColor;
                 } else {
                   colorcellTemp = codeBlue; // Nilai tidak valid

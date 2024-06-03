@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 
@@ -10,65 +10,68 @@ import LatestHeart from '../../Components/LatestHeart';
 import LatestTemperature from '../../Components/LatestTemperature';
 
 import images from '../../constants/images';
-import useProfile from '../../Components/useProfile';
-import { useProfileData } from '../../Components/ProfileContext';
+// import { useProfileData } from '../../Components/ProfileContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import useProfile from "../../Components/useProfile"
+import { useCallback, useEffect, useState } from 'react';
+
 
 
 const Home = () => {
 	const navigation = useNavigation();
-	const { nama_lengkap } = useProfileData()
-	const [token, setToken] = useState(null)
+	const { nama_lengkap, fetchProfile } = useProfile()
 	const [loading, setLoading] = useState(true)
-	useEffect(() => {
-		const checkToken = async () => {
-			const checkToken = async () => {
-				const storedToken = await AsyncStorage.getItem('token');
-				if (!storedToken) {
-					navigation.navigate('BeforeLogin');
-				} else {
-					setToken(storedToken);
-				}
+	const [refreshing, setRefreshing] = useState(false);
+
+	useFocusEffect(
+		useCallback(() => {
+			const loadData = async () => {
+				setLoading(true);
+				await fetchProfile();
 				setLoading(false);
 			};
-		}
 
-		checkToken()
-	}, [navigation])
+			loadData();
+		}, [])
+	);
 
 	return (
-		<SafeAreaView>
-			<View className="w-full min-h-[85vh] px-4 my-6">
+		<SafeAreaView >
+			<View className="w-full min-h-[100vh] px-4 my-6">
 				<View className="flex-row items-center justify-between mb-10 mt-4">
 					<View className="flex-row items-center">
-						{/* <Image source={images.profile} resizeMode='contain' className="w-[60] h-[60] rounded-full" /> */}
+						<Image source={images.profile} resizeMode='contain' className="w-16 h-16 rounded-full" />
 						<View className="ml-4">
-							<Text className="text-2xl text-black">Halo, {nama_lengkap}</Text>
-							<Text className="text-gray-400">Have a good day</Text>
+							{loading ? (
+								<ActivityIndicator size="large" color="#bce7f0" />
+							) : (
+								<>
+									<Text className="text-lg text-black font-pmedium">Halo, {nama_lengkap}!</Text>
+								</>
+							)}
 						</View>
 					</View>
+
 					<View>
 						<TouchableOpacity
+							className='bg-gray-200 w-16 h-16 justify-center items-center rounded-full'
 							onPress={() => navigation.navigate('Notification')}>
 							<View >
-								<Ionicons name="notifications" size={28} color="#FFC94A" />
+								<Ionicons name="notifications-outline" size={28} color="black" />
 							</View>
 						</TouchableOpacity>
 					</View>
+				</View>
+				<View>
+					<Text className='font-pmedium text-2xl ml-3'>Flowbeat</Text>
 				</View>
 				<View className='mt-5'>
 					<View className='flex flex-row justify-between'>
 
 						<LatestHeart />
-
-						<LatestOxygen />
-
 					</View>
 					<View className='flex flex-row justify-between mt-3 '>
-
-						<LatestSystolic />
-
+						<LatestOxygen />
 						<LatestTemperature />
 					</View>
 				</View>

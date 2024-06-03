@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
 
 import images from '../constants/images'
+import { MaterialIcons } from '@expo/vector-icons';
 
 const LatestOxygen = () => {
 	const navigation = useNavigation();
@@ -33,8 +34,8 @@ const LatestOxygen = () => {
 
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1'>
-			<Text className='text-3xl font-medium'>{item.blood_oxygen}</Text>
-			<Text className='font-light text-[12px]'>%</Text>
+			<Text className='text-4xl font-pmedium'>{item.blood_oxygen}</Text>
+			<Text className='font-preguler text-[18px]'>%</Text>
 		</View>
 	)
 
@@ -52,12 +53,15 @@ const LatestOxygen = () => {
 					shadowRadius: 6.27,
 					elevation: 10,
 				}}
-				className='w-44 h-60 shadow-2xl bg-white rounded-[25px] p-5'
+				className='w-44 h-60 shadow-2xl bg-[#bce7f0] rounded-[40px] p-5'
 			>
-				<Text className='text-md font-medium'>Saturasi Oksigen</Text>
-				<Image source={images.oksigen}
+				{/* <Image source={images.oksigen}
 					className='w-32 h-32'
-				/>
+				/> */}
+				<View className='bg-white rounded-full w-16 h-16 items-center justify-center mb-9'>
+					<MaterialIcons name="air" size={35} color="black" />
+				</View>
+				<Text className='text-sm font-pmedium my-3'>Oksigen Tubuh</Text>
 				<FlatList
 					data={datas}
 					renderItem={renderItem}
