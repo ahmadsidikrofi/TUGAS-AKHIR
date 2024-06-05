@@ -24,7 +24,7 @@ const Profile = () => {
 	const updateProfile = async (e) => {
 		e.preventDefault()
 		const token = await AsyncStorage.getItem('token')
-		const profilePasien = { nama_lengkap, tgl_lahir, jenis_kelamin }
+		const profilePasien = { nama_lengkap, tgl_lahir, jenis_kelamin, alamat }
 		await axios.put(`https://flowbeat.web.id/api/profile`, profilePasien, {
 			headers: { Authorization: `Bearer ${token}` }
 		}).then(() => {
@@ -87,11 +87,11 @@ const Profile = () => {
 								animationType='slide'
 								transparent={true}
 								visible={open}
-								onRequestClose={() => setOpen(false)} // Menutup modal saat tombol kembali ditekan (hanya untuk Android)
+								onRequestClose={() => setOpen(false)}
 							>
 								<TouchableOpacity
 									style={{ flex: 1 }}
-									onPress={() => setOpen(false)} // Menutup modal saat area luar modal diklik
+									onPress={() => setOpen(false)}
 								>
 									<View className='flex justify-center items-center my-auto p-4'>
 										<View className='w-full bg-blue-500 rounded-lg p-4'>
@@ -127,10 +127,18 @@ const Profile = () => {
 					<TextInput
 						value={isLoading ? "Loading..." : alamat}
 						onChangeText={(text) => setAlamat(text)}
-						numberOfLines={4}
 						multiline={true}
-						className='text-md w-full h-20 pl-3 py-1 border border-gray-400 rounded-md focus:border-blue-500'
+						numberOfLines={4}
+						className=' border-[#a7a6a6] rounded-md focus:border-blue-500'
+						style={{
+							height: 100,
+							textAlignVertical: 'top',
+							borderWidth: 1,
+							paddingHorizontal: 12,
+							paddingVertical: 8,
+						}}
 					/>
+
 
 					<View className='mt-6'>
 						<TouchableOpacity

@@ -22,25 +22,28 @@ const SignUp = () => {
 	const [isPasswordShown, setIsPasswordShown] = useState(false);
 	const [isConfirmPasswordShown, setIsConfirmPasswordShown] = useState(false);
 	const [error, setError] = useState('');
-
-
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleRegis = async () => {
+		setIsLoading(true);
+
 		// Validasi input
 		if (!nama || !phone || !password || !confirmPassword) {
 			setError('Semua kolom harus diisi');
+			setIsLoading(false);
 			return;
 		}
 		if (password !== confirmPassword) {
 			setError('Password dan konfirmasi password harus sama');
+			setIsLoading(false);
 			return;
 		}
 		if (!validatePhone(phone)) {
 			setError('Nomor HP tidak valid');
+			setIsLoading(false);
 			return;
 		}
 
-		// Jika validasi sukses, reset pesan error
 		setError('');
 
 		const payload = {
@@ -59,10 +62,12 @@ const SignUp = () => {
 				setMassage('Gagal mendaftar. Silakan coba lagi.');
 			});
 
-		// Setelah berhasil atau gagal mendaftar, reset status show/hide password
+
 		setIsPasswordShown(false);
 		setIsConfirmPasswordShown(false);
+		setIsLoading(false);
 	}
+
 
 	const validatePhone = (phone) => {
 		const re = /^\d{11,12}$/; // Validasi untuk 11-12 digit angka
@@ -73,26 +78,26 @@ const SignUp = () => {
 		<SafeAreaView>
 			<ScrollView>
 				<View className="w-full min-h-[85vh] px-4 my-6">
-					<PoppinsBold><Text className='text-xl '>Buat Akun</Text></PoppinsBold>
-					<PoppinsRegular><Text className='text-md text-gray-500'>Daftarkan akun anda sebelum melakukan login</Text></PoppinsRegular>
+					<Text className='text-xl font-pbold'>Buat Akun</Text>
+					<Text className='text-md text-gray-500 font-pregular'>Daftarkan akun anda sebelum melakukan login</Text>
 					<View className='mt-24'>
 						<View className='mb-2'>
-							<PoppinsRegular><Text>Nama lengkap</Text></PoppinsRegular>
+							<Text className='font-pregular'>Nama lengkap</Text>
 						</View>
 						<View className='mb-4 h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput
-								className=' w-full'
+								className=' w-full font-pregular'
 								placeholder='Masukan nama lengkap Anda'
 								onChangeText={(e) => setNama(e)}
 							/>
 						</View>
 
 						<View className='mb-2'>
-							<PoppinsRegular><Text>Nomor handphone</Text></PoppinsRegular>
+							<Text className='font-pregular'>Nomor handphone</Text>
 						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput
-								className=' w-full'
+								className=' w-full font-pregular'
 								placeholder='Masukan nomor HP Anda'
 								onChangeText={(e) => setPhone(e)}
 								keyboardType='numeric'
@@ -100,10 +105,10 @@ const SignUp = () => {
 						</View>
 
 						<View className='mb-2'>
-							<PoppinsRegular><Text>Password</Text></PoppinsRegular>
+							<Text className='font-pregular'>Password</Text>
 						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
-							<TextInput className=' w-full'
+							<TextInput className=' w-full font-pregular'
 								placeholder='Masukan kata sandi Anda'
 								secureTextEntry={!isPasswordShown}
 								onChangeText={(e) => setPassword(e)}
@@ -120,10 +125,10 @@ const SignUp = () => {
 							</TouchableOpacity>
 						</View>
 						<View className='mb-2'>
-							<PoppinsRegular><Text>Konfirmasi password</Text></PoppinsRegular>
+							<Text className='font-pregular'>Konfirmasi password</Text>
 						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
-							<TextInput className=' w-full'
+							<TextInput className='font-pregular w-full'
 								placeholder='Konfirmasi kata sandi Anda'
 								secureTextEntry={!isConfirmPasswordShown}
 								onChangeText={(e) => setConfirmPassword(e)}
@@ -143,19 +148,24 @@ const SignUp = () => {
 						{/* Pesan error */}
 						<View className='flex-row gap-1 items-center'>
 							{error !== '' && <Image source={icons.error} className='w-4 h-4' />}
-							{error !== '' && <Text className='text-red-500'>{error}</Text>}
+							{error !== '' && <Text className='text-red-500 font-pregular'>{error}</Text>}
 						</View>
 
 						{/* Tombol Daftar */}
-						<TouchableOpacity
-							className='mt-5 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
-							onPress={handleRegis}>
-							<PoppinsBold><Text className='font-bold text-lg text-white'>Daftar</Text></PoppinsBold>
-						</TouchableOpacity>
+						{isLoading ? (
+							<ActivityIndicator size="large" color="#0000ff" />
+						) : (
+							<TouchableOpacity
+								className='mt-5 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
+								onPress={handleRegis}>
+								<PoppinsBold><Text className='font-bold text-lg text-white'>Daftar</Text></PoppinsBold>
+							</TouchableOpacity>
+						)}
+
 
 						{/* Tautan untuk login */}
 						<View className="justify-center pt-5 flex-row gap-x-1">
-							<PoppinsRegular><Text className="text-black-200">Sudah mempunyai akun?</Text></PoppinsRegular>
+							<Text className="text-black-200">Sudah mempunyai akun?</Text>
 							<TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
 								<PoppinsBold><Text className='font-bold text-blue-500'>Masuk</Text></PoppinsBold>
 							</TouchableOpacity>

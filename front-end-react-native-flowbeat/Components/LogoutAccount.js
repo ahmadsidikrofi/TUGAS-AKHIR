@@ -41,7 +41,7 @@ const LogoutAccount = () => {
 			className='flex-row items-center bg-white w-full p-3 rounded-md mt-2 h-[50px]'
 			onPress={handleLogout}>
 			<AntDesign name="logout" size={24} color="red" />
-			<Text className='font-pmedium text-rose-600 mx-5'>Keluar</Text>
+			<Text className='font-pbold text-rose-600 mx-5'>Keluar</Text>
 		</TouchableOpacity>
 	);
 };

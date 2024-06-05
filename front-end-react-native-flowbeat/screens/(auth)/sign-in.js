@@ -12,8 +12,6 @@ import images from '../../constants/images';
 // Font
 import PoppinsBold from '../../Components/Fonts/PoppinsBold';
 import PoppinsRegular from '../../Components/Fonts/PoppinsRegular';
-import PoppinsMedium from '../../Components/Fonts/Poppins-Medium';
-import PoppinsThin from '../../Components/Fonts/Poppins-Thin';
 
 const SignIn = () => {
 	const navigation = useNavigation();
@@ -64,8 +62,8 @@ const SignIn = () => {
 		<SafeAreaView>
 			<ScrollView>
 				<View className="px-4 my-6">
-					<PoppinsBold><Text className="text-xl">Masuk</Text></PoppinsBold>
-					<PoppinsRegular><Text className='text-gray-500'>Masuk dengan akun yang telah terdaftar</Text></PoppinsRegular>
+					<PoppinsBold><Text className="text-lg">Selamat Datang</Text></PoppinsBold>
+					<Text className='text-gray-400 font-pregular'>Silahkan Login Menggunakan akun yang sudah terdaftar</Text>
 					<View className="flex justify-center items-center">
 						<Image
 							source={images.heartImg}
@@ -74,23 +72,23 @@ const SignIn = () => {
 						/>
 					</View>
 					<View className='mt-5 mb-2'>
-						<PoppinsRegular><Text>Nomor Handphone</Text></PoppinsRegular>
+						<Text className='font-pregular'>Nomor handphone</Text>
 					</View>
 					<View className="mb-4">
 						<TextInput
 							className="font-pregular h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
-							placeholder="Masukkan nomor HP Anda"
+							placeholder="Masukkan nomor handphone"
 							onChangeText={(text) => setPhone(text)}
 							keyboardType='numeric'
 						/>
 					</View>
 					<View className='mb-2'>
-						<PoppinsRegular><Text className="mb-2">Password</Text></PoppinsRegular>
+						<Text className="font-pregular">Password</Text>
 					</View>
 					<View className="flex-row items-center border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500">
 						<TextInput
 							className="font-pregular flex-1 h-[55px] px-4"
-							placeholder="Masukkan kata sandi Anda"
+							placeholder="Masukkan kata sandi"
 							secureTextEntry={!isPasswordShown}
 							onChangeText={(text) => setPassword(text)}
 						/>
@@ -112,7 +110,7 @@ const SignIn = () => {
 					<TouchableOpacity
 						className='mb-5 mt-3 flex flex-row justify-end'
 						onPress={() => navigation.navigate('ForgetPassword')} >
-						<PoppinsRegular><Text className="text-rose-400">Lupa password?</Text></PoppinsRegular>
+						<Text className="text-rose-400 font-pmedium">Lupa password?</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
@@ -123,13 +121,13 @@ const SignIn = () => {
 						{isLoading ? (
 							<ActivityIndicator color="#ffffff" />
 						) : (
-							<PoppinsBold><Text className='text-lg text-white'>Masuk</Text></PoppinsBold>
+							<Text className='text-lg text-white font-pbold'>Masuk</Text>
 						)}
 					</TouchableOpacity>
 					<View className="flex-row justify-center gap-x-1">
-						<PoppinsRegular><Text>Belum mempunyai akun?</Text></PoppinsRegular>
+						<Text className='font-pregular'>Belum mempunyai akun?</Text>
 						<TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-							<PoppinsBold><Text className="font-bold text-blue-500">Daftar</Text></PoppinsBold>
+							<Text className="font-pbold text-blue-500">Daftar</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
