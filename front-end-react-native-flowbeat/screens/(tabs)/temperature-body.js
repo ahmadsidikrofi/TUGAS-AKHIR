@@ -59,7 +59,7 @@ const TemperatureBody = () => {
 
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1 justify-center mb-10'>
-			<Image source={icons.love} className='w-8 h-8 mb-2' />
+			<Image source={icons.temperature} className='w-8 h-8 mb-1' />
 			<Text className='text-3xl font-medium'>{item.patient_temp}</Text>
 			<Text className='font-light text-[12px]'>°C</Text>
 		</View>
@@ -122,28 +122,31 @@ const TemperatureBody = () => {
 											yAxisSuffix="°C"
 											yAxisInterval={1}
 											chartConfig={{
-												backgroundColor: "#ffe6e6",
-												backgroundGradientFrom: "#fbe285",
-												backgroundGradientTo: "#fbe285",
+												backgroundColor: "#ffecb3", // Warna latar belakang lebih muda
+												backgroundGradientFrom: "#fff9e6", // Warna gradasi awal lebih muda
+												backgroundGradientTo: "#ffecb3", // Warna gradasi akhir lebih muda
 												decimalPlaces: 2,
-												color: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,
-												labelColor: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,
+												color: (opacity = 0.6) => `rgba(255, 165, 0, ${opacity})`,
+												labelColor: (opacity = 0.6) => `rgba(255, 165, 0, ${opacity})`,
 												style: {
 													borderRadius: 16
 												},
 												propsForDots: {
 													r: "3",
 													strokeWidth: "0",
-													stroke: "#fbe285"
+													stroke: "#FFA500"
 												},
 												propsForHorizontalLabels: {
 													fontSize: 10,
-													fill: "#FF6969"
+													fill: "#FFA500"
 												},
 												propsForVerticalLabels: {
 													fontSize: 10,
-													fill: "#FF6969",
+													fill: "#FFA500",
 													rotation: 40,
+												},
+												propsForBackgroundLines: {
+													stroke: "#FFA500", // Warna garis putus-putus oranye
 												},
 											}}
 											style={{

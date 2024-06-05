@@ -27,7 +27,7 @@ const OxygenSaturation = () => {
 			const res = await axios.get('https://flowbeat.web.id/api/oxymeter-patient-mobile', {
 				headers: {
 					Authorization: `Bearer ${token}`
-				} 
+				}
 			});
 			const bloodOxygen = res.data.oxygen;
 			setDatas(bloodOxygen);
@@ -52,7 +52,7 @@ const OxygenSaturation = () => {
 		setMinOxygen(min);
 		setMaxOxygen(max);
 	}
-	
+
 	useEffect(() => {
 		setInterval(() => {
 			Spo2();
@@ -62,6 +62,7 @@ const OxygenSaturation = () => {
 
 	const renderItem = ({ item }) => (
 		<View className='flex-row items-center gap-1 justify-center mb-10'>
+			<Image source={icons.oxygen} className='w-9 h-9 mb-1' />
 			<Text className='text-3xl font-medium'>{item.blood_oxygen}</Text>
 			<Text className='font-light text-[12px]'>%</Text>
 		</View>
@@ -71,11 +72,11 @@ const OxygenSaturation = () => {
 		if (!datas || datas.length === 0) return { labels: [], datasets: [{ data: [] }] };
 		const step = Math.ceil(datas.length / 10);
 		const labels = datas.filter((_, index) => index % step === 0)
-		.map(data => new Intl.DateTimeFormat('id-ID', {
-			hour: 'numeric',
-			minute: 'numeric',
-			second: 'numeric'
-		}).format(new Date(data.created_at)));
+			.map(data => new Intl.DateTimeFormat('id-ID', {
+				hour: 'numeric',
+				minute: 'numeric',
+				second: 'numeric'
+			}).format(new Date(data.created_at)));
 
 		const Spo2 = datas.map(data => parseInt(data.blood_oxygen.slice(0, 10)));
 
@@ -91,7 +92,7 @@ const OxygenSaturation = () => {
 	const chartData = formatDataForChart(datas);
 
 	return (
-		<SafeAreaView className='flex-1'>  
+		<SafeAreaView className='flex-1'>
 			<View className='w-full min-h-[85vh] px-4 my-6'>
 				<View className='flex-row items-center gap-2 mb-10'>
 					<TouchableOpacity onPress={() => navigation.navigate('MainApp')}>
@@ -154,7 +155,7 @@ const OxygenSaturation = () => {
 					<Text className='text-sm font-pmedium'>Rata-rata</Text>
 					<View className='flex-row justify-center mt-3'>
 						<Text className='text-3xl font-pmedium mr-1'>{avgOxygen}</Text>
-						<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
+						<Text className='font-pregular text-[12px] mt-3'>%</Text>
 					</View>
 				</View>
 
@@ -163,14 +164,14 @@ const OxygenSaturation = () => {
 						<Text className='text-sm font-pmedium'>Oksigen Terendah</Text>
 						<View className='flex-row justify-center mt-3'>
 							<Text className='text-3xl font-pmedium mr-1'>{minOxygen}</Text>
-							<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
+							<Text className='font-pregular text-[12px] mt-3'>%</Text>
 						</View>
 					</View>
 					<View className='w-[48%] bg-[#bce7f0] rounded-xl p-4'>
 						<Text className='text-sm font-pmedium'>Oksigen Tertinggi</Text>
 						<View className='flex-row justify-center mt-3'>
 							<Text className='text-3xl font-pmedium mr-1'>{maxOxygen}</Text>
-							<Text className='font-pregular text-[12px] mt-3'>BPM</Text>
+							<Text className='font-pregular text-[12px] mt-3'>%</Text>
 						</View>
 					</View>
 				</View>
