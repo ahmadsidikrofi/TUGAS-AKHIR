@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
 const data = [
 	{ label: 'Pria', value: 'Pria' },
@@ -11,32 +10,27 @@ const data = [
 const DropdownGender = ({ setJenis_kelamin, jenis_kelamin }) => {
 	const [value, setValue] = useState(jenis_kelamin);
 	const [isFocus, setIsFocus] = useState(false);
-	const [test, setTest] = useState('')
+	const [isSaved, setIsSaved] = useState(false); // Langkah 1: State untuk menunjukkan apakah nilai sudah disimpan atau tidak
 
-	useEffect(() => { setValue(jenis_kelamin) }, [jenis_kelamin])
+	useEffect(() => {
+		setValue(jenis_kelamin)
+	}, [jenis_kelamin]);
 
-	const renderLabel = () => {
-		if (value || isFocus) {
-			return (
-				<Text style={[styles.label, isFocus && { color: 'blue' }]}>
-					Mana kelaminmu?
-				</Text>
-			);
+	useEffect(() => {
+		if (isSaved) { // Langkah 3: Setelah nilai disimpan, atur kembali isFocus menjadi false
+			setIsFocus(false);
 		}
-		return null;
-	};
+	}, [isSaved]);
 
 	return (
 		<View style={styles.container}>
-			{renderLabel()}
 			<Dropdown
 				style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
 				placeholderStyle={styles.placeholderStyle}
 				selectedTextStyle={styles.selectedTextStyle}
 				inputSearchStyle={styles.inputSearchStyle}
-				iconStyle={styles.iconStyle}
 				data={data}
-				maxHeight={300}
+				maxHeight={400}
 				labelField="label"
 				valueField="value"
 				placeholder={!isFocus ? 'Pilih kelamin' : '...'}
@@ -46,17 +40,9 @@ const DropdownGender = ({ setJenis_kelamin, jenis_kelamin }) => {
 				onBlur={() => setIsFocus(false)}
 				onChange={item => {
 					setValue(item.value);
-					setJenis_kelamin(item.value)
-					setIsFocus(false);
+					setJenis_kelamin(item.value);
+					setIsSaved(true); // Langkah 2: Setelah nilai dipilih, atur isSaved menjadi true
 				}}
-				renderLeftIcon={() => (
-					<AntDesign
-						style={styles.icon}
-						color={isFocus ? 'blue' : 'black'}
-						name="Safety"
-						size={20}
-					/>
-				)}
 			/>
 		</View>
 	);
@@ -66,40 +52,21 @@ export default DropdownGender;
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: 'white',
-		paddingVertical: 16,
-		paddingHorizontal: 8,
-		borderRadius: 15
+		borderRadius: 13,
+		width: 165,
 	},
 	dropdown: {
 		height: 50,
-		borderColor: 'gray',
-		borderWidth: 0.5,
-		borderRadius: 8,
+		borderColor: '#a7a6a6',
+		borderWidth: 1,
+		borderRadius: 6,
 		paddingHorizontal: 8,
-	},
-	icon: {
-		marginRight: 5,
-	},
-	label: {
-		position: 'absolute',
-		backgroundColor: 'white',
-		borderRadius: 15,
-		left: 22,
-		top: 8,
-		zIndex: 999,
-		paddingHorizontal: 8,
-		fontSize: 14,
 	},
 	placeholderStyle: {
 		fontSize: 16,
 	},
 	selectedTextStyle: {
 		fontSize: 16,
-	},
-	iconStyle: {
-		width: 20,
-		height: 20,
 	},
 	inputSearchStyle: {
 		height: 40,

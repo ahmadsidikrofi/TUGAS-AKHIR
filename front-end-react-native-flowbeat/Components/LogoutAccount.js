@@ -32,13 +32,13 @@ const LogoutAccount = () => {
 				shadowColor: "#000",
 				shadowOffset: {
 					width: 0,
-					height: 5,
+					height: 2, // Ubah ketinggian bayangan menjadi lebih tipis
 				},
-				shadowOpacity: 0.34,
-				shadowRadius: 6.27,
-				elevation: 10,
+				shadowOpacity: 0.2, // Mengurangi opasitas bayangan
+				shadowRadius: 2, // Mengurangi radius bayangan
+				elevation: 2, // Menyesuaikan elevasi (hanya untuk Android)
 			}}
-			className='flex-row items-center bg-white w-full p-3 rounded-md mb-8'
+			className='flex-row items-center bg-white w-full p-3 rounded-md mt-2 h-[50px]'
 			onPress={handleLogout}>
 			<AntDesign name="logout" size={24} color="red" />
 			<Text className='font-pmedium text-rose-600 mx-5'>Keluar</Text>
