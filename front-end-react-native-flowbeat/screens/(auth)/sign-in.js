@@ -19,7 +19,7 @@ const SignIn = () => {
 	const [password, setPassword] = useState('');
 	const [isPasswordShown, setIsPasswordShown] = useState(false);
 	const [error, setError] = useState('');
-	const [isLoading, setIsLoading] = useState(false); // State untuk menentukan apakah proses login sedang berlangsung
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleLogin = async () => {
 		if (!phone || !password) {
@@ -32,7 +32,7 @@ const SignIn = () => {
 			return;
 		}
 
-		setIsLoading(true); // Mengatur isLoading menjadi true saat proses login dimulai
+		setIsLoading(true);
 
 		const payload = {
 			noHp: phone,
