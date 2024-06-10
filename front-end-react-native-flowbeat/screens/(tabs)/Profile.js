@@ -19,7 +19,7 @@ const Profile = () => {
 	const [open, setOpen] = useState(false)
 	const [tanggal, setTanggal] = useState('')
 
-	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, setJenis_kelamin, setNama_lengkap, setAlamat, setTgl_lahir, fetchProfile } = useProfile()
+	const { nama_lengkap, alamat, tgl_lahir, jenis_kelamin, perawatan, noHp, setJenis_kelamin, setNama_lengkap, setAlamat, setTgl_lahir, fetchProfile } = useProfile()
 
 	const updateProfile = async (e) => {
 		e.preventDefault()
@@ -60,7 +60,9 @@ const Profile = () => {
 				<View className='w-full min-h-[85vh] px-4 my-6'>
 					<Text className='mb-7 font-bold text-lg text-center'>Profile</Text>
 					<View className='justify-center items-center'>
-						<Image source={{ uri: "https://xsgames.co/randomusers/avatar.php?g=pixel" }} className='w-32 h-32 rounded-full' />
+						<Image source={{ uri: `https://ui-avatars.com/api/?name=${nama_lengkap}&size=500&background=random` }} className='w-32 h-32 rounded-full' />
+						<Text className='mt-3 font-pmedium'>{noHp}</Text>
+						<Text className='font-pmedium'>{perawatan}</Text>
 					</View>
 					<View className='border-b border-[#a7a6a6] w-full self-center mt-6 mb-3' />
 
@@ -80,8 +82,8 @@ const Profile = () => {
 
 						{/* Tanggal Lahir */}
 						<View>
-							<TouchableOpacity onPress={handleOpenModal} className='mb-2 mt-3'><Text className='font-pregular'>Kelahiran</Text>
-								<Text className='border border-[#a7a6a6] rounded-md h-[50px] w-[165px] text-center pt-3 mt-2'>{tgl_lahir}</Text>
+							<TouchableOpacity onPress={handleOpenModal} className='mb-2 mt-6 w-[155px]'><Text className='font-pregular'>Kelahiran</Text>
+								<Text className='border border-[#a7a6a6] rounded-md text-center px-4 py-[11px] '>{tgl_lahir}</Text>
 							</TouchableOpacity>
 							<Modal
 								animationType='slide'

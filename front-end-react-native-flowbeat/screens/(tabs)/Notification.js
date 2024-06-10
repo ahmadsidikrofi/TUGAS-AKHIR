@@ -27,7 +27,6 @@ const Notification = () => {
 			setDatas(res.data)
 			setFirstLoad(res.data.slice(0, 10))
 		}).catch((err) => {
-			// console.log(err)
 		})
 	}
 
@@ -98,7 +97,7 @@ const Notification = () => {
 													minute: 'numeric'
 												}).format(new Date(data.created_at))}</Text>
 											</View>
-											<Text className='font-pregular'>Assessmen dilakukan oleh perawat senior, maks respon 5 menit dengan eskalasi perawatan monitoring per 4-6 jam</Text>
+											<Text className='font-pregular'>Kondisi anda sedang baik, tetap pertahankan kondisi anda</Text>
 										</View>
 									)
 
@@ -127,7 +126,7 @@ const Notification = () => {
 													minute: 'numeric'
 												}).format(new Date(data.created_at))}</Text>
 											</View>
-											<Text className='font-pregular text-[12px]'>Lakukan eskalasi perawatan dan frekuensi monitoring tiap jam. Pertimbangkan eskalasi perawatan ke unit intensif care edukasi keluarga pasien</Text>
+											<Text className='font-pregular text-[12px]'>Kondisi anda sedang kurang baik, istirahat sejenak untuk memulihkan kondisi anda menjadi lebih baik</Text>
 										</View>
 									)
 								} else if (totalScore >= 7) {
@@ -155,7 +154,7 @@ const Notification = () => {
 													minute: 'numeric'
 												}).format(new Date(data.created_at))}</Text>
 											</View>
-											<Text className='font-pregular text-[12px]'>Respon maksimal 10 menit beri informasi ke DPJP dan edukasi keluarga pasien</Text>
+											<Text className='font-pregular text-[12px]'>Kondisi anda sedang tidak baik, segera istirahat untuk menenangkankan diri anda</Text>
 										</View>
 									)
 								}

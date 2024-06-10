@@ -103,7 +103,7 @@ const HeartRate = () => {
 					<Text className='text-xl font-pmedium'>Detak Jantung</Text>
 				</View>
 
-				{/* <View className='mb-3'>
+				<View className='mb-3'>
 					<FlatList
 						data={lastData}
 						renderItem={renderItem}
@@ -157,7 +157,7 @@ const HeartRate = () => {
 							</>
 						}
 					/>
-				</View> */}
+				</View>
 
 				<View className='w-[100%] bg-[#FF6969] rounded-xl p-4 mb-4'>
 					<Text className='text-sm font-pmedium'>Rata-rata</Text>

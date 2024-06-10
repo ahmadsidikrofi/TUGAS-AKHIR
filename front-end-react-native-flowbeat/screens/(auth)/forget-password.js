@@ -56,9 +56,6 @@ const ForgetPassword = () => {
 		}
 	};
 
-
-
-
 	return (
 		<SafeAreaView>
 			<ScrollView>
@@ -72,7 +69,7 @@ const ForgetPassword = () => {
 						</View>
 						<View>
 							<PoppinsBold><Text className='text-xl'>Lupa Password</Text></PoppinsBold>
-							<PoppinsRegular><Text className='text-md text-gray-500'>Silakan isi data dengan benar untuk mereset password Anda</Text></PoppinsRegular>
+							<PoppinsRegular><Text className='text-md text-gray-500'>Silakan Isi Data dengan Benar untuk Mereset Password Anda</Text></PoppinsRegular>
 						</View>
 					</View>
 					<View className="flex justify-center items-center">
@@ -83,8 +80,8 @@ const ForgetPassword = () => {
 					</View>
 					<View className="mb-4">
 						<TextInput
-							className="h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
-							placeholder="Masukkan nomor HP Anda"
+							className="font-pregular h-[55px] text-[13px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
+							placeholder="Masukkan nomor handphone anda"
 							onChangeText={(text) => setPhone(text)}
 							keyboardType='numeric'
 						/>
@@ -93,8 +90,8 @@ const ForgetPassword = () => {
 						<PoppinsRegular><Text className="mb-2">Password baru</Text></PoppinsRegular>
 					</View>
 					<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
-						<TextInput className=' w-full'
-							placeholder='Masukan kata sandi baru Anda'
+						<TextInput className='font-pregular text-[13px] w-full'
+							placeholder='Masukan kata sandi baru anda'
 							secureTextEntry={!isPasswordShown}
 							onChangeText={(e) => setPassword(e)}
 						/>
@@ -113,8 +110,8 @@ const ForgetPassword = () => {
 						<PoppinsRegular><Text className="mb-2">Konfirmasi password baru</Text></PoppinsRegular>
 					</View>
 					<View className='mb-3 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
-						<TextInput className=' w-full'
-							placeholder='Konfirmasi kata sandi Anda'
+						<TextInput className='font-pregular text-[13px] w-full'
+							placeholder='Konfirmasi kata sandi anda'
 							secureTextEntry={!isConfirmPasswordShown}
 							onChangeText={(e) => setConfirmPassword(e)}
 						/>
@@ -130,9 +127,9 @@ const ForgetPassword = () => {
 						</TouchableOpacity>
 					</View>
 
-					<View className='flex-row gap-1 items-center mb-2'>
+					<View className='flex-row gap-1 items-center'>
 						{error !== '' && <Image source={icons.error} className='w-4 h-4' />}
-						{error !== '' && <Text className="text-red-500">{error}</Text>}
+						{error !== '' && <Text className="text-red-500 font-pregular text-[13px] pt-2">{error}</Text>}
 					</View>
 					<TouchableOpacity
 						className="bg-blue-500 rounded-[8px] h-[55px] justify-center items-center mt-3"
@@ -151,11 +148,5 @@ const ForgetPassword = () => {
 	);
 };
 
-
-// const styles = StyleSheet.create({
-// 	poppinsBold: {
-// 		fontFamily: 'poppins-Bold'
-// 	}
-// })
 
 export default ForgetPassword;

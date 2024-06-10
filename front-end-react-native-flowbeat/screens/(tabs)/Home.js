@@ -35,20 +35,19 @@ const Home = () => {
 		}, [])
 	);
 
+	const getFirstWord = (name) => {
+		return name.split(' ')[0];
+	};
 	return (
 		<SafeAreaView >
 			<View className="w-full min-h-[100vh] px-4 my-6">
 				<View className="flex-row items-center justify-between mb-10 mt-4">
 					<View className="flex-row items-center">
-						<Image source={images.profile} resizeMode='contain' className="w-16 h-16 rounded-full" />
+						<Image source={{ uri: `https://ui-avatars.com/api/?name=${nama_lengkap}&size=500&background=random` }} resizeMode='contain' className="w-16 h-16 rounded-full" />
 						<View className="ml-4">
-							{loading ? (
-								<ActivityIndicator size="large" color="#bce7f0" />
-							) : (
-								<>
-									<Text className="text-lg text-black font-pmedium">Halo, {nama_lengkap}!</Text>
-								</>
-							)}
+							<>
+								<Text className="text-lg text-black font-pmedium">Halo, {nama_lengkap.length > 8 ? nama_lengkap.substring(0, 10) + "..." : nama_lengkap}</Text>
+							</>
 						</View>
 					</View>
 
