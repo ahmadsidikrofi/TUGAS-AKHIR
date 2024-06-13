@@ -72,4 +72,5 @@ Route::middleware('api')->group(function () {
     // Notes Mobile
     Route::get('/notes-mobile', [NotesController::class, "GetNotesMobile"]);
     Route::get('/note-mobile/{id}', [NotesController::class, "GetNotesMobileById"]);
+    Route::put('/reply-note/{id}', [NotesController::class, "ReplyNoteById"]);
 });

@@ -43,7 +43,7 @@ class AuthController extends Controller
         if ($checkPhoneNumber) {
             return response()->json([
                 'success' => false,
-                'message' => 'Email pasien sudah terdaftar'
+                'message' => 'No handphone pasien sudah terdaftar'
             ], 404);
         }
 
@@ -98,7 +98,7 @@ class AuthController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => "Sepertinya ada yang salah dengan email / password kamu"
+                'message' => "Sepertinya ada yang salah dengan No handphone / password kamu"
             ], 404);
         };
     }
@@ -146,11 +146,18 @@ class AuthController extends Controller
         $removeToken = JWTAuth::invalidate($token);
         if ($removeToken) {
             $user = $request->user();
-            $user->update(['is_login' => 0]);
-            return response()->json([
-                'success' => true,
-                'message' => 'Logout berhasil dilakukan!'
-            ]);
+            if ($user) {
+                $user->update(['is_login' => 0]);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Logout berhasil dilakukan!'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Logout gagal, token usang!'
+                ]);
+            }
         }
     }
 }

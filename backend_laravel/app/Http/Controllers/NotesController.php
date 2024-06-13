@@ -13,7 +13,14 @@ class NotesController extends Controller
         $pasienId = PasienModel::where('slug', $slug)->value('id');
         if ($pasienId) {
             $notes = NotesModel::where('patient_id', $pasienId)->latest()->get();
-            return response()->json($notes, 200);
+            if ($notes->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ups..belum ada catatan pada pasien ini'
+                ], 200);
+            } else {
+                return response()->json($notes, 200);
+            }
         } else {
             return response()->json([
                 'success' => 'false',
@@ -28,6 +35,12 @@ class NotesController extends Controller
         $pasien = $request->user();
         if ($pasien !== null) {
             $notes = NotesModel::where('patient_id', $pasien->id)->latest()->get();
+            if ($notes->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kamu belum diberi catatan sama pasien!!!'
+                ], 200);
+            }
             return response()->json($notes, 200);
         } else {
             return response()->json([
@@ -139,5 +152,30 @@ class NotesController extends Controller
             'success' => true,
             'message' => 'Catatan berhasil dihapus',
         ], 200);
+    }
+
+    public function ReplyNoteById( $id, Request $request )
+    {
+        $patient = $request->user();
+        if ($patient !== null) {
+            $note = NotesModel::where('id', $id)->where('patient_id', $patient->id);
+            if ($note) {
+                $note->update(["reply_note"]);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Catatan terbalas!!'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Catatan tidak ditemukan'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pasien sedang tidak login'
+            ], 401);
+        }
     }
 }

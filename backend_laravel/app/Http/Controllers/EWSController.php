@@ -14,14 +14,13 @@ use Illuminate\Http\Request;
 
 class EWSController extends Controller
 {
-    function StoreEWS( Request $request )
+    public function StoreEWS( Request $request )
     {
         $heart_beats = $request->input('hr');
         $blood_oxygen = $request->input('SpO2');
         $temp = $request->input('temp');
         $patient_id = $request->input('patient_id');
 
-        // Queue::push(new StoreDataEwsJob($dataToStore));
         $patient = PasienModel::find($patient_id);
         if ($patient) {
             if ($patient->is_login == '1' && $patient->is_active == 'active') {
@@ -56,6 +55,9 @@ class EWSController extends Controller
         $yellowColor = 1;
         $orangeColor = 2;
         $greenColor = 0;
+        if ($heart_beats > 139) {
+            $heart_beats = 139;
+        }
         $patient->heartrate()->create(['heart_beats' => $heart_beats]);
         if ($heart_beats > 40 && $heart_beats <= 50) {
             $patient->heartrate()->where('heart_beats', $heart_beats)->update(['score' => $yellowColor]); // Kuning

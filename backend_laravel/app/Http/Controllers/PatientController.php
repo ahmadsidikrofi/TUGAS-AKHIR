@@ -13,7 +13,7 @@ class PatientController extends Controller
         return response()->json($dataPatients, 200);
     }
 
-    function PatientsData()
+    public function PatientsData()
     {
         $patients = PasienModel::with(['heartrate' => function ($query) {
             $query->orderBy('created_at', 'desc');
@@ -48,7 +48,7 @@ class PatientController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Kamu tidak berada pada masa login',
-                'is_login' => $pasien->is_login,
+                'is_login' => 0,
             ], 401);
         }
     }
