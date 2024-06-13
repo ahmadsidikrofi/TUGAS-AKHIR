@@ -1,10 +1,9 @@
-// Import React Hooks useState
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native'; // Import ActivityIndicator
 import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import icons from '../../constants/icons';
 import images from '../../constants/images';
@@ -23,12 +22,12 @@ const SignIn = () => {
 
 	const handleLogin = async () => {
 		if (!phone || !password) {
-			setError('Nomor HP dan password harus diisi');
+			setError('Nomor handphone dan password harus diisi');
 			return;
 		}
 
 		if (!validatePhone(phone)) {
-			setError('Nomor HP tidak valid');
+			setError('Nomor handphone tidak valid');
 			return;
 		}
 
@@ -46,7 +45,7 @@ const SignIn = () => {
 				navigation.navigate('MainApp');
 			})
 			.catch((error) => {
-				setError('Nomor HP atau password salah');
+				setError('Nomor handphone atau password salah');
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -58,12 +57,22 @@ const SignIn = () => {
 		return re.test(phone);
 	}
 
+	useFocusEffect(
+		React.useCallback(() => {
+			// Reset error state when the screen gains focus
+			setError('');
+			// Optionally reset other states like phone and password if needed
+			setPhone('');
+			setPassword('');
+		}, [])
+	);
+
 	return (
 		<SafeAreaView>
 			<ScrollView>
 				<View className="px-4 my-6">
 					<PoppinsBold><Text className="text-lg">Selamat Datang</Text></PoppinsBold>
-					<Text className='text-gray-400 font-pregular'>Silahkan Login Menggunakan akun yang sudah terdaftar</Text>
+					<Text className='text-gray-400 font-pregular'>Silahkan Login Menggunakan Akun yang Sudah Terdaftar</Text>
 					<View className="flex justify-center items-center">
 						<Image
 							source={images.heartImg}
@@ -76,8 +85,8 @@ const SignIn = () => {
 					</View>
 					<View className="mb-4">
 						<TextInput
-							className="font-pregular h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
-							placeholder="Masukkan nomor handphone"
+							className="font-pregular h-[55px] text-[13px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500"
+							placeholder="Masukkan nomor handphone anda"
 							onChangeText={(text) => setPhone(text)}
 							keyboardType='numeric'
 						/>
@@ -87,8 +96,8 @@ const SignIn = () => {
 					</View>
 					<View className="flex-row items-center border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500">
 						<TextInput
-							className="font-pregular flex-1 h-[55px] px-4"
-							placeholder="Masukkan kata sandi"
+							className="font-pregular text-[13px] flex-1 h-[55px] px-4"
+							placeholder="Masukkan kata sandi anda"
 							secureTextEntry={!isPasswordShown}
 							onChangeText={(text) => setPassword(text)}
 						/>
@@ -103,14 +112,14 @@ const SignIn = () => {
 							/>
 						</TouchableOpacity>
 					</View>
-					<View className='flex-row gap-1 items-center mt-1'>
+					<View className='flex-row gap-1 items-center'>
 						{error !== '' && <Image source={icons.error} className='w-4 h-4' />}
-						{error !== '' && <Text className="text-red-500">{error}</Text>}
+						{error !== '' && <Text className="text-red-500 font-pregular text-[13px] pt-2">{error}</Text>}
 					</View>
 					<TouchableOpacity
 						className='mb-5 mt-3 flex flex-row justify-end'
 						onPress={() => navigation.navigate('ForgetPassword')} >
-						<Text className="text-rose-400 font-pmedium">Lupa password?</Text>
+						<Text className="text-blue-500 font-pbold">Lupa password?</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity

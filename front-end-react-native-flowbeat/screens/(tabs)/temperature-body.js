@@ -61,7 +61,7 @@ const TemperatureBody = () => {
 		<View className='flex-row items-center gap-1 justify-center mb-10'>
 			<Image source={icons.temperature} className='w-8 h-8 mb-1' />
 			<Text className='text-3xl font-medium'>{item.patient_temp}</Text>
-			<Text className='font-light text-[12px]'>°C</Text>
+			<Text className='font-pregular text-[12px]'>°C</Text>
 		</View>
 	);
 
@@ -122,9 +122,9 @@ const TemperatureBody = () => {
 											yAxisSuffix="°C"
 											yAxisInterval={1}
 											chartConfig={{
-												backgroundColor: "#ffecb3", // Warna latar belakang lebih muda
-												backgroundGradientFrom: "#fff9e6", // Warna gradasi awal lebih muda
-												backgroundGradientTo: "#ffecb3", // Warna gradasi akhir lebih muda
+												backgroundColor: "#ffecb3",
+												backgroundGradientFrom: "#fff9e6",
+												backgroundGradientTo: "#ffecb3",
 												decimalPlaces: 2,
 												color: (opacity = 0.6) => `rgba(255, 165, 0, ${opacity})`,
 												labelColor: (opacity = 0.6) => `rgba(255, 165, 0, ${opacity})`,
@@ -146,7 +146,7 @@ const TemperatureBody = () => {
 													rotation: 40,
 												},
 												propsForBackgroundLines: {
-													stroke: "#FFA500", // Warna garis putus-putus oranye
+													stroke: "#ffe999",
 												},
 											}}
 											style={{
@@ -163,26 +163,26 @@ const TemperatureBody = () => {
 				</View>
 
 				<View className='w-[100%] bg-[#fbe285] rounded-xl p-4 mb-4'>
-					<Text className='text-sm font-medium'>Rata-rata</Text>
+					<Text className='font-pmedium '>Rata-rata</Text>
 					<View className='flex-row justify-center mt-3'>
-						<Text className='text-3xl font-medium mr-1'>{averageTemp}</Text>
-						<Text className='font-light text-[12px] mt-3'>°C</Text>
+						<Text className='text-3xl font-pmedium mr-1'>{averageTemp}</Text>
+						<Text className='font-pregular text-[12px] mt-3'>°C</Text>
 					</View>
 				</View>
 
 				<View className='flex-row justify-between'>
 					<View className='w-[48%] bg-[#fbe285] rounded-xl p-4'>
-						<Text className='text-sm font-medium'>Suhu Terendah</Text>
+						<Text className='text-sm font-pmedium'>Suhu Terendah</Text>
 						<View className='flex-row justify-center mt-3'>
-							<Text className='text-3xl font-medium mr-1'>{minTemp}</Text>
-							<Text className='font-light text-[12px] mt-3'>°C</Text>
+							<Text className='text-3xl font-pmedium mr-1'>{minTemp}</Text>
+							<Text className='font-pregular text-[12px] mt-3'>°C</Text>
 						</View>
 					</View>
 					<View className='w-[48%] bg-[#fbe285] rounded-xl p-4'>
-						<Text className='text-sm font-medium'>Suhu Tertinggi</Text>
+						<Text className='text-sm font-pmedium'>Suhu Tertinggi</Text>
 						<View className='flex-row justify-center mt-3'>
-							<Text className='text-3xl font-medium mr-1'>{maxTemp}</Text>
-							<Text className='font-light text-[12px] mt-3'>°C</Text>
+							<Text className='text-3xl font-pmedium mr-1'>{maxTemp}</Text>
+							<Text className='font-pregular text-[12px] mt-3'>°C</Text>
 						</View>
 					</View>
 				</View>

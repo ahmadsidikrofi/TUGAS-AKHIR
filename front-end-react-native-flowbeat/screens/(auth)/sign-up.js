@@ -29,7 +29,7 @@ const SignUp = () => {
 
 		// Validasi input
 		if (!nama || !phone || !password || !confirmPassword) {
-			setError('Semua kolom harus diisi');
+			setError('Semua kolom harus dilengkapi');
 			setIsLoading(false);
 			return;
 		}
@@ -39,7 +39,7 @@ const SignUp = () => {
 			return;
 		}
 		if (!validatePhone(phone)) {
-			setError('Nomor HP tidak valid');
+			setError('Nomor handphone tidak valid');
 			setIsLoading(false);
 			return;
 		}
@@ -79,15 +79,15 @@ const SignUp = () => {
 			<ScrollView>
 				<View className="w-full min-h-[85vh] px-4 my-6">
 					<Text className='text-xl font-pbold'>Buat Akun</Text>
-					<Text className='text-md text-gray-500 font-pregular'>Daftarkan akun anda sebelum melakukan login</Text>
+					<Text className='text-gray-400 font-pregular'>Daftarkan Akun Anda Sebelum Melakukan Login</Text>
 					<View className='mt-24'>
 						<View className='mb-2'>
 							<Text className='font-pregular'>Nama lengkap</Text>
 						</View>
 						<View className='mb-4 h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput
-								className=' w-full font-pregular'
-								placeholder='Masukan nama lengkap Anda'
+								className=' w-full font-pregular text-[13px]'
+								placeholder='Masukan nama lengkap anda'
 								onChangeText={(e) => setNama(e)}
 							/>
 						</View>
@@ -97,8 +97,8 @@ const SignUp = () => {
 						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
 							<TextInput
-								className=' w-full font-pregular'
-								placeholder='Masukan nomor HP Anda'
+								className=' w-full font-pregular text-[13px]'
+								placeholder='Masukan nomor handphone anda'
 								onChangeText={(e) => setPhone(e)}
 								keyboardType='numeric'
 							/>
@@ -108,8 +108,8 @@ const SignUp = () => {
 							<Text className='font-pregular'>Password</Text>
 						</View>
 						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
-							<TextInput className=' w-full font-pregular'
-								placeholder='Masukan kata sandi Anda'
+							<TextInput className=' w-full font-pregular text-[13px]'
+								placeholder='Masukan kata sandi anda'
 								secureTextEntry={!isPasswordShown}
 								onChangeText={(e) => setPassword(e)}
 							/>
@@ -127,9 +127,9 @@ const SignUp = () => {
 						<View className='mb-2'>
 							<Text className='font-pregular'>Konfirmasi password</Text>
 						</View>
-						<View className='mb-4 w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
-							<TextInput className='font-pregular w-full'
-								placeholder='Konfirmasi kata sandi Anda'
+						<View className=' w-full h-[55px] px-4 bg-[#EEEEEE] border-2 border-[#DDDDDD] rounded-[8px] focus:border-blue-500 items-center flex-row'>
+							<TextInput className='font-pregular w-full text-[13px]'
+								placeholder='Konfirmasi kata sandi anda'
 								secureTextEntry={!isConfirmPasswordShown}
 								onChangeText={(e) => setConfirmPassword(e)}
 							/>
@@ -148,7 +148,7 @@ const SignUp = () => {
 						{/* Pesan error */}
 						<View className='flex-row gap-1 items-center'>
 							{error !== '' && <Image source={icons.error} className='w-4 h-4' />}
-							{error !== '' && <Text className='text-red-500 font-pregular'>{error}</Text>}
+							{error !== '' && <Text className="text-red-500 font-pregular pt-2 text-[13px]">{error}</Text>}
 						</View>
 
 						{/* Tombol Daftar */}
@@ -156,7 +156,7 @@ const SignUp = () => {
 							<ActivityIndicator size="large" color="#0000ff" />
 						) : (
 							<TouchableOpacity
-								className='mt-5 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
+								className='mt-6 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
 								onPress={handleRegis}>
 								<PoppinsBold><Text className='font-bold text-lg text-white'>Daftar</Text></PoppinsBold>
 							</TouchableOpacity>
