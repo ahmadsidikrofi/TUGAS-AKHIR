@@ -30,10 +30,10 @@ const Detail = ({ params: { slug } }) => {
         <button onClick={() => router.push(`/pasien`)}>
           <ArrowCircleLeft size={40} />
         </button>
-        <h1 className="text-3xl text-[#5d87ff] font-bold">Detail Pasien</h1>
+        <h1 className="text-3xl text-[#5d87ff] dark:text-white font-bold">Detail Pasien</h1>
       </div>
       <div className="justify-center flex">
-        <div className="flex gap-10 my-5 mt-10 w-[900px] 2xl:w-[1000px] border bg-white p-5 px-10 py-8 rounded-lg shadow-lg">
+        <div className="flex gap-10 my-5 mt-10 w-[900px] 2xl:w-[1000px] light:border bg-white dark:bg-black p-5 px-10 py-8 rounded-lg shadow-lg">
           <UserCircle size={90} />
           <div className="flex flex-col gap-2">
             <h1 className="text-md">
@@ -59,7 +59,7 @@ const Detail = ({ params: { slug } }) => {
         </div>
       </div>
 
-      <h1 className="text-3xl text-[#5d87ff] font-bold text-center mt-10">Monitoring Pasien</h1>
+      <h1 className="text-3xl text-[#5d87ff] dark:text-white font-bold text-center mt-10">Monitoring Pasien</h1>
       <div className="flex flex-col lg:flex max-sm:block items-center lg:gap-5">
         <NewChartJantung slug={datas.slug} />
         <ChartOxygen slug={datas.slug} />

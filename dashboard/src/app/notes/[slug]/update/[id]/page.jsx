@@ -44,18 +44,18 @@ const Update = ({ params }) => {
         <button onClick={() => router.push(`/notes/${slug}`)}>
           <ArrowCircleLeft size={40} />
         </button>
-        <h1 className="text-3xl text-[#5d87ff] font-bold">Update Notes</h1>
+        <h1 className="text-3xl text-[#5d87ff] font-bold">Perbarui Notes</h1>
       </div>
       <div className="mt-10 ml-10 flex flex-col gap-3">
         <div>
           <label htmlFor="title" className="text-lg  block mb-2 font-medium text-gray-900">
-            Title Notes
+            Judul Notes
           </label>
-          <input type="text" value={title} name="title" id="title" onChange={(e) => setTitle(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg h-10 px-5 w-[50vw]" placeholder="Promo Name" required />
+          <input type="text" value={title} name="title" id="title" onChange={(e) => setTitle(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg h-10 px-5 w-[50vw]" placeholder="Judul Nores" required />
         </div>
         <div className="my-5">
           <label htmlFor="description" className="text-lg block mb-2 font-medium text-gray-900">
-            Description Notes
+            Deskripsi Notes
           </label>
           <Editor
             apiKey="29beonzzetb88fq33tyhw6q6tghwk5qu44899is5yqtkp0gv"
@@ -76,7 +76,7 @@ const Update = ({ params }) => {
         </div>
 
         <button onClick={edit} type="submit" className="w-32 mt-10 text-white bg-sky-700 rounded-lg text-sm p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-          Update Notes
+          Perbarui Notes
         </button>
       </div>
     </div>

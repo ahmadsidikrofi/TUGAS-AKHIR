@@ -23,7 +23,7 @@ export default function NewChartJantung({ slug }) {
 
   const maxBloodOxygen = Math.max(...data.map((item) => item.blood_oxygen));
   return (
-    <div className="mt-10 text-[#5d87ff] rounded-lg shadow p-5 px-10 py-10">
+    <div className="mt-10 dark:text-white dark:bg-black text-[#5d87ff] rounded-lg shadow p-5 px-10 py-10">
       <h1 className="text-xl mb-5 font-bold">Grafik SpO2</h1>
       <LineChart
         width={810}
@@ -35,8 +35,8 @@ export default function NewChartJantung({ slug }) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" horizontal={true} />
-        <XAxis dataKey="created_at" className="text-[13px]" />
-        <YAxis dataKey="blood_oxygen" domain={[0, maxBloodOxygen]} />
+        <XAxis dataKey="created_at" tick={{ fill: '#959595' }} className="text-[13px]" />
+        <YAxis dataKey="blood_oxygen" tick={{ fill: '#959595' }} domain={[0, maxBloodOxygen]} />
         <Tooltip contentStyle={{ backgroundColor: '#fff', color: '#000' }} />
         <Legend />
         <Line type="linear" dataKey="blood_oxygen" name="Spo2" strokeWidth={2} stroke="#f52f57" activeDot={{ r: 5 }} />

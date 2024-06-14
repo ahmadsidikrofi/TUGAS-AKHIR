@@ -38,7 +38,7 @@ export default function ChartKondisi({ kondisiBerat, kondisiRingan, kondisiSedan
     return null;
   }
   return (
-    <div className="rounded-lg border py-10 shadow-lg w-[510px] h-[445px]">
+    <div className="rounded-lg dark:dark border py-10 shadow-lg w-[510px] h-[445px]">
       <h1 className="text-xl font-bold px-10 mb-5 text-[#5d87ff]">Kondisi Pasien</h1>
       <BarChart
         activeIndex={activeIndex}

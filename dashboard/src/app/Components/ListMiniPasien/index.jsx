@@ -11,8 +11,8 @@ const ListMiniPasien = ({ pasien, loading }) => {
   let codeBlue = 'bg-sky-500';
   return (
     <div className="flex flex-col ">
-      <div className="max-sm:w-[80%] xl:w-[970px] 2xl:w-[1300px] mx-auto border rounded-lg py-7 px-10 shadow-lg">
-        <h1 className="font-bold text-xl text-[#5d87ff]">Early Warning Score Condition</h1>
+      <div className="max-sm:w-[80%] dark:bg-dark dark:text-white xl:w-[970px] 2xl:w-[1300px] mx-auto border rounded-lg py-7 px-10 shadow-lg">
+        <h1 className="font-bold text-xl dark:text-white text-[#5d87ff]">Early Warning Score Condition</h1>
         <Table className="mt-8">
           <TableHeader>
             <TableRow>
@@ -85,9 +85,9 @@ const ListMiniPasien = ({ pasien, loading }) => {
                     <TableCell className="text-center">{index + 1}</TableCell>
                     <TableCell className="text-center">{item.nama_lengkap}</TableCell>
                     <TableCell className="text-center">{item.perawatan}</TableCell>
-                    <TableCell className={`text-center border border-white ${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
-                    <TableCell className={`text-center border border-white ${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
-                    <TableCell className={`text-center border border-white ${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
+                    <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
+                    <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
+                    <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
                   </TableRow>
                 );
               })

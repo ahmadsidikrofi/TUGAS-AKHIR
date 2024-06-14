@@ -6,24 +6,23 @@ import { Trash } from '@phosphor-icons/react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/components/ui/use-toast';
 import { useFlowbeatApi } from '@/context/ApiProvider';
+import { useEffect, useState } from 'react';
 
-const DelNotes = ({ id }) => {
+const DelNotes = ({ id, handleDelete }) => {
   const { axios } = useFlowbeatApi();
   const { toast } = useToast();
-  // const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const hapusData = async (e) => {
     e.preventDefault();
-    await axios
-      .delete(`/note/${id}`)
-      .then((response) => {
-        if (response.data.success === true) {
-          toast({
-            title: 'Notes Terhapus',
-            description: 'Notes berhasil Terhapus',
-          });
-        }
-      })
-      .catch((error) => console.log(error));
+    const res = await axios.delete(`/note/${id}`);
+    if (res.data.success) {
+      handleDelete(id);
+      toast({
+        title: 'Notes Terhapus',
+        description: 'Notes berhasil Terhapus',
+      });
+    }
   };
   return (
     <div>
@@ -38,7 +37,7 @@ const DelNotes = ({ id }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={hapusData}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={(e) => hapusData(e)}>Setuju</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

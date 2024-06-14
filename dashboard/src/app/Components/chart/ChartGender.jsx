@@ -20,7 +20,7 @@ const ChartGender = ({ genderPria, genderWanita }) => {
   const [isMounted, setIsMounted] = useState(false);
   const data = [
     { name: 'Pria', value: genderPria.length, color: '#121481' },
-    { name: 'Wanita', value: genderWanita.length, color: '#FFC94A' },
+    { name: 'Wanita', value: genderWanita.length, color: '#E524BD' },
   ];
 
   useEffect(() => {
@@ -31,8 +31,8 @@ const ChartGender = ({ genderPria, genderWanita }) => {
     return null;
   }
   return (
-    <div className="rounded-lg border shadow-lg">
-      <h1 className="text-xl mt-10 font-bold px-10 mb-5 text-[#5d87ff]">Jenis Kelamin</h1>
+    <div className="rounded-lg border shadow-lg dark:bg-dark">
+      <h1 className="text-xl mt-10 font-bold px-10 mb-5 dark:text-white text-[#5d87ff]">Jenis Kelamin</h1>
       <PieChart width={400} height={340} className=" -mt-[90px]">
         <Pie data={data} cx={200} cy={200} labelLine={false} label={renderCustomizedLabel} outerRadius={80} dataKey="value">
           {data.map((entry, index) => (
@@ -46,7 +46,7 @@ const ChartGender = ({ genderPria, genderWanita }) => {
           <h1 className="font-bold ">Pria</h1>
         </div>
         <div className="flex gap-3 items-center">
-          <div className="bg-[#FFC94A] rounded-full w-[15px] h-[15px]"></div>
+          <div className="bg-[#E524BD] rounded-full w-[15px] h-[15px]"></div>
           <h1 className="font-bold">Wanita</h1>
         </div>
       </div>
