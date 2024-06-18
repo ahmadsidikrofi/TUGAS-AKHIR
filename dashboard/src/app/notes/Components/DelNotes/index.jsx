@@ -21,6 +21,7 @@ const DelNotes = ({ id }) => {
             title: 'Notes Terhapus',
             description: 'Notes berhasil Terhapus',
           });
+          router.replace(router.asPath);
         }
       })
       .catch((error) => console.log(error));

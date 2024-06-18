@@ -35,19 +35,19 @@ const Pasien = () => {
   let codeBlue = 'bg-sky-500';
 
   const { toast } = useToast();
-  const fetchData = async () => {
-    await axios
-      .get('/patients')
-      // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
-      .then((response) => {
-        setPasien(response?.data);
-        setLoading(false);
-      })
-      .catch((error) => console.log(error));
-  };
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchData = async () => {
+      await axios
+        .get('/patients')
+        // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
+        .then((response) => {
+          setPasien(response?.data);
+          setLoading(false);
+        })
+        .catch((error) => console.log(error));
+    };
+    fetchData()
+  }, [axios, setPasien, setLoading]);
 
   const handleSearch = (keyword) => {
     setFilteredPasien(pasien.filter((item) => item.nama_lengkap.toLowerCase().includes(keyword.toLowerCase())));
