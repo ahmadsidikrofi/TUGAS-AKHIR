@@ -39,7 +39,7 @@ export default function NewChartJantung({ slug }) {
         <YAxis dataKey="blood_oxygen" tick={{ fill: '#959595' }} domain={[0, maxBloodOxygen]} />
         <Tooltip contentStyle={{ backgroundColor: '#fff', color: '#000' }} />
         <Legend />
-        <Line type="linear" dataKey="blood_oxygen" name="Spo2" strokeWidth={2} stroke="#f52f57" activeDot={{ r: 5 }} />
+        <Line type="linear" dataKey="blood_oxygen" name="Spo2" strokeWidth={2} stroke="#192EEC" activeDot={{ r: 5 }} />
       </LineChart>
     </div>
   );
