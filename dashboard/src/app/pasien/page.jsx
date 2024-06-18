@@ -310,7 +310,7 @@ const Pasien = () => {
                 );
               })
             ) : (
-              pasien.reverse().map((item, i) => {
+              pasien.map((item, i) => {
                 const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0) + Number(item.temperature?.score || 0);
                 let cellColor = codeBlue;
                 if (calcEws >= 1 && calcEws <= 4) {
