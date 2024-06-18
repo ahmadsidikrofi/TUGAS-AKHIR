@@ -35,7 +35,7 @@ const Profile = () => {
 				alert('Profile berhasil diperbarui');
 			}, 1000);
 		}).catch((err) => {
-			alert('Gagal mengubah profile')
+			alert('Profile gagal diperbarui')
 		})
 	}
 

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const Notes = () => {
 	const [originalDatas, setOriginalDatas] = useState([]); // Menyimpan data asli
@@ -31,8 +32,13 @@ const Notes = () => {
 					}
 				});
 				console.log(res.data);
-				setDatas(res.data);
-				setOriginalDatas(res.data); // Simpan data asli saat pertama kali didapatkan
+				if (Array.isArray(res.data)) {
+					setDatas(res.data);
+					setOriginalDatas(res.data);
+				} else {
+					setDatas([]);
+					setOriginalDatas([]);
+				}
 			}
 		} catch (err) {
 			console.log(err);
@@ -89,51 +95,65 @@ const Notes = () => {
 							</View>
 						</View>
 					</View>
-					<View className="flex-row flex-wrap justify-between">
-						{
-							datas.map((data) => (
-								<TouchableOpacity
-									key={data.id}
-									title={data.title}
-									description={data.description}
-									jam={data.created_at}
-									onPress={() =>
-										navigation.navigate('NotesDetail', {
-											title: data.title,
-											description: data.description,
-											jam: data.created_at,
-										})
-									}
-									className="bg-[#ecf0f1] w-[48%] h-52 mb-4 rounded-xl p-3 shadow-lg relative"
-									style={{
-										shadowColor: "#000",
-										shadowOffset: {
-											width: 0,
-											height: 5,
-										},
-										shadowOpacity: 0.34,
-										shadowRadius: 5.27,
-										elevation: 5,
-									}}>
-									<Text ellipsizeMode='tail' numberOfLines={2}
-										className="font-pbold mb-2 text-[15px]">
-										{data.title}</Text>
-									<Text ellipsizeMode='tail' numberOfLines={2}
-										className='font-pregular text-[12px]'>
-										{parseHtmlToText(data.description)}</Text>
-									<Text className="font-pregular text-[9px] text-gray-800 absolute bottom-2 right-3">
-										{new Intl.DateTimeFormat('id-ID', {
-											year: 'numeric',
-											month: 'long',
-											day: 'numeric',
-											hour: 'numeric',
-											minute: 'numeric'
-										}).format(new Date(data.created_at))}
-									</Text>
-								</TouchableOpacity>
-							))
-						}
-					</View>
+					{
+						datas.length < 1 ? (
+							<View className='mt-48'>
+								<View className='mx-auto'>
+									<FontAwesome5 name="notes-medical" size={84} color="#3C83F6" />
+								</View>
+								<View className='mx-auto'>
+									<Text className='font-pmedium text-slate-800 mt-3'>Kamu belum diberi catatan perawat</Text>
+								</View>
+							</View>
+						) : (
+							<View className="flex-row flex-wrap justify-between">
+								{
+
+									datas.map((data) => (
+										<TouchableOpacity
+											key={data.id}
+											title={data.title}
+											description={data.description}
+											jam={data.created_at}
+											onPress={() =>
+												navigation.navigate('NotesDetail', {
+													title: data.title,
+													description: data.description,
+													jam: data.created_at,
+												})
+											}
+											className="bg-white w-[48%] h-52 mb-4 rounded-xl p-3 shadow-lg relative"
+											style={{
+												shadowColor: "#000",
+												shadowOffset: {
+													width: 0,
+													height: 5,
+												},
+												shadowOpacity: 0.34,
+												shadowRadius: 5.27,
+												elevation: 5,
+											}}>
+											<Text ellipsizeMode='tail' numberOfLines={2}
+												className="font-pbold mb-2 text-[15px]">
+												{data.title}</Text>
+											<Text ellipsizeMode='tail' numberOfLines={2}
+												className='font-pregular text-[12px]'>
+												{parseHtmlToText(data.description)}</Text>
+											<Text className="font-pregular text-[9px] text-gray-800 absolute bottom-2 right-3">
+												{new Intl.DateTimeFormat('id-ID', {
+													year: 'numeric',
+													month: 'long',
+													day: 'numeric',
+													hour: 'numeric',
+													minute: 'numeric'
+												}).format(new Date(data.created_at))}
+											</Text>
+										</TouchableOpacity>
+									))
+								}
+							</View>
+						)
+					}
 				</View>
 			</ScrollView>
 		</SafeAreaView>

@@ -13,8 +13,8 @@ const TemperatureBody = () => {
 	const [lastData, setLastData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [averageTemp, setAverageTemp] = useState(0);
-	const [minTemp, setMinTemp] = useState(null);
-	const [maxTemp, setMaxTemp] = useState(null);
+	const [minTemp, setMinTemp] = useState(0);
+	const [maxTemp, setMaxTemp] = useState(0);
 
 	const dataTemperature = async () => {
 		try {
@@ -39,7 +39,7 @@ const TemperatureBody = () => {
 
 	const calculateStatistics = (temps) => {
 		if (temps.length === 0) return;
-		const tempValues = temps.map(data => parseFloat(data.patient_temp));
+		const tempValues = temps.map(data => parseInt(data.patient_temp));
 		const total = tempValues.reduce((sum, temp) => sum + temp, 0);
 		const average = total / tempValues.length;
 		const min = Math.min(...tempValues);

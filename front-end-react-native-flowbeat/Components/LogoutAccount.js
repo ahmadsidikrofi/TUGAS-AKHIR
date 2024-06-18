@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -26,6 +27,22 @@ const LogoutAccount = () => {
 		}
 	};
 
+	const confirmLogout = () => {
+		Alert.alert(
+			"Konfirmasi Logout",
+			"Apakah Anda yakin ingin keluar dari aplikasi?",
+			[
+				{
+					text: "Tidak",
+					onPress: () => console.log("Logout dibatalkan"),
+					style: "cancel"
+				},
+				{ text: "Ya", onPress: handleLogout }
+			],
+			{ cancelable: false }
+		);
+	};
+
 	return (
 		<TouchableOpacity
 			style={{
@@ -38,8 +55,8 @@ const LogoutAccount = () => {
 				shadowRadius: 2,
 				elevation: 2,
 			}}
-			className='flex-row items-center bg-red-600 w-full p-3 rounded-md mt-2 h-[50px]'
-			onPress={handleLogout}>
+			className='flex-row items-center bg-red-500 w-full p-3 rounded-md mt-2 h-[50px]'
+			onPress={confirmLogout}>
 			<AntDesign name="logout" size={24} color="white" />
 			<Text className='font-pbold text-white mx-5'>Keluar</Text>
 		</TouchableOpacity>

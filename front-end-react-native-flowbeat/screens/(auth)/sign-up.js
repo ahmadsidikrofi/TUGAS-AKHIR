@@ -22,25 +22,20 @@ const SignUp = () => {
 	const [isPasswordShown, setIsPasswordShown] = useState(false);
 	const [isConfirmPasswordShown, setIsConfirmPasswordShown] = useState(false);
 	const [error, setError] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
 
 	const handleRegis = async () => {
-		setIsLoading(true);
 
 		// Validasi input
 		if (!nama || !phone || !password || !confirmPassword) {
 			setError('Semua kolom harus dilengkapi');
-			setIsLoading(false);
 			return;
 		}
 		if (password !== confirmPassword) {
 			setError('Password dan konfirmasi password harus sama');
-			setIsLoading(false);
 			return;
 		}
 		if (!validatePhone(phone)) {
 			setError('Nomor handphone tidak valid');
-			setIsLoading(false);
 			return;
 		}
 
@@ -65,12 +60,11 @@ const SignUp = () => {
 
 		setIsPasswordShown(false);
 		setIsConfirmPasswordShown(false);
-		setIsLoading(false);
 	}
 
 
 	const validatePhone = (phone) => {
-		const re = /^\d{11,12}$/; // Validasi untuk 11-12 digit angka
+		const re = /^\d{11,12}$/;
 		return re.test(phone);
 	}
 
@@ -151,23 +145,18 @@ const SignUp = () => {
 							{error !== '' && <Text className="text-red-500 font-pregular pt-2 text-[13px]">{error}</Text>}
 						</View>
 
-						{/* Tombol Daftar */}
-						{isLoading ? (
-							<ActivityIndicator size="large" color="#0000ff" />
-						) : (
-							<TouchableOpacity
-								className='mt-6 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
-								onPress={handleRegis}>
-								<PoppinsBold><Text className='font-bold text-lg text-white'>Daftar</Text></PoppinsBold>
-							</TouchableOpacity>
-						)}
+						<TouchableOpacity
+							className='mt-6 bg-blue-500 rounded-[8px] h-[55px] justify-center items-center'
+							onPress={handleRegis}>
+							<Text className='font-pbold text-lg text-white'>Daftar</Text>
+						</TouchableOpacity>
 
 
 						{/* Tautan untuk login */}
 						<View className="justify-center pt-5 flex-row gap-x-1">
-							<Text className="text-black-200">Sudah mempunyai akun?</Text>
+							<Text className="text-black-200 font-pregular">Sudah mempunyai akun?</Text>
 							<TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-								<PoppinsBold><Text className='font-bold text-blue-500'>Masuk</Text></PoppinsBold>
+								<Text className='font-pbold text-blue-500'>Masuk</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
