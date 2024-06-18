@@ -27,23 +27,22 @@ const NotesDetail = ({ route }) => {
 						</TouchableOpacity>
 						<Text className='text-2xl font-pbold'>Detail Notes</Text>
 					</View>
-					<View className='px-4 py-5 bg-[#ecf0f1] rounded-xl h-[85vh] relative'>
-						<Text className='font-pbold text-2xl mb-2'>{title}</Text>
-						<Text className='font-pregular mb-2'>{cleanDescription}</Text>
-						<View className='absolute bottom-4 right-4 bg-white py-2 px-4 rounded-full'>
-							<Text className='text-[11px] font-pbold'>
-								{new Intl.DateTimeFormat('id-ID', {
-									year: 'numeric',
-									month: 'long',
-									day: 'numeric',
-									hour: 'numeric',
-									minute: 'numeric'
-								}).format(new Date(jam))}
-							</Text>
-						</View>
-					</View>
+
+					<Text className='font-pbold text-2xl mb-4'>{title}</Text>
+					<Text className='font-pregular mb-12'>{cleanDescription}</Text>
 				</View>
 			</ScrollView>
+			<View className='absolute bottom-4 right-4 bg-white py-2 px-4 rounded-full'>
+				<Text className='text-[11px] font-pbold'>
+					{new Intl.DateTimeFormat('id-ID', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+						hour: 'numeric',
+						minute: 'numeric'
+					}).format(new Date(jam))}
+				</Text>
+			</View>
 		</SafeAreaView>
 	)
 }
