@@ -38,7 +38,6 @@ const Pasien = () => {
   const fetchData = async () => {
     await axios
       .get('/patients')
-      // .get('http://192.168.18.8:8080/TUGAS-AKHIR/backend_laravel/public/api/patients')
       .then((response) => {
         setPasien(response?.data);
         setLoading(false);
@@ -47,6 +46,8 @@ const Pasien = () => {
   };
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleSearch = (keyword) => {
