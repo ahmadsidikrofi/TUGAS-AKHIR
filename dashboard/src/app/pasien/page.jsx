@@ -63,7 +63,7 @@ const Pasien = () => {
   const ubahPerawatan = async (slug, jenisPerawatanBaru) => {
     if (typeof window !== 'undefined') {
       axios
-        .put(`https://flowbeat.web.id/api/profile/${slug}`, {
+        .put(`https://flowbeat.web.id/api/patient/${slug}/profile`, {
           perawatan: jenisPerawatanBaru,
         })
         .then(() => {
@@ -95,7 +95,7 @@ const Pasien = () => {
   const ubahStatus = async (slug, statusBaru) => {
     if (typeof window !== 'undefined') {
       axios
-        .put(`https://flowbeat.web.id/api/profile/${slug}`, {
+        .put(`https://flowbeat.web.id/api/patient/${slug}/profile`, {
           is_active: statusBaru,
         })
         .then(() => {
@@ -228,7 +228,7 @@ const Pasien = () => {
   return (
     <div className="flex flex-col w-full">
       <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] font-bold">Daftar Pasien</h1>
-      <div className="border-[1px] sm:w-[500px] xl:w-[1015px] 2xl:w-[1360px] p-10 border-slate-200 dark:border-slate-800 rounded-lg my-10 mx-6">
+      <div className="border-[1px] sm:w-[500px] xl:w-[1015px] 2xl:w-[1360px] p-10 border-slate-200  rounded-lg my-10 mx-6">
         <SearchInput onSearch={handleSearch} />
         <Table className="w-max flex flex-col gap-5">
           <TableHeader className="w-max flex gap-12">
@@ -280,7 +280,7 @@ const Pasien = () => {
                 return (
                   <TableRow className="text-center flex" key={i}>
                     <TableCell className="text-center w-[65px] ">{i + 1}</TableCell>
-                    <TableCell className="text-center 2xl:w-[488px] xl:w-[260px]">{item.nama_lengkap}</TableCell>
+                    <TableCell className="items-center text-center 2xl:w-[488px] xl:w-[260px]">{item.nama_lengkap}</TableCell>
                     <TableCell className="text-center xl:w-[157px] 2xl:w-[180px]">
                       <DropdownPerawatan item={item} />
                     </TableCell>
@@ -310,7 +310,7 @@ const Pasien = () => {
                 );
               })
             ) : (
-              pasien.map((item, i) => {
+              pasien.reverse().map((item, i) => {
                 const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0) + Number(item.temperature?.score || 0);
                 let cellColor = codeBlue;
                 if (calcEws >= 1 && calcEws <= 4) {
@@ -324,8 +324,8 @@ const Pasien = () => {
                 }
                 return (
                   <TableRow className="text-center flex" key={i}>
-                    <TableCell className="text-center w-[65px] ">{i + 1}</TableCell>
-                    <TableCell className="text-center 2xl:w-[488px] xl:w-[260px]">{item.nama_lengkap}</TableCell>
+                    <TableCell className="text-center mt-2 w-[65px] ">{i + 1}</TableCell>
+                    <TableCell className="text-center mt-2 2xl:w-[488px] xl:w-[260px]">{item.nama_lengkap}</TableCell>
                     <TableCell className="text-center xl:w-[157px] 2xl:w-[180px]">
                       <DropdownPerawatan item={item} />
                     </TableCell>
@@ -341,7 +341,7 @@ const Pasien = () => {
                       )}
                     </TableCell>
                     <TableCell className={`text-center ml-[55px] mr-[50px] ${cellColor} w-12`}>
-                      <p className="text-center mt-3">{calcEws}</p>
+                      <p className="text-center dark:text-black mt-3">{calcEws}</p>
                     </TableCell>
                     <TableCell className=" items-center text-center xl:w-[125px] 2xl:w-[150px]">
                       <DropdownStatus item={item} />

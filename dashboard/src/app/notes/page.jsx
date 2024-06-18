@@ -4,18 +4,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Note } from '@phosphor-icons/react';
+import { CaretRight } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useFlowbeatApi } from '@/context/ApiProvider';
 const Notes = () => {
-  const { axios } = useFlowbeatApi() 
+  const { axios } = useFlowbeatApi();
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const skeleton = <Skeleton className="w-[50px] h-[20px] rounded-full dark:bg-slate-200" />;
 
   useEffect(() => {
     const dataUser = async () => {
-      await axios.get(`/patients`)
+      await axios
+        .get(`/patients`)
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             setUser(response.data);
@@ -24,11 +25,11 @@ const Notes = () => {
         })
         .catch((error) => console.log(error));
     };
-    dataUser()
+    dataUser();
   }, [axios]);
   return (
     <div className="flex flex-col ">
-      <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] font-bold">Notes Pasien</h1>
+      <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] dark:text-white font-bold">Notes Pasien</h1>
       <div className="py-10 rounded-lg my-10 mx-6 pl-20 items-center w-full border">
         <Table className="w-max flex flex-col  gap-2">
           <TableHeader className="w-max flex gap-12">
@@ -51,8 +52,8 @@ const Notes = () => {
                   <TableCell className="text-center">{index + 1}</TableCell>
                   <TableCell className="text-center w-full">{item.nama_lengkap}</TableCell>
                   <TableCell className="text-center ml-40 mr-10">
-                    <Link href={`/notes/${item.slug}`}>
-                      <Note size={32} />
+                    <Link className="text-[#5d87ff] dark:text-white" href={`/notes/${item.slug}`}>
+                      <CaretRight size={25} />
                     </Link>
                   </TableCell>
                 </TableRow>

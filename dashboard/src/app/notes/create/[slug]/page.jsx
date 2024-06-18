@@ -33,8 +33,8 @@ const Create = ({ params: { slug } }) => {
       .then((response) => {
         if (response.data.success === true) {
           toast({
-            title: 'Notes Terhapus',
-            description: 'Notes berhasil Terhapus',
+            title: 'Notes Ditambahkan',
+            description: 'Notes berhasil Ditambahkan',
           });
           router.push(`/notes/${slug}`);
         }
@@ -47,25 +47,25 @@ const Create = ({ params: { slug } }) => {
         <button onClick={() => router.push(`/notes/${slug}`)}>
           <ArrowCircleLeft size={40} />
         </button>
-        <h1 className="text-3xl text-[#5d87ff] font-bold">Create Notes</h1>
+        <h1 className="text-3xl text-[#5d87ff] font-bold">Membuat Notes</h1>
       </div>
       <div className="mt-10 ml-10 flex flex-col gap-3">
         <div>
           <label htmlFor="title" className="text-lg  block mb-2 font-medium text-gray-900">
-            Title Notes
+            Judul Notes
           </label>
-          <input type="text" name="title" id="title" onChange={handleTitle} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg h-10 px-5 w-[50vw]" placeholder="Promo Name" required />
+          <input type="text" name="title" id="title" onChange={handleTitle} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg h-10 px-5 w-[50vw]" placeholder="Judul Notes" required />
         </div>
         <div className="my-5">
           <label htmlFor="description" className="text-lg block mb-2 font-medium text-gray-900">
-            Description Notes
+            Deskripsi Notes
           </label>
           <Editor
             apiKey="o61nnuwogclhd3z601n2k0zh479m9kbnsivauhaxrlu4jco0"
             onInit={(evt, editor) => (editorRef.current = editor)}
             onEditorChange={handleDescription}
             textareaName="description"
-            placeholder="Deskripsi Note."
+            placeholder="Deskripsi Notes."
             init={{
               height: 300,
               width: 700,
@@ -78,7 +78,7 @@ const Create = ({ params: { slug } }) => {
         </div>
 
         <button onClick={createData} type="submit" className="w-32 mt-10 text-white bg-sky-700 rounded-lg text-sm p-3 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-          Create Notes
+          Buat Notes
         </button>
       </div>
     </div>

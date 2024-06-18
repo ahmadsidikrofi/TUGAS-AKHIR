@@ -53,17 +53,7 @@ const Sidebar = () => {
                     <p>Pasien</p>
                   </div>
                 </Link>
-                <Link
-                  href={'/help'}
-                  onClick={() => handelActive('help')}
-                  className={`flex cursor-pointer text-lg items-center w-[250px] rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
-                    ${active === 'help' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
-                >
-                  <div className="flex gap-4 font-bold text-lg items-center">
-                    <Question size={32} />
-                    <p>Help</p>
-                  </div>
-                </Link>
+
                 <Link
                   href={'/notes'}
                   onClick={() => handelActive('notes')}
@@ -73,6 +63,17 @@ const Sidebar = () => {
                   <div className="flex gap-4 font-bold text-lg items-center">
                     <Note size={32} />
                     <p>Notes</p>
+                  </div>
+                </Link>
+                <Link
+                  href={'/faq'}
+                  onClick={() => handelActive('faq')}
+                  className={`flex cursor-pointer text-lg items-center w-[250px] rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
+                    ${active === 'faq' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
+                >
+                  <div className="flex gap-4 font-bold text-lg items-center">
+                    <Question size={32} />
+                    <p>FAQ</p>
                   </div>
                 </Link>
                 <Link
