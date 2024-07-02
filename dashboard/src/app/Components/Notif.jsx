@@ -51,7 +51,7 @@ const Notif = () => {
           <Bell className="cursor-pointer pt-1" size={23} />
         </SheetTrigger>
       ) : (
-        <SheetTrigger className="border text-center p-2 rounded-lg">
+        <SheetTrigger className="border dark:border-none text-center p-2 rounded-lg">
           <BellRinging className="cursor-pointer text-[#5d87ff]" size={23} />
         </SheetTrigger>
       )}
@@ -101,7 +101,7 @@ const Notif = () => {
                 {group.slice(0, 12).map((item, index2) => {
                   if (item.total_score >= 5 && item.total_score < 7) {
                     return (
-                      <SheetDescription key={index2} className="text-black dark:text-white py-5 h-60 border-l-[13px] border-orange-500 rounded-lg shadow-lg px-5">
+                      <SheetDescription key={index2} className="text-black dark:text-white bg-[#5d87ff] py-5 h-60 border-l-[13px] border-orange-500 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-lg">{item.nama_lengkap}</p>
                         <p className="font-lg mt-1">Total Score {item.total_score}</p>
                         <p className="text  mt-5">Lakukan eskalasi perawatan dan frekuensi monitoring tiap jam. Pertimbangkan eskalasi perawatan ke unit intensif care edukasi keluarga pasien</p>
@@ -113,19 +113,19 @@ const Notif = () => {
                     );
                   } else if (item.total_score >= 0 && item.total_score <= 4) {
                     return (
-                      <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-yellow-400 rounded-lg shadow-lg px-5">
+                      <SheetDescription key={index2} className="text-black dark:text-white py-5 h-60 border-l-[13px] border-yellow-400 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-2xl">{item.nama_lengkap}</p>
                         <p className="font-lg mt-1">Total Score {item.total_score}</p>
-                        <p className="text text-black mt-5">Assessmen dilakukan oleh perawat senior (maks respon 5 menit) dengan eskalasi perawatan monitoring per 4-6 jam</p>
-                        <p className="mt-5 flex gap-1 justify-end w-full relative top-2 items-center text-sm font-bold text-black">
-                          <Clock className="text-black" size={22} />
-                          <p className="text-black">{item.created_at}</p>
+                        <p className="text  mt-5">Assessmen dilakukan oleh perawat senior (maks respon 5 menit) dengan eskalasi perawatan monitoring per 4-6 jam</p>
+                        <p className="mt-5 flex gap-1 justify-end w-full relative top-2 items-center text-sm font-bold ">
+                          <Clock className="" size={22} />
+                          <p className="">{item.created_at}</p>
                         </p>
                       </SheetDescription>
                     );
                   } else if (item.total_score >= 7 && item.total_score <= 9) {
                     return (
-                      <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-red-500 rounded-lg shadow-lg px-5">
+                      <SheetDescription key={index2} className="text-black dark:text-white py-5 h-60 border-l-[13px] border-red-500 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-2xl">{item.nama_lengkap}</p>
                         <p className="font-lg mt-1">Total Score {item.total_score}</p>
                         <p className="text text-black mt-5">Respon maksimal 10 menit beri informasi ke DPJP dan edukasi keluarga pasien</p>
@@ -137,13 +137,13 @@ const Notif = () => {
                     );
                   } else {
                     return (
-                      <SheetDescription key={index2} className="text-black py-5 h-60 border-l-[13px] border-[#0ea5e9] rounded-lg shadow-lg px-5">
+                      <SheetDescription key={index2} className="text-black dark:text-white py-5 h-60 border-l-[13px] border-[#0ea5e9] rounded-lg shadow-lg px-5">
                         <p className="font-bold text-2xl">{item.nama_lengkap}</p>
                         <p className="font-lg mt-1">Total Score {item.total_score}</p>
-                        <p className="text text-black mt-5">Assessmen dilakukan oleh perawat senior (maks respon 5 menit) dengan eskalasi perawatan monitoring per 4-6 jam</p>
-                        <p className="mt-5 flex gap-1 justify-end w-full relative top-2 items-center text-sm font-bold text-black">
-                          <Clock className="text-black" size={22} />
-                          <p className="text-black">{item.created_at}</p>
+                        <p className="text  mt-5">Assessmen dilakukan oleh perawat senior (maks respon 5 menit) dengan eskalasi perawatan monitoring per 4-6 jam</p>
+                        <p className="mt-5 flex gap-1 justify-end w-full relative top-2 items-center text-sm font-bold ">
+                          <Clock className="" size={22} />
+                          <p className="">{item.created_at}</p>
                         </p>
                       </SheetDescription>
                     );
