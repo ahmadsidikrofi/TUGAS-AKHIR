@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CaretRight } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useFlowbeatApi } from '@/context/ApiProvider';
+import { Button } from '@/components/ui/button';
 const Notes = () => {
   const { axios } = useFlowbeatApi();
   const [user, setUser] = useState([]);
@@ -52,9 +53,11 @@ const Notes = () => {
                   <TableCell className="text-center">{index + 1}</TableCell>
                   <TableCell className="text-center w-full">{item.nama_lengkap}</TableCell>
                   <TableCell className="text-center ml-40 mr-10">
-                    <Link className="text-[#5d87ff] dark:text-white" href={`/notes/${item.slug}`}>
-                      <CaretRight size={25} />
-                    </Link>
+                    <Button variant="outline">
+                      <Link className="text-[#5d87ff] dark:text-white" href={`/notes/${item.slug}`}>
+                        <CaretRight size={25} />
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))

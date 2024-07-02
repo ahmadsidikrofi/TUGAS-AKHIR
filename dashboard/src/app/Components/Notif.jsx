@@ -52,7 +52,7 @@ const Notif = () => {
         </SheetTrigger>
       ) : (
         <SheetTrigger asChild className="text-center p-2 rounded-lg">
-          <Button variant='ghost'>
+          <Button variant='outline'>
             <BellRinging color='#5d87ff' size={23} />
           </Button>
         </SheetTrigger>
@@ -130,10 +130,10 @@ const Notif = () => {
                       <SheetDescription key={index2} className="text-black dark:text-white py-5 h-60 border-l-[13px] border-red-500 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-2xl">{item.nama_lengkap}</p>
                         <p className="font-lg mt-1">Total Score {item.total_score}</p>
-                        <p className="text text-black mt-5">Respon maksimal 10 menit beri informasi ke DPJP dan edukasi keluarga pasien</p>
-                        <p className="mt-5 flex gap-1 justify-end w-full relative top-7 items-center text-sm font-bold text-black">
-                          <Clock className="text-black" size={22} />
-                          <p className="text-black">{item.created_at}</p>
+                        <p className="text  mt-5">Respon maksimal 10 menit beri informasi ke DPJP dan edukasi keluarga pasien</p>
+                        <p className="mt-5 flex gap-1 justify-end w-full relative top-7 items-center text-sm font-bold ">
+                          <Clock className="" size={22} />
+                          <p className="">{item.created_at}</p>
                         </p>
                       </SheetDescription>
                     );
