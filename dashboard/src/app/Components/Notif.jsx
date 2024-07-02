@@ -101,7 +101,7 @@ const Notif = () => {
                 {group.slice(0, 12).map((item, index2) => {
                   if (item.total_score >= 5 && item.total_score < 7) {
                     return (
-                      <SheetDescription key={index2} className="text-black dark:text-white bg-[#5d87ff] py-5 h-60 border-l-[13px] border-orange-500 rounded-lg shadow-lg px-5">
+                      <SheetDescription key={index2} className="text-black dark:text-white bg-white py-5 h-60 border-l-[13px] border-orange-500 rounded-lg shadow-lg px-5">
                         <p className="font-bold text-lg">{item.nama_lengkap}</p>
                         <p className="font-lg mt-1">Total Score {item.total_score}</p>
                         <p className="text  mt-5">Lakukan eskalasi perawatan dan frekuensi monitoring tiap jam. Pertimbangkan eskalasi perawatan ke unit intensif care edukasi keluarga pasien</p>
