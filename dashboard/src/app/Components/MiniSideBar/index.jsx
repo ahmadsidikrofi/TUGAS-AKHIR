@@ -22,7 +22,7 @@ const MiniSideBar = () => {
   return (
     <div className="lg:hidden">
       <Sheet>
-        <div className="flex flex-col hover:shadow-lg rounded-lg shadow-sm gap-5 items-center justify-center mt-9 p-2 mx-4 absolute -top-20">
+        <div className="flex flex-col hover:shadow-lg rounded-lg shadow-sm gap-5 items-center justify-center mt-9 p-2 mx-4 absolute top-20">
           <SheetTrigger className=" hover:rounded-[18px] hover:cursor-pointer hover: transition-all ease-linear">
             <List size={32} />
           </SheetTrigger>
