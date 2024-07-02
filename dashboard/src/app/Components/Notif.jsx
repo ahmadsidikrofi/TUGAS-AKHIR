@@ -52,7 +52,7 @@ const Notif = () => {
         </SheetTrigger>
       ) : (
         <SheetTrigger asChild className="text-center p-2 rounded-lg">
-          <Button variant='outline'>
+          <Button variant='outline' size='icon'>
             <BellRinging color='#5d87ff' size={23} />
           </Button>
         </SheetTrigger>
