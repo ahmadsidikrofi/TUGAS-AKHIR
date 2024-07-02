@@ -51,13 +51,13 @@ const Create = ({ params: { slug } }) => {
       </div>
       <div className="mt-10 ml-10 flex flex-col gap-3">
         <div>
-          <label htmlFor="title" className="text-lg  block mb-2 font-medium text-gray-900">
+          <label htmlFor="title" className="text-lg  block mb-2 font-medium text-gray-900 dark:text-white">
             Judul Notes
           </label>
           <input type="text" name="title" id="title" onChange={handleTitle} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg h-10 px-5 w-[50vw]" placeholder="Judul Notes" required />
         </div>
         <div className="my-5">
-          <label htmlFor="description" className="text-lg block mb-2 font-medium text-gray-900">
+          <label htmlFor="description" className="text-lg block mb-2 font-medium text-gray-900 dark:text-white">
             Deskripsi Notes
           </label>
           <Editor
