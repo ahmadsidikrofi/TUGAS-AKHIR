@@ -8,7 +8,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
   let yellowColor = 'bg-yellow-400';
   let orangeColor = 'bg-orange-500';
   let greenColor = 'bg-green-500';
-  let codeBlue = 'bg-sky-500';
+  let noData = 'bg-slate-300';
   return (
     <div className="flex flex-col ">
       <div className="max-sm:w-[80%] dark:bg-dark dark:text-white xl:w-[970px] 2xl:w-[1300px] mx-auto border rounded-lg py-7 px-10 shadow-lg">
@@ -53,7 +53,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
                   } else if (item.heartrate?.heart_beats >= 91 && item.heartrate?.heart_beats <= 110) {
                     colorcellHR = yellowColor;
                   } else {
-                    colorcellHR = codeBlue; // Nilai tidak valid
+                    colorcellHR = noData; // Nilai tidak valid
                   }
 
                   // Oxygen saturation
@@ -66,7 +66,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
                   } else if (item.oxygen_saturation?.blood_oxygen >= 94 && item.oxygen_saturation?.blood_oxygen <= 95) {
                     colorcellSpO2 = yellowColor;
                   } else {
-                    colorcellSpO2 = codeBlue;
+                    colorcellSpO2 = noData;
                   }
                   // Temperature
                   if (item.temperature?.patient_temp <= 35) {
@@ -80,7 +80,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
                   } else if (item.temperature?.patient_temp >= 38.1 && item.temperature?.patient_temp <= 39) {
                     colorcellTemp = yellowColor;
                   } else {
-                    colorcellTemp = codeBlue; // Nilai tidak valid
+                    colorcellTemp = noData; // Nilai tidak valid
                   }
 
                   return (

@@ -32,7 +32,7 @@ const Pasien = () => {
   let redColor = 'bg-red-500';
   let yellowColor = 'bg-yellow-400';
   let orangeColor = 'bg-orange-500';
-  let codeBlue = 'bg-sky-500';
+  let noData = 'bg-slate-300';
 
   const { toast } = useToast();
   const fetchData = async () => {
@@ -76,6 +76,7 @@ const Pasien = () => {
             return item;
           });
           setPasien(updatePerawatan);
+          setFilteredPasien(updatePerawatan);
           toast({
             title: 'Ubah Perawatan',
             description: 'Jenis perawatan berhasil diubah',
@@ -108,6 +109,7 @@ const Pasien = () => {
             return item;
           });
           setPasien(updateStatus);
+          setFilteredPasien(updateStatus);
           toast({
             title: 'Ubah Status',
             description: 'Status Berhasil Diubah',
@@ -167,6 +169,7 @@ const Pasien = () => {
         return 0;
       });
       setPasien(sortedPasienAsc);
+      setFilteredPasien(sortedPasienAsc);
       setSortPerawatan(true);
     } else {
       // Lakukan sorting secara descending
@@ -176,6 +179,7 @@ const Pasien = () => {
         return 0;
       });
       setPasien(sortedPasienDesc);
+      setFilteredPasien(sortedPasienDesc);
       setSortPerawatan(false);
     }
   };
@@ -266,7 +270,7 @@ const Pasien = () => {
             ) : filteredPasien.length > 0 ? (
               filteredPasien.map((item, i) => {
                 const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.temperature?.score || 0);
-                let cellColor = codeBlue;
+                let cellColor = noData;
                 if (calcEws >= 1 && calcEws <= 4) {
                   cellColor = yellowColor;
                 } else if (calcEws >= 5 && calcEws < 7) {
@@ -311,7 +315,7 @@ const Pasien = () => {
             ) : (
               pasien.map((item, i) => {
                 const calcEws = Number(item.heartrate?.score || 0) + Number(item.oxygen_saturation?.score || 0) + Number(item.nibp?.score || 0) + Number(item.temperature?.score || 0);
-                let cellColor = codeBlue;
+                let cellColor = noData;
                 if (calcEws >= 1 && calcEws <= 4) {
                   cellColor = yellowColor;
                 } else if (calcEws >= 5 && calcEws < 7) {
