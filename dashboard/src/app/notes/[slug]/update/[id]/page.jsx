@@ -51,14 +51,14 @@ const Update = ({ params }) => {
           <label htmlFor="title" className="text-lg  block mb-2 font-medium text-gray-900">
             Judul Notes
           </label>
-          <input type="text" value={title} name="title" id="title" onChange={(e) => setTitle(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg h-10 px-5 w-[50vw]" placeholder="Judul Nores" required />
+          <input type="text" value={title} name="title" id="title" onChange={(e) => setTitle(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg h-10 px-5 w-[50vw]" placeholder="Judul Notes" required />
         </div>
         <div className="my-5">
           <label htmlFor="description" className="text-lg block mb-2 font-medium text-gray-900">
             Deskripsi Notes
           </label>
           <Editor
-            apiKey="29beonzzetb88fq33tyhw6q6tghwk5qu44899is5yqtkp0gv"
+            apiKey="o61nnuwogclhd3z601n2k0zh479m9kbnsivauhaxrlu4jco0"
             onInit={(evt, editor) => (editorRef.current = editor)}
             onEditorChange={(content) => setDescription(content)}
             value={description}

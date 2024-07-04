@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { DarkTheme } from '../DarkTheme';
 import { HoverMenu } from '../HoverMenu';
 import { Gauge } from 'lucide-react';
-import { Question, Note, List } from '@phosphor-icons/react';
+import { Question, Note, List, SmileyNervous, Database } from '@phosphor-icons/react';
 import Notif from '../Notif';
 import Image from 'next/image';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -22,7 +22,7 @@ const MiniSideBar = () => {
   return (
     <div className="lg:hidden">
       <Sheet>
-        <div className="flex flex-col hover:shadow-lg rounded-lg shadow-sm gap-5 items-center justify-center mt-9 p-2 mx-4 absolute top-0 ">
+        <div className="flex flex-col hover:shadow-lg rounded-lg shadow-sm gap-5 items-center justify-center my-9 p-2 mx-4 absolute top-14">
           <SheetTrigger className=" hover:rounded-[18px] hover:cursor-pointer hover: transition-all ease-linear">
             <List size={32} />
           </SheetTrigger>
@@ -52,38 +52,50 @@ const MiniSideBar = () => {
                       <p>Dashboard</p>
                     </div>
                   </Link>
-                  <div
-                    onMouseEnter={() => setTimeout(() => handelActive('pasien'), 1000)}
-                    className="flex justify-between cursor-pointer gap-4 text-lg items-center rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear"
-                  >
-                    <HoverMenu />
+                  <Link
+                  href={'/pasien'}
+                  onClick={() => handelActive('pasien')}
+                  className={`flex cursor-pointer text-lg items-center rounded-[8px]  w-[250px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
+                    ${active === 'pasien' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
+                >
+                  <div className="flex gap-4 font-bold text-lg items-center">
+                    <SmileyNervous size={32} />
+                    <p>Pasien</p>
                   </div>
-                  <Link
-                    href={'/help'}
-                    onClick={() => handelActive('help')}
-                    className={`flex justify-between cursor-pointer gap-4 text-lg items-center rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
-                      ${active === 'help' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
-                  >
-                    <div className="flex gap-4 font-bold text-lg items-center">
-                      <Question size={32} />
-                      <p>Help</p>
-                    </div>
-                  </Link>
-                  <Link
-                    href={'/notes'}
-                    onClick={() => handelActive('notes')}
-                    className={`flex justify-between cursor-pointer gap-4 text-lg items-center rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
-                      ${active === 'notes' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
-                  >
-                    <div className="flex gap-4 font-bold text-lg items-center">
-                      <Note size={32} />
-                      <p>Notes</p>
-                    </div>
-                  </Link>
-                </div>
-                <div className=" flex flex-col mt-14 gap-2 items-center justify-center">
-                  <h1 className="text-lg font-bold">Support By:</h1>
-                  <Image src="/img/telu.png" alt="" height={120} width={120} priority />
+                </Link>
+                <Link
+                  href={'/notes'}
+                  onClick={() => handelActive('notes')}
+                  className={`flex justify-between cursor-pointer gap-4 w-[250px] text-lg items-center rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
+                    ${active === 'notes' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
+                >
+                  <div className="flex gap-4 font-bold text-lg items-center">
+                    <Note size={32} />
+                    <p>Notes</p>
+                  </div>
+                </Link>
+                <Link
+                  href={'/faq'}
+                  onClick={() => handelActive('faq')}
+                  className={`flex cursor-pointer text-lg items-center w-[250px] rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
+                    ${active === 'faq' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
+                >
+                  <div className="flex gap-4 font-bold text-lg items-center">
+                    <Question size={32} />
+                    <p>FAQ</p>
+                  </div>
+                </Link>
+                <Link
+                  href={'/masterdata'}
+                  onClick={() => handelActive('master')}
+                  className={`flex justify-between cursor-pointer gap-4 w-[250px] text-lg items-center rounded-[8px] p-4 text-[#5d87ff] dark:text-white hover:bg-blue-400 dark:hover:bg-white hover:rounded-[18px] hover:text-white dark:hover:text-black transition-all ease-linear 
+                    ${active === 'master' ? 'bg-[#5d87ff] text-white rounded-[8px]' : 'null'}`}
+                >
+                  <div className="flex gap-4 font-bold text-lg items-center">
+                    <Database size={32} />
+                    <p>Master Data</p>
+                  </div>
+                </Link>
                 </div>
               </div>
             </SheetDescription>
