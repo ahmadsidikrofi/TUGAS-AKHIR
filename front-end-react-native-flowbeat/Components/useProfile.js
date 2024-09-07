@@ -33,15 +33,41 @@ const useProfile = () => {
 				console.error(err);
 			}
 		}
-	};
+	}
+ 
+	const fetchPolarProfile = async () => {
+		const accessToken = await AsyncStorage.getItem('access_token')
+		const polarUserId = await AsyncStorage.getItem('x_user_id')
+		if (accessToken) {
+			const headers = {
+				'Accept': 'application/json',
+				'Authorization': `Bearer ${accessToken}`
+			}
+			await axios.get(`https://www.polaraccesslink.com/v3/users/${polarUserId}`, { headers })
+			.then((res) => {
+				const data = res.data
+				setNama_lengkap(data['first-name'] + ' ' + data['last-name'])
+				setTgl_lahir(data.birthdate)
+				if (data.gender === 'MALE') {
+					setJenis_kelamin('Pria')
+				} else if (data.gender === 'FEMALE') {
+					setJenis_kelamin('Wanita')
+				}
+			})
+			.catch(err => {
+				console.error(err)
+			})
+		}
+	}
 	useEffect(() => {
-		fetchProfile();
-	}, []);
+		fetchProfile()
+		fetchPolarProfile()
+	}, [])
 
 	return {
 		nama_lengkap, alamat, tgl_lahir, jenis_kelamin, datas, noHp, perawatan,
 		setNama_lengkap, setAlamat, setTgl_lahir, setJenis_kelamin,
-		fetchProfile
+		fetchProfile, fetchPolarProfile
 	}
 }
 

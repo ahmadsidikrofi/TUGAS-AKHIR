@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, } from 'react-native'
-import React from 'react'
+import { View, Text, ScrollView, Image, TouchableOpacity, Linking, } from 'react-native'
+import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 
@@ -7,12 +7,15 @@ import images from '../../constants/images'
 
 // Fonts
 import PoppinsBold from '../../Components/Fonts/PoppinsBold';
-import PoppinsRegular from '../../Components/Fonts/PoppinsRegular';
-import PoppinsMedium from '../../Components/Fonts/Poppins-Medium';
-import PoppinsThin from '../../Components/Fonts/Poppins-Thin';
-
+  
 const BeforeLogin = () => {
 	const navigation = useNavigation()
+
+	const handleSignInWithPolar = () => {
+		Linking.openURL('https://flow.polar.com/oauth2/authorization?response_type=code&client_id=55a69c83-e0e8-4f95-abb6-491fdaf9695c&redirect_uri=https://flowbeat123.vercel.app/auth/callback&scope=accesslink.read_all')
+		navigation.navigate('PolarCode')
+	}
+
 	return (
 		<SafeAreaView>
 			<ScrollView contentContainerStyle={{ height: '100%' }}>
@@ -26,12 +29,17 @@ const BeforeLogin = () => {
 					</View>
 					<TouchableOpacity
 						onPress={() => navigation.navigate('SignIn')}
-						className='bg-blue-500 rounded-xl min-h-[62px] justify-center items-center mt-10 mb-5'>
+						className='bg-blue-500 rounded-xl p-2 justify-center items-center mt-10 mb-5'>
 						<PoppinsBold><Text className='text-[22px] text-white'>Masuk</Text></PoppinsBold>
 					</TouchableOpacity>
 					<TouchableOpacity
+						onPress={handleSignInWithPolar}
+						className='bg-blue-500 rounded-xl p-2 justify-center items-center mb-5'>
+						<PoppinsBold><Text className='text-[22px] text-white'>Masuk dengan Polar</Text></PoppinsBold>
+					</TouchableOpacity>
+					<TouchableOpacity
 						onPress={() => navigation.navigate('SignUp')}
-						className='bg-blue-500 rounded-xl min-h-[62px] justify-center items-center'>
+						className='bg-blue-500 rounded-xl p-2 justify-center items-center'>
 						<PoppinsBold><Text className='text-[22px] text-white'>Daftar</Text></PoppinsBold>
 					</TouchableOpacity>
 				</View>
