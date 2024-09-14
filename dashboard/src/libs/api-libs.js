@@ -2,7 +2,7 @@ import { toast } from '@/components/ui/use-toast';
 import axios from 'axios';
 
 const NetworkError = axios.create({
-  baseURL: 'http://flowbeat.web.id/api',
+  baseURL: 'https://flowbeat.web.id/api',
 })
 
 NetworkError.interceptors.response.use(
