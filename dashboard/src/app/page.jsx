@@ -71,40 +71,32 @@ const Home = () => {
 
   return (
     <>
-      <h1 className="ml-2 mt-10 text-3xl font-bold dark:text-white text-[#5d87ff]">Dashboard</h1>
-      <div className="flex flex-col gap-10 mx-6 my-10">
-        <div className="flex gap-5">
-          <div className="flex w-[220px] dark:bg-dark dark:shadow-sm dark:shadow-white dark:bor xl:gap-3 xl:px-3 p-2 items-center 2xl:w-[278px] 2xl:h-[100px] 2xl:gap-5 border-l-8 shadow-lg rounded-lg border-[#5d87ff]  2xl:p-5 rounded-lg">
-            <div className="bg-[#5d87ff] rounded-full 2xl:gap-3 xl:p-2">
-              <User className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-6 xl:h-6 2xl:w-9 2xl:h-9" />
-            </div>
+      <h1 className="mt-10 text-3xl font-bold dark:text-white text-[#5d87ff]">Dashboard</h1>
+      <div className="flex flex-col gap-10  my-10">
+        <div className="grid xl:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-2 sm:w-3/4 max-sm:w-60 xl:w-full">
+          <div className="flex sm:w-72 lg:w-full dark:bg-dark dark:shadow-sm dark:shadow-white gap-3 px-3 p-5 items-center h-full border-l-8 shadow-lg border-[#5d87ff] rounded-lg">
+            <User className="w-12 h-12 bg-[#5d87ff] p-3 rounded-full" />
             <div className="flex flex-col gap-1">
               <h1 className="font-bold 2xl:text-xl dark:text-white xl:text-md text-[#5d87ff]">Jumlah Pasien</h1>
               <h1 className="2xl:text-3xl xl:text-2xl font-bold">{totPasien}</h1>
             </div>
           </div>
-          <div className="flex w-[220px] xl:gap-3 dark:bg-dark dark:shadow-sm dark:shadow-white  xl:px-3 p-2 items-center 2xl:w-[278px] 2xl:h-[100px] 2xl:gap-5 border-l-8 shadow-lg rounded-lg border-[#5d87ff]  2xl:p-5 rounded-lg">
-            <div className="bg-[#CFFF92] rounded-full 2xl:gap-3 xl:p-2">
-              <SignIn className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-6 xl:h-6 2xl:w-9 2xl:h-9" />
-            </div>
+          <div className="flex sm:w-72 lg:w-full dark:bg-dark dark:shadow-sm dark:shadow-white gap-3 px-3 p-5 items-center h-full border-l-8 shadow-lg border-[#5d87ff] rounded-lg">
+            <SignIn className="w-12 h-12 bg-[#CFFF92] p-3 rounded-full" />
             <div className="flex flex-col gap-1">
               <h1 className="font-bold 2xl:text-xl xl:text-md dark:text-white text-[#5d87ff]">Pasien Login</h1>
               <h1 className="2xl:text-3xl dark:text-white xl:text-2xl font-bold">{is_login}</h1>
             </div>
           </div>
-          <div className="flex w-[220px] xl:gap-3 xl:px-3 dark:bg-dark dark:shadow-sm dark:shadow-white  p-2 items-center 2xl:w-[278px] 2xl:h-[100px] 2xl:gap-5 border-l-8 shadow-lg rounded-lg border-[#5d87ff]  2xl:p-5 rounded-lg">
-            <div className="bg-[#FF8484] rounded-full 2xl:gap-3 xl:p-2">
-              <SignOut className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-6 xl:h-6 2xl:w-9 2xl:h-9" />
-            </div>
+          <div className="flex sm:w-72 lg:w-full dark:bg-dark dark:shadow-sm dark:shadow-white gap-3 px-3 p-5 items-center h-full border-l-8 shadow-lg border-[#5d87ff] rounded-lg">
+            <SignOut className="w-12 h-12 bg-[#FF8484] p-3 rounded-full" />
             <div className="flex flex-col gap-1">
               <h1 className="font-bold 2xl:text-xl xl:text-md dark:text-white text-[#5d87ff]">Pasien Logout</h1>
               <h1 className="2xl:text-3xl xl:text-2xl dark:text-white font-bold">{is_notLogin}</h1>
             </div>
           </div>
-          <div className="flex w-[220px] xl:gap-3 xl:px-3 p-2 dark:bg-dark dark:shadow-sm dark:shadow-white items-center 2xl:w-[278px] 2xl:h-[100px] 2xl:gap-5 border-l-8 shadow-lg rounded-lg border-[#5d87ff]  2xl:p-5 rounded-lg">
-            <div className="bg-[#D15DE3] rounded-full 2xl:gap-3 xl:p-2">
-              <Pulse className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-6 xl:h-6 2xl:w-9 2xl:h-9" />
-            </div>
+          <div className="flex sm:w-72 lg:w-full dark:bg-dark dark:shadow-sm dark:shadow-white gap-3 px-3 p-5 items-center h-full border-l-8 shadow-lg border-[#5d87ff] rounded-lg">
+            <Pulse className="w-12 h-12 bg-[#D15DE3] p-3 rounded-full" />
             <div className="flex flex-col gap-1">
               <h1 className="font-bold 2xl:text-xl xl:text-md dark:text-white text-[#5d87ff]">Pasien Active</h1>
               <h1 className="2xl:text-3xl xl:text-2xl dark:text-white font-bold">{monitoring}</h1>
@@ -112,7 +104,7 @@ const Home = () => {
           </div>
         </div>
         <ListMiniPasien pasien={pasien} loading={loading} />
-        <div className="flex gap-10">
+        <div className="grid sm:grid-cols-1 xl:grid-cols-2 sm:gap-3 max-sm:gap-3">
           <ChartGender genderPria={genderPria} genderWanita={genderWanita} />
           <ChartKondisi kondisiBerat={kondisiBerat} kondisiSedang={kondisiSedang} kondisiRingan={kondisiRingan} />
         </div>

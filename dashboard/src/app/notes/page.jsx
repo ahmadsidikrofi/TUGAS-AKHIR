@@ -29,30 +29,30 @@ const Notes = () => {
     dataUser();
   }, [axios]);
   return (
-    <div className="flex flex-col ">
-      <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] dark:text-white font-bold">Notes Pasien</h1>
-      <div className="py-10 rounded-lg my-10 mx-6 pl-20 items-center w-full border">
-        <Table className="w-max flex flex-col  gap-2">
-          <TableHeader className="w-max flex gap-12">
-            <TableRow className="w-max flex">
-              <TableHead className="text-center w=[50px]">MRN</TableHead>
-              <TableHead className="mx-32 text-center w-full">Nama Pasien</TableHead>
-              <TableHead className="text-center ml-44 mr-10">Notes</TableHead>
+    <div className="flex flex-col mx-3 ">
+      <h1 className="mt-10 text-3xl text-[#5d87ff] dark:text-white font-bold">Notes Pasien</h1>
+      <div className="my-10 border rounded-lg p-3">
+        <Table>
+          <TableHeader>
+            <TableRow className="max-sm:text-[12px]">
+              <TableHead className="md:px-16 py-2">MRN</TableHead>
+              <TableHead className="md:px-16 py-2 text-nowrap">Nama Pasien</TableHead>
+              <TableHead className="md:px-16 py-2">Notes</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow className="w-full text-center flex gap-2">
-                <TableCell className="text-center">{skeleton}</TableCell>
-                <TableCell className="text-center ml-36 w-full">{skeleton}</TableCell>
-                <TableCell className="text-center ml-40 mr-10">{skeleton}</TableCell>
+              <TableRow>
+                <TableCell>{skeleton}</TableCell>
+                <TableCell>{skeleton}</TableCell>
+                <TableCell>{skeleton}</TableCell>
               </TableRow>
             ) : (
               user.map((item, index) => (
-                <TableRow className="w-full text-center flex gap-2" key={index}>
-                  <TableCell className="text-center">{index + 1}</TableCell>
-                  <TableCell className="text-center w-full">{item.nama_lengkap}</TableCell>
-                  <TableCell className="text-center ml-40 mr-10">
+                <TableRow className="text-left max-sm:text-[12px]" key={index}>
+                  <TableCell className="text-center md:px-16 py-2">{index + 1}</TableCell>
+                  <TableCell className="md:px-16 py-2">{item.nama_lengkap}</TableCell>
+                  <TableCell className="md:px-16 py-2">
                     <Button variant="outline">
                       <Link className="text-[#5d87ff] dark:text-white" href={`/notes/${item.slug}`}>
                         <CaretRight size={25} />

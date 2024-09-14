@@ -31,9 +31,9 @@ const ChartGender = ({ genderPria, genderWanita }) => {
     return null;
   }
   return (
-    <div className="rounded-lg border shadow-lg dark:bg-dark">
+    <div className="rounded-lg border shadow-lg dark:bg-dark sm:w-[90%] max-sm:w-full">
       <h1 className="text-xl mt-10 font-bold px-10 mb-5 dark:text-white text-[#5d87ff]">Jenis Kelamin</h1>
-      <PieChart width={400} height={340} className=" -mt-[90px]">
+      <PieChart width={window.innerWidth <= 640 ? 300 : 500} height={340} className="-mt-[90px]">
         <Pie data={data} cx={200} cy={200} labelLine={false} label={renderCustomizedLabel} outerRadius={80} dataKey="value">
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />

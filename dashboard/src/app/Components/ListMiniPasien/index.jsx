@@ -10,18 +10,19 @@ const ListMiniPasien = ({ pasien, loading }) => {
   let greenColor = 'bg-green-500';
   let noData = 'bg-slate-300';
   return (
-    <div className="flex flex-col ">
-      <div className="max-sm:w-[80%] dark:bg-dark dark:text-white xl:w-[970px] 2xl:w-[1300px] mx-auto border rounded-lg py-7 px-10 shadow-lg">
-        <h1 className="font-bold text-xl dark:text-white text-[#5d87ff]">Early Warning Score Condition</h1>
+    <>
+    <div className="dark:bg-dark dark:text-white w-full border rounded-lg py-7 px-2 shadow-lg">
+      <h1 className="font-bold text-xl dark:text-white text-[#5d87ff]">Early Warning Score Condition</h1>
+      <div className="md:overflow-x-auto overflow-x-hidden md:w-[500px] sm:w-[400px] max-sm:w-[300px] lg:w-[600px] xl:w-full">
         <Table className="mt-8">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-10 text-center">No</TableHead>
-              <TableHead className="w-72 text-center">Nama pasien</TableHead>
-              <TableHead className="w-40 text-center">Perawatan</TableHead>
-              <TableHead className="w-16 text-center">HR</TableHead>
-              <TableHead className="w-16 text-center">SpO2</TableHead>
-              <TableHead className="w-16 text-center">Temp</TableHead>
+              <TableHead>No</TableHead>
+              <TableHead className="text-left text-nowrap">Nama pasien</TableHead>
+              <TableHead className="text-left text-nowrap">Perawatan</TableHead>
+              <TableHead className="text-left">HR</TableHead>
+              <TableHead className="text-center">SpO2</TableHead>
+              <TableHead className="text-center">Temp</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -85,12 +86,12 @@ const ListMiniPasien = ({ pasien, loading }) => {
 
                   return (
                     <TableRow key={index}>
-                      <TableCell className="text-center">{index + 1}</TableCell>
-                      <TableCell className="text-center">{item.nama_lengkap}</TableCell>
-                      <TableCell className="text-center">{item.perawatan}</TableCell>
-                      <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellHR} w-[10px]`}>{item.heartrate?.heart_beats || 0}</TableCell>
-                      <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellSpO2} w-[10px]`}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
-                      <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellTemp} w-[10px]`}>{item.temperature?.patient_temp || 0}</TableCell>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell className="text-left">{item.nama_lengkap}</TableCell>
+                      <TableCell className="text-left">{item.perawatan}</TableCell>
+                      <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellHR} `}>{item.heartrate?.heart_beats || 0}</TableCell>
+                      <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellSpO2} `}>{item.oxygen_saturation?.blood_oxygen || 0}</TableCell>
+                      <TableCell className={`text-center dark:text-black light:border light:border-white ${colorcellTemp} `}>{item.temperature?.patient_temp || 0}</TableCell>
                     </TableRow>
                   );
                 })
@@ -99,6 +100,7 @@ const ListMiniPasien = ({ pasien, loading }) => {
         </Table>
       </div>
     </div>
+    </>
   );
 };
 export default ListMiniPasien;

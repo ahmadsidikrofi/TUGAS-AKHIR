@@ -230,14 +230,14 @@ const Pasien = () => {
   };
 
   return (
-    <div className="flex flex-col w-full">
-      <h1 className="ml-2 mt-10 text-3xl text-[#5d87ff] font-bold">Daftar Pasien</h1>
-      <div className="border-[1px] sm:w-[500px] xl:w-[1015px] 2xl:w-[1360px] p-10 border-slate-200  rounded-lg my-10 mx-6">
+    <div className="flex flex-col w-full mx-4">
+      <h1 className="mt-10 text-3xl text-[#5d87ff] font-bold">Daftar Pasien</h1>
+      <div className="mt-10">
         <SearchInput onSearch={handleSearch} />
-        <Table className="w-max flex flex-col gap-5">
-          <TableHeader className="w-max flex gap-12">
+        <Table className="w-full flex flex-col gap-5">
+          <TableHeader className="w-full flex">
             <TableRow>
-              <TableHead className="w-[50px] text-center">MRN</TableHead>
+              <TableHead className="text-center">MRN</TableHead>
               <TableHead className="text-center xl:w-[260px] 2xl:w-[490px]">Nama Pasien</TableHead>
               <TableHead className="text-center xl:w-[80px] 2xl:w-[180px]">
                 <Button variant="ghost" onClick={handleSortPerawatan}>
